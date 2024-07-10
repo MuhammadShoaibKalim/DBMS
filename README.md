@@ -116,5 +116,11 @@ calculus.
      1.	Homogeneous DDB: Those database systems that execute on the same operating system and use the same 
         application process and carry the same hardware devices. 
      2.	Heterogeneous DDB: Those database systems that execute on different operating systems under different 
-        application procedures and carry different hardware devices. 
+        application procedures and carry different hardware devices.
+
+     Advantages of Distributed Database 
+    	⚫ Modular development is possible in a distributed database, i.e., the system can be expanded by including new
+          computers and connecting them to the distributed system. 
+     ⚫	One server failure will not affect the entire data set. 
+
 ```
