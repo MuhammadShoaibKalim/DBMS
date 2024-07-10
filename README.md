@@ -335,6 +335,57 @@ calculus.
         3)	Referential integrity specifies that rows cannot be deleted, which are used by other records. 
         4)	User-defined integrity: It enforces some specific business rules defined by users. These rules are 
            different from the entity, domain, or referential integrity. 
+```
 
+**DBMS (Database Management System)**
+ Definition:
+
+A DBMS is software that provides an interface to interact with databases for creating, retrieving, updating, and managing data.
+Data Storage:
+
+DBMS stores data as files. The structure of the data might not be organized into tables.
+Data Integrity:
+
+DBMS does not enforce any rules for data integrity; it's the responsibility of the developer to handle data integrity.
+Normalization:
+
+DBMS might not support normalization, leading to data redundancy and inconsistency.
+Examples:
+
+Examples include file systems, XML databases, and other non-relational databases.
+Transactions:
+
+Limited support for transactions. DBMS may not fully support ACID (Atomicity, Consistency, Isolation, Durability) properties.
+Data Relationships:
+
+DBMS does not inherently support the concept of primary keys, foreign keys, or the relational integrity constraints between tables.
+Complex Queries:
+
+Limited support for complex queries involving joins and other relational operations.
+RDBMS (Relational Database Management System)
+Definition:
+
+An RDBMS is a type of DBMS that uses a relational model to store data in tables. It ensures data integrity and supports SQL for database operations.
+Data Storage:
+
+RDBMS stores data in tables (relations). Each table consists of rows and columns.
+Data Integrity:
+
+RDBMS enforces data integrity through constraints like primary keys, foreign keys, unique constraints, and check constraints.
+Normalization:
+
+RDBMS supports normalization to reduce data redundancy and ensure data consistency.
+Examples:
+
+Examples include MySQL, PostgreSQL, Oracle, Microsoft SQL Server, and SQLite.
+Transactions:
+
+Full support for transactions with ACID properties to ensure data reliability and integrity.
+Data Relationships:
+
+RDBMS supports relationships between tables using primary keys and foreign keys. It enforces relational integrity.
+Complex Queries:
+
+RDBMS provides robust support for complex queries involving joins, subqueries, and other relational operations.
 
 
