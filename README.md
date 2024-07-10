@@ -391,6 +391,7 @@ calculus.
         relational operations.
 ```
   **DBSM Architecture**
+  ```
        1. Single-Tier Architecture
            Definition: In single-tier architecture, the database and the application accessing the database
              reside on the same system. The user interacts directly with the DBMS.
