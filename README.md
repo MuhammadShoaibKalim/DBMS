@@ -235,9 +235,82 @@ calculus.
         11- Enterprise Database 
         
        ⚫	Large organizations or enterprises use this database for managing a massive amount of data.  
-       ⚫	It helps organizations to increase and improve their efficiency. Such a database allows simultaneous access to users. 
+       ⚫	It helps organizations to increase and improve their efficiency. Such a database allows  
+         simultaneous access to users. 
 
       Advantages of Enterprise Database 
        ✓	Multi processes are supportable over the Enterprise database. 
        ✓	It allows executing parallel queries on the system. 
 ```
+
+    **RDBMS**
+
+```
+       •	RDBMS stands for Relational Database Management System. 
+       •	All modern database management systems like SQL, MS SQL Server, IBM DB2, ORACLE, My-SQL, and Microsoft Access
+        are based on RDBMS. 
+       •	It is called Relational Database Management System (RDBMS) because it is based on the relational model 
+          introduced by E.F. Codd. 
+
+     ➢ How it works
+
+       ◆	Data is represented in terms of tuples (rows) in RDBMS. 
+       ◆	A relational database is the most commonly used database. It contains several tables, and each table has 
+           its primary key. 
+       ◆	Due to a collection of an organized set of tables, data can be accessed easily in RDBMS.
+
+     ➢ Table/Relation
+
+      ⚫	Everything in a relational database is stored in the form of relations.  
+      ⚫	The RDBMS database uses tables to store data.  
+      ⚫	A table is a collection of related data entries and contains rows and columns to store data.  
+      ⚫	Each table represents some real-world objects such as a person, place, or event about which information is 
+         collected.  
+      ⚫	The organized collection of data into a relational table is known as the logical view of the database. 
+ 
+     Properties of a Relation:
+
+      •	Each relation has a unique name by which it is identified in the database. 
+      •	Relation does not contain duplicate tuples. 
+      •	The tuples of a relation have no specific order. 
+      •	All attributes in a relation are atomic, i.e., each cell of a relation contains exactly one value. 
+       A table is the simplest example of data stored in RDBMS.
+
+        ID 	Name 	AGE 	COURSE 
+        1 	Ajeet 	24 	B.Tech 
+        2 	aryan 	20 	C.A 
+        3 	Mahesh 	21 	BCA 
+        4 	Ratan 	22 	MCA 
+        5 	Vimal 	26 	BSC 
+
+      -> Row or Record 
+       A row of a table is also called a record or tuple. It contains the specific information of each entry 
+       in the table. It is a horizontal entity in the table. For example, The above table contains 5 records. 
+ 
+      -> Properties of a row 
+       •	No two tuples are identical to each other in all their entries. 
+       •	All tuples of the relation have the same format and the same number of entries. 
+       •	The order of the tuple is irrelevant. They are identified by their content, not by their position. 
+
+      ➢ Column/attribute 
+         A column is a vertical entity in the table that contains all information associated with a specific 
+         field in a table. For example, "name" is a column in the above table that contains all information 
+         about a student's name. 
+      
+     -> Properties of an Attribute 
+        •	Every attribute of a relation must have a name. 
+        •	Null values are permitted for the attributes. 
+        •	Default values can be specified for an attribute automatically inserted if no other value is specified 
+        for an attribute. 
+        •	Attributes that uniquely identify each tuple of a relation are the primary keys. 
+      ➢ Data item/Cells 
+         The smallest unit of data in the table is the individual data item. It is stored at the intersection of tuples and attributes. 
+       Properties of data items 
+        •	Data items are atomic. 
+        •	The data items for an attribute should be drawn from the same domain. 
+         In the below example, the data item in the student table consists of Ajeet, 24 Btech, etc. 
+
+```
+
+
+
