@@ -161,16 +161,17 @@ calculus.
 
         1.	Key-value storage: It is the simplest type of database storage where it stores every single item as a
            key (or attribute name) holding its value, together. 
-        2.	Document-oriented Database: A type of database used to store data as JSON-like document. It helps developers 
-           in storing data by using the same document-model format as used in the application code. 
-        3.	Graph Databases: It is used for storing vast amounts of data in a graph-like structure. Most commonly, social 
-            networking websites use the graph database. 
-        4.	Wide-column stores: It is similar to the data represented in relational databases. Here, data is stored in large 
-           columns together, instead of storing in rows. 
+        2.	Document-oriented Database: A type of database used to store data as JSON-like documents. It helps  
+           developers in storing data by using the same document-model format as used in the application code. 
+        3.	Graph Databases: It is used for storing vast amounts of data in a graph-like structure. Most commonly,  
+            social networking websites use the graph database. 
+        4.	Wide-column stores: It is similar to the data represented in relational databases. Here, data is stored   
+            in large columns together, instead of stored in rows. 
  
      Advantages of NoSQL Database 
   
-          ✓	It enables good productivity in the application development as it is not required to store data in a structured format. 
+          ✓	It enables good productivity in application development as it is not required to store data in a
+           structured format. 
           ✓	It is a better option for managing and handling large data sets. 
           ✓	It provides high scalability. 
           ✓	Users can quickly access data from the database through key-value.
@@ -179,8 +180,10 @@ calculus.
 ```
       5- Cloud Database
 
-         ⚫	A type of database where data is stored in a virtual environment and executes over the cloud computing platform.  
-         ⚫	It provides users with various cloud computing services (SaaS, PaaS, IaaS, etc.) for accessing the database.  
+         ⚫	A type of database where data is stored in a virtual environment and executes over the
+           cloud computing platform.  
+         ⚫	It provides users with various cloud computing services (SaaS, PaaS, IaaS, etc.) for accessing
+           the database.  
          ⚫	There are numerous cloud platforms, but the best options are: 
  
          ✓	Amazon Web Services(AWS) 
@@ -194,9 +197,11 @@ calculus.
 ```
         6- Object-oriented Databases
 
-         ⚫	The type of database that uses the object-based data model approach for storing data in the database system.  
-         ⚫	The data is represented and stored as objects which are similar to the objects used in the object-oriented
-            programming language. 
+         ⚫	The type of database that uses the object-based data model approach for storing data in
+             the database system.  
+         ⚫	The data is represented and stored as objects that are similar to the objects used in the
+            object-oriented programming language. 
+          
  ```
 
 ```
@@ -204,8 +209,9 @@ calculus.
 
          ⚫	It is the type of database that stores data in the form of parent-children relationship nodes.  
          ⚫	Here, it organizes data in a tree-like structure.
-         ⚫	Data get stored in the form of records that are connected via links. Each child record in the tree will contain
-            only one parent. On the other hand, each parent record can have multiple child records. 
+         ⚫	Data gets stored in the form of records that are connected via links. Each child record in 
+            the tree will contain only one parent. On the other hand, each parent record can have multiple
+            child records. 
 ```
 
 ```
