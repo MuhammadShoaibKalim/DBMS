@@ -6,7 +6,7 @@
 ❖ Data
  
 ⚫ Data is a collection of a distinct small unit of information. It can be used
-   in various forms like text, numbers, media, bytes, etc., stored in pieces of paper or electronic memory, etc.
+   in various forms like text, numbers, media, bytes, etc., stored in paper or electronic memory, etc.
 
 ⚫ Word 'Data' is originated from the word 'datum' which means 'single piece
    of information.' It is the plural of the word datum.  
@@ -49,3 +49,4 @@ calculus.
 
 ```
 
+![image](https://github.com/MuhammadShoaibKalim/DBMS/assets/120046632/93a26ab1-557a-4ee1-a4b8-deeb0bb46b05)
