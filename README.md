@@ -79,7 +79,10 @@ calculus.
 ```
   **Types of Databases**
   ![image](https://github.com/MuhammadShoaibKalim/DBMS/assets/120046632/12608202-03f7-4c27-9b50-6df05e967b10)
+  
 ```
+ Centralized database
+
    ⚫ It is the type of database that stores data in a centralized database 
    ⚫	 It comforts the users to access the stored data from different locations through several applications.  
    ⚫	 These applications contain the authentication process to let users access data securely.  
@@ -101,5 +104,17 @@ calculus.
 
 ```
 
+``` 
+   Distributed Database
 
+   ⚫	Unlike a centralized database system, in distributed systems, data is distributed among different database
+      systems of an organization.  
+   ⚫	These database systems are connected via communication links. Such links help the end-users to access the data easily.  
+   ⚫	Examples of the Distributed database are Apache Cassandra, HBase, Ignite, etc. 
+      We can further divide a distributed database system into:
 
+     1.	Homogeneous DDB: Those database systems that execute on the same operating system and use the same 
+        application process and carry the same hardware devices. 
+     2.	Heterogeneous DDB: Those database systems that execute on different operating systems under different 
+        application procedures and carry different hardware devices. 
+```
