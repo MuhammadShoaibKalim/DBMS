@@ -304,13 +304,37 @@ calculus.
         for an attribute. 
         •	Attributes that uniquely identify each tuple of a relation are the primary keys. 
       ➢ Data item/Cells 
-         The smallest unit of data in the table is the individual data item. It is stored at the intersection of tuples and attributes. 
-       Properties of data items 
+         The smallest unit of data in the table is the individual data item. It is stored at the intersection of 
+          tuples and attributes. 
+          
+        Properties of data items 
         •	Data items are atomic. 
         •	The data items for an attribute should be drawn from the same domain. 
          In the below example, the data item in the student table consists of Ajeet, 24 Btech, etc. 
 
 ```
+
+```
+     ➢ Degree 
+       The total number of attributes that comprise a relation is known as the degree of the table. 
+     ➢ Cardinality 
+        The total number of tuples at any one time in a relation is known as the table's cardinality. 
+        The relation whose cardinality is 0 is called an empty table. 
+     ➢ Domain 
+        The domain refers to the possible values each attribute can contain. It can be specified using 
+          standard data types such as integers, floating numbers, etc.  
+        For example, An attribute entitled Marital_Status may be limited to married or unmarried values. 
+     ➢ NULL Values 
+        The NULL value of the table specifies that the field has been left blank during record creation.  
+        It is different from the value filled with zero or a field that contains space. 
+     ➢ Data Integrity 
+       There are the following categories of data integrity exist with each RDBMS: 
+        1)	Entity integrity: It specifies that there should be no duplicate rows in a table. 
+        2)	Domain integrity: It enforces valid entries for a given column by restricting the type, the format, 
+           or the range of values. 
+        3)	Referential integrity specifies that rows cannot be deleted, which are used by other records. 
+        4)	User-defined integrity: It enforces some specific business rules defined by users. These rules are 
+           different from the entity, domain, or referential integrity. 
 
 
 
