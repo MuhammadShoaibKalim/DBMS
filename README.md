@@ -77,3 +77,29 @@ calculus.
    ◆	Complexity: DBMS creates additional complexity and requirements. 
 
 ```
+  **Types of Databases**
+  ![image](https://github.com/MuhammadShoaibKalim/DBMS/assets/120046632/12608202-03f7-4c27-9b50-6df05e967b10)
+```
+   ⚫ It is the type of database that stores data in a centralized database 
+   ⚫	 It comforts the users to access the stored data from different locations through several applications.  
+   ⚫	 These applications contain the authentication process to let users access data securely.  
+   ⚫	 An example of a Centralized database can be a Central Library that carries a central database of each library in 
+       a college/university.
+
+ Advantages:
+
+    ◆ It has decreased the risk of data management, i.e., manipulation of data will not affect the core data.
+    ◆ Data consistency is maintained as it manages data in a central repository. 
+    ◆ It provides better data quality, which enables organizations to establish data standards.
+    ◆ It is less costly because fewer vendors are required to handle the data sets.
+
+ Disadvantages :
+
+    ◆ The size of the centralized database is large, which increases the response time for fetching the data.
+    ◆ It is not easy to update such an extensive database system.
+    ◆ If any server failure occurs, entire data will be lost, which could be a huge loss.
+
+```
+
+
+
