@@ -48,3 +48,4 @@ calculus.
 ⚫ A cylindrical structure is used to display the image of a database. 
 
 ```
+
