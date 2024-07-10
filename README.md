@@ -54,8 +54,8 @@ calculus.
 
 **DBMS (Data Base Management System)**
 ```
-  Database management System is software used to store and retrieve the database. For example, Oracle, MySQL, etc.;
-    are some popular DBMS tools. 
+  Database management System is software used to store and retrieve the database. For example, Oracle, 
+     MySQL, etc.; are some popular DBMS tools. 
    •	DBMS provides the interface to perform various operations like creation, deletion, modification, etc. 
    •	DBMS allows the user to create their databases as per their requirement. 
    •	DBMS accepts the request from the application and provides specific data through the operating system. 
@@ -66,14 +66,16 @@ calculus.
 
    ◆	Controls redundancy: It stores all the data in a single database file to control data redundancy. 
    ◆	Data sharing: An authorized user can share the data among multiple users. 
-   ◆	Backup: It provides a backup and recovery subsystem. This recovery system creates automatic data from system failure and
-      restores data if required.
-   ◆	Multiple user interfaces: It provides a different type of user interfaces like GUI, and application interfaces.
+   ◆	Backup: It provides a backup and recovery subsystem. This recovery system creates automatic data from 
+      system failure and restores data if required.
+   ◆	Multiple user interfaces: It provides a different type of user interfaces like GUI, and
+      application interfaces.
 
  ➢ Disadvantage of DBMS
 
    ◆	Size: It occupies large disk space and large memory to run efficiently. 
-   ◆	Cost: DBMS requires a high-speed data processor and larger memory to run DBMS software, so it is costly. 
+   ◆	Cost: DBMS requires a high-speed data processor and larger memory to run DBMS software,
+     so it is costly. 
    ◆	Complexity: DBMS creates additional complexity and requirements. 
 
 ```
