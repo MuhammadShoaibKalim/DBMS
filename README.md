@@ -15,7 +15,8 @@
     efficient movement and processing. Data is interchangeable.
 
 ```
-
+Additional resource: 
+https://drive.google.com/file/d/1lNtUlDnDwHwhv8QHFaarsoX4CFK8Ty92/view
 ```
 ❖ Database
 
