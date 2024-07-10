@@ -346,55 +346,77 @@ calculus.
            different from the entity, domain, or referential integrity. 
 ```
 
-**DBMS (Database Management System)**
- Definition:
+      **DBMS (Database Management System)**
+       Definition:
 
-A DBMS is software that provides an interface to interact with databases for creating, retrieving, updating, and managing data.
-Data Storage:
+        A DBMS is software that provides an interface to interact with databases for creating,
+         retrieving, updating, and managing data.
+       Data Storage:
+        DBMS stores data as files. The structure of the data might not be organized into tables.
+       Data Integrity:
+        DBMS does not enforce any rules for data integrity; it's the responsibility of the developer
+        to handle data integrity.
+       Normalization:
+        DBMS might not support normalization, leading to data redundancy and inconsistency.
+       Examples:
+        include file systems, XML databases, and other non-relational databases.
+      Transactions:
+        Limited support for transactions. DBMS may not fully support ACID (Atomicity, Consistency,
+         Isolation, Durability) properties.
+      Data Relationships:
+       DBMS does not inherently support the concept of primary keys, foreign keys, or the relational
+        integrity constraints between tables.
+      Complex Queries:
+       Limited support for complex queries involving joins and other relational operations.
+     RDBMS (Relational Database Management System)
+      Definition:
+       An RDBMS is a type of DBMS that uses a relational model to store data in tables. It ensures data
+       integrity and supports SQL for database operations.
+      Data Storage:
+       RDBMS stores data in tables (relations). Each table consists of rows and columns.
+      Data Integrity:
+       RDBMS enforces data integrity through constraints like primary keys, foreign keys, unique constraints,
+       and check constraints.
+      Normalization:
+       RDBMS supports normalization to reduce data redundancy and ensure data consistency.
+      Examples:
+       include MySQL, PostgreSQL, Oracle, Microsoft SQL Server, and SQLite.
+      Transactions:
+       Full support for transactions with ACID properties to ensure data reliability and integrity.
+      Data Relationships:
+       RDBMS supports relationships between tables using primary keys and foreign keys. It enforces
+        relational integrity.
+      Complex Queries:
+        RDBMS provides robust support for complex queries involving joins, subqueries, and other
+        relational operations.
+```
+  **DBSM Architecture**
+       1. Single-Tier Architecture
+           Definition: In single-tier architecture, the database and the application accessing the database
+             reside on the same system. The user interacts directly with the DBMS.
+          Characteristics:
+          -> The simplest form of DBMS architecture.
+          -> Suitable for small-scale applications.
+          -> Minimal network overhead since everything is on a single system.
+          -> Microsoft Access is a desktop database application that includes both the database and the 
+             application in a single package. It is used for creating and managing databases on a single machine.
+      2. Two-tier architecture
+          Definition: In two-tier architecture, the client (application) directly communicates with the database 
+          server. The client sends a request to the server, which processes the request and sends the response back to the client.
 
-DBMS stores data as files. The structure of the data might not be organized into tables.
-Data Integrity:
+        Characteristics:
+           -> Client and server are on separate systems.
+           -> The user interacts with the client application, which then interacts with the DBMS.
+           -> In a two-tier architecture, a client application communicates directly with a database server. 
+             For example, a desktop application developed using Java Swing that connects to a MySQL database server.
+      3. Three-tier architecture  
+            Definition: In a three-tier architecture, there is an additional layer between the client and the database 
+               server, known as the application server or middleware. This layer processes client 
+               requests and communicates with the database server.
 
-DBMS does not enforce any rules for data integrity; it's the responsibility of the developer to handle data integrity.
-Normalization:
-
-DBMS might not support normalization, leading to data redundancy and inconsistency.
-Examples:
-
-Examples include file systems, XML databases, and other non-relational databases.
-Transactions:
-
-Limited support for transactions. DBMS may not fully support ACID (Atomicity, Consistency, Isolation, Durability) properties.
-Data Relationships:
-
-DBMS does not inherently support the concept of primary keys, foreign keys, or the relational integrity constraints between tables.
-Complex Queries:
-
-Limited support for complex queries involving joins and other relational operations.
-RDBMS (Relational Database Management System)
-Definition:
-
-An RDBMS is a type of DBMS that uses a relational model to store data in tables. It ensures data integrity and supports SQL for database operations.
-Data Storage:
-
-RDBMS stores data in tables (relations). Each table consists of rows and columns.
-Data Integrity:
-
-RDBMS enforces data integrity through constraints like primary keys, foreign keys, unique constraints, and check constraints.
-Normalization:
-
-RDBMS supports normalization to reduce data redundancy and ensure data consistency.
-Examples:
-
-Examples include MySQL, PostgreSQL, Oracle, Microsoft SQL Server, and SQLite.
-Transactions:
-
-Full support for transactions with ACID properties to ensure data reliability and integrity.
-Data Relationships:
-
-RDBMS supports relationships between tables using primary keys and foreign keys. It enforces relational integrity.
-Complex Queries:
-
-RDBMS provides robust support for complex queries involving joins, subqueries, and other relational operations.
-
-
+         Characteristics:
+            -> Consists of three layers: Presentation layer (client), Application layer (middleware or 
+               application server), and Data layer (database server).
+            -> The client interacts with the application server, which in turn interacts with the database server.
+            -> E-commerce platforms like Amazon use a three-tier architecture with a web client (browser), 
+              an application server, and a database server.
