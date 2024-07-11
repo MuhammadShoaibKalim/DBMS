@@ -115,3 +115,16 @@ UPDATE table_name SET column1 = value1, column2 = value2 WHERE condition;
 
 -- Deleting data from a table
 DELETE FROM table_name WHERE condition;
+```
+
+### Indexes in DBMS (#indexes-in-dbms)
+Indexes are special lookup tables that the database search engine can use to speed up data retrieval. They are essential for enhancing the performance of database queries.
+
+## Types of Indexes
+1. Unique Index
+A unique index ensures that the indexed column(s) do not have duplicate values. This type of index helps maintain data integrity by enforcing the uniqueness of data in the indexed column(s).
+
+## Example:
+```-- Creating a unique index
+CREATE UNIQUE INDEX idx_unique ON table_name (column_name);
+```
