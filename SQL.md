@@ -574,6 +574,81 @@ FROM employees;
 SELECT DISTINCT department_id, position
 FROM employees;
 ```
+# Aggregate Functions (COUNT, MAX, MIN, SUM, AVG)
+**39. Count**
+```
+-- Count the total number of employees
+SELECT COUNT(*)
+FROM employees;
+
+Output:
+| COUNT(*) |
+|----------|
+|    10    |
+
+```
+**Exmaple**
+```
+-- Count the number of employees in each department
+SELECT department_id, COUNT(*)
+FROM employees
+GROUP BY department_id;
+```
+**40. Max**
+```
+-- Find the highest salary among all employees
+SELECT MAX(salary)
+FROM employees;
+```
+**Example**
+```
+-- Find the highest salary in each department
+SELECT department_id, MAX(salary)
+FROM employees
+GROUP BY department_id;
+```
+
+**41. MIN**
+```
+-- Find the lowest salary among all employees
+SELECT MIN(salary)
+FROM employees;
+```
+```
+-- Find the lowest salary in each department
+SELECT department_id, MIN(salary)
+FROM employees
+GROUP BY department_id;
+```
+**42. SUM**
+```
+-- Calculate the total salary paid to all employees
+SELECT SUM(salary)
+FROM employees;
+```
+**Exmaple**
+```
+-- Calculate the total salary paid in each department
+SELECT department_id, SUM(salary)
+FROM employees
+GROUP BY department_id;
+```
+**43. AVG**
+```
+-- Calculate the average salary of all employees
+SELECT AVG(salary)
+FROM employees;
+```
+**Example**
+```
+-- Calculate the average salary in each department
+SELECT department_id, AVG(salary)
+FROM employees
+GROUP BY department_id;
+```
+
+
+
 
 
 
