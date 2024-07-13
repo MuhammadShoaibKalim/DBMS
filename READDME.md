@@ -74,6 +74,7 @@
 │       ├── Stored_Procedures.sql
 │       └── Functions.sql
 
+# Creating, Dropping, and Altering Tables
 
  **1. How to create DB**
  ```
@@ -147,7 +148,7 @@ ALTER TABLE employees
 MODIFY COLUMN name VARCHAR(150);
 ```
 
-### Basic Data Operations
+# Basic Data Operations
 
 **7. Inserting Data**
 
@@ -188,3 +189,27 @@ UPDATE employees
 SET salary = 80000.00
 WHERE id = 1;
 ```
+
+**9. Deleting Data**
+```
+DELETE FROM table_name
+WHERE condition;
+```
+**Example**
+```
+DELETE FROM employees
+WHERE id = 1;
+```
+
+# Advanced SQL Syntax
+
+### Joins
+
+**10. Inner Join**
+```
+SELECT columns
+FROM table1
+INNER JOIN table2
+ON table1.column = table2.column;
+```
+
