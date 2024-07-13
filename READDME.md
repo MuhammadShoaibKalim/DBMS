@@ -247,3 +247,18 @@ FROM employees
 RIGHT JOIN departments
 ON employees.department_id = departments.id;
 ```
+
+**13. FULL OUTER JOIN Join**
+```
+SELECT columns
+FROM table1
+FULL OUTER JOIN table2
+ON table1.column = table2.column;
+```
+**Example**
+```
+SELECT employees.name, departments.department_name
+FROM employees
+FULL OUTER JOIN departments
+ON employees.department_id = departments.id;
+```
