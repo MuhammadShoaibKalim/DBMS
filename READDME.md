@@ -277,3 +277,23 @@ SELECT name
 FROM employees
 WHERE salary > (SELECT AVG(salary) FROM employees);
 ```
+**Index**
+
+**15. Create Index**
+```
+CREATE INDEX index_name
+ON table_name (column1, column2, ...);
+```
+**Example**
+```
+CREATE INDEX idx_salary
+ON employees (salary);
+```
+**16. Droppig Index**
+```
+DROP INDEX index_name;
+```
+**Example**
+```
+DROP INDEX idx_salary;
+```
