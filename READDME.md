@@ -400,6 +400,70 @@ DROP TRIGGER trigger_name;
 ```
 DROP TRIGGER trg_after_insert;
 ```
+# Using AND, OR, NOT, BETWEEN, and IN
+
+**28. AND**
+```
+SELECT name, salary
+FROM Employees
+WHERE position = 'Manager' AND salary > 70000;
+```
+**Example**
+```
+SELECT name, salary
+FROM employees
+WHERE position = 'Manager' AND salary > 70000;
+```
+
+**29. OR**
+```
+SELECT name, salary
+FROM Employees
+WHERE position = 'Manager' OR position = 'Developer';
+```
+**Example**
+```
+SELECT name, salary
+FROM employees
+WHERE position = 'Manager' OR position = 'Developer';
+```
+**30. NOT**
+```
+SELECT name, salary
+FROM Employees
+WHERE NOT position = 'Manager';
+```
+
+**Example**
+```
+SELECT name, salary
+FROM employees
+WHERE NOT position = 'Manager';
+```
+**31. BETWEEN**
+```
+SELECT name, salary
+FROM Employees
+WHERE salary BETWEEN 50000 AND 80000;
+```
+**Example**
+```
+SELECT name, salary
+FROM employees
+WHERE salary BETWEEN 50000 AND 80000;
+```
+**32. IN**
+```
+SELECT name, salary
+FROM Employees
+WHERE position IN ('Manager', 'Developer');
+```
+**Example**
+```
+SELECT name, salary
+FROM employees
+WHERE position IN ('Manager', 'Developer');
+```
 
 
 
