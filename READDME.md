@@ -528,9 +528,37 @@ SELECT name
 FROM employees
 WHERE name LIKE 'J_n%';
 ```
-
-
 **Note:** The COALESCE function returns the first non-NULL value in a list of arguments.
+
+**37. Sorting Data with ORDER BY**
+
+```
+SELECT column1, column2, ...
+FROM table_name
+ORDER BY column1 [ASC|DESC], column2 [ASC|DESC], ...;
+```
+**Ascending order**
+```
+-- Select all employees sorted by their salary in ascending order
+SELECT name, salary
+FROM employees
+ORDER BY salary ASC;
+```
+**Discending order**
+```
+-- Select all employees sorted by their salary in descending order
+SELECT name, salary
+FROM employees
+ORDER BY salary DESC;
+```
+**Multiple Columns**
+```
+-- Select all employees sorted by department and then by name within each department in ascending order
+SELECT name, department_id, salary
+FROM employees
+ORDER BY department_id ASC, name ASC;
+```
+
 
 
 This structure organizes the SQL syntax and examples into a comprehensive and easy-to-navigate `README.md` file for your repository. You can add this file to your repository and update the file paths as needed based on your directory structure.
