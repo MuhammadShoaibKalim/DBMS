@@ -262,3 +262,18 @@ FROM employees
 FULL OUTER JOIN departments
 ON employees.department_id = departments.id;
 ```
+
+**14. Sub Queries** 
+```
+SELECT column1
+FROM table_name
+WHERE column2 = (SELECT column2
+                 FROM table_name
+                 WHERE condition);
+```
+**Example**
+```
+SELECT name
+FROM employees
+WHERE salary > (SELECT AVG(salary) FROM employees);
+```
