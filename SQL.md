@@ -544,7 +544,7 @@ SELECT name, salary
 FROM employees
 ORDER BY salary ASC;
 ```
-**Discending order**
+**Descending order**
 ```
 -- Select all employees sorted by their salary in descending order
 SELECT name, salary
@@ -557,6 +557,22 @@ ORDER BY salary DESC;
 SELECT name, department_id, salary
 FROM employees
 ORDER BY department_id ASC, name ASC;
+```
+**38. Using Distinct**
+```
+SELECT DISTINCT column1, column2, ...
+FROM table_name;
+```
+**Example**
+```
+-- Select unique positions from the employees table
+SELECT DISTINCT position
+FROM employees;
+```
+```
+-- Select unique combinations of department_id and position
+SELECT DISTINCT department_id, position
+FROM employees;
 ```
 
 
