@@ -18,17 +18,15 @@
 - [Library_Management_System](./Projects/Library_Management_System)
 - [Hospital_Management_System](./Projects/Hospital_Management_System)
 
-## Creating, Dropping, and Altering Tables
+ ## Creating, Dropping, and Altering Tables
 
-### 1. How to create DB
-```sql
-CREATE DATABASE database_name;
-
- ```
+ ### 1. How to create DB
+ ```sql
  CREATE DATABASE database_name;
- ```
+```
 
  **2. Using DB**
+
  ```
  USE database_name;
 ```
