@@ -212,4 +212,12 @@ FROM table1
 INNER JOIN table2
 ON table1.column = table2.column;
 ```
+**Example**
+```
+SELECT employees.name, departments.department_name
+FROM employees
+INNER JOIN departments
+ON employees.department_id = departments.id;
+```
+
 
