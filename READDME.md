@@ -1,82 +1,29 @@
 # DBMS
 
-│
-├── SQL_Syntax
-│   ├── Basic_Syntax.sql
+## SQL_Syntax
+- [Basic_Syntax.sql](./SQL_Syntax/Basic_Syntax.sql)
+- [Advanced_Syntax.sql](./SQL_Syntax/Advanced_Syntax.sql)
+- [Joins.sql](./SQL_Syntax/Joins.sql)
+- [Subqueries.sql](./SQL_Syntax/Subqueries.sql)
+- [Indexes.sql](./SQL_Syntax/Indexes.sql)
+- [Transactions.sql](./SQL_Syntax/Transactions.sql)
+- [Views.sql](./SQL_Syntax/Views.sql)
+- [Stored_Procedures.sql](./SQL_Syntax/Stored_Procedures.sql)
+- [Triggers.sql](./SQL_Syntax/Triggers.sql)
+- [Functions.sql](./SQL_Syntax/Functions.sql)
 
-│   ├── Advanced_Syntax.sql
+## Projects
+- [Employee_Management_System](./Projects/Employee_Management_System)
+- [Online_Retail_Database](./Projects/Online_Retail_Database)
+- [Library_Management_System](./Projects/Library_Management_System)
+- [Hospital_Management_System](./Projects/Hospital_Management_System)
 
-│   ├── Joins.sql
+## Creating, Dropping, and Altering Tables
 
-│   ├── Subqueries.sql
+### 1. How to create DB
+```sql
+CREATE DATABASE database_name;
 
-│   ├── Indexes.sql
-
-│   ├── Transactions.sql
-
-│   ├── Views.sql
-
-│   ├── Stored_Procedures.sql
-
-│   ├── Triggers.sql
-
-│   └── Functions.sql
-
-│
-├── Projects
-
-│   ├── Employee_Management_System
-
-│   │   ├── README.md
-
-│   │   ├── Schema.sql
-
-│   │   ├── Queries.sql
-
-│   │   ├── Stored_Procedures.sql
-
-│   │   └── Functions.sql
-
-│   │
-
-│   ├── Online_Retail_Database
-
-│   │   ├── README.md
-
-│   │   ├── Schema.sql
-
-│   │   ├── Queries.sql
-
-│   │   ├── Stored_Procedures.sql
-
-│   │   └── Functions.sql
-
-│   │
-
-│   ├── Library_Management_System
-
-│   │   ├── README.md
-
-│   │   ├── Schema.sql
-
-│   │   ├── Queries.sql
-
-│   │   ├── Stored_Procedures.sql
-
-│   │   └── Functions.sql
-
-│   │
-
-│   └── Hospital_Management_System
-│       ├── README.md
-│       ├── Schema.sql
-│       ├── Queries.sql
-│       ├── Stored_Procedures.sql
-│       └── Functions.sql
-
-# Creating, Dropping, and Altering Tables
-
- **1. How to create DB**
  ```
  CREATE DATABASE database_name;
  ```
@@ -341,7 +288,7 @@ SELECT name, salary
 FROM employees
 WHERE salary > 50000;
 ```
-**Drop View**
+**19. Drop View**
 ```
 DROP VIEW view_name;
 ```
@@ -351,7 +298,7 @@ DROP VIEW high_salary_employees;
 ```
 **Stored Procedures**
 
-**19. Create  Stored Procedures**
+**20. Create  Stored Procedures**
 ```
 CREATE PROCEDURE procedure_name
 AS
@@ -369,7 +316,7 @@ BEGIN
 END;
 ```
 
-**Executing Stored Procedures**
+**21. Executing Stored Procedures**
 ```
 EXEC procedure_name;
 ```
@@ -377,7 +324,7 @@ EXEC procedure_name;
 ```
 EXEC raise_salary;
 ```
-**Dropping Stored Procedures**
+**22. Dropping Stored Procedures**
 ```
 DROP PROCEDURE procedure_name;
 ```
@@ -388,7 +335,7 @@ DROP PROCEDURE raise_salary;
 
 # Function
 
-**Create Function**
+**23. Create Function**
 ```
 CREATE FUNCTION function_name (@param1 datatype, @param2 datatype, ...)
 RETURNS return_datatype
@@ -407,7 +354,7 @@ BEGIN
     RETURN @salary * 0.1;
 END;
 ```
-**Execution Function**
+**24. Execution Function**
 ```
 SELECT function_name(param1, param2, ...);
 ```
@@ -416,7 +363,7 @@ SELECT function_name(param1, param2, ...);
 SELECT calculate_bonus(salary)
 FROM employees;
 ```
-**Dropping Function**
+**25. Dropping Function**
 ```
 DROP FUNCTION function_name;
 ```
@@ -427,7 +374,7 @@ DROP FUNCTION calculate_bonus;
 
 **Trigers**
 
-**Create Triggers**
+**26. Create Triggers**
 ```
 CREATE TRIGGER trigger_name
 ON table_name
@@ -447,7 +394,7 @@ BEGIN
     PRINT 'A new employee record has been inserted.';
 END;
 ```
-**Dropping Trigger**
+**27. Dropping Trigger**
 ```
 DROP TRIGGER trigger_name;
 ```
@@ -457,9 +404,6 @@ DROP TRIGGER trg_after_insert;
 ```
 
 
-This `README.md` file provides a structured overview of essential SQL syntax and includes examples to illustrate each concept. You can add this to your repository to serve as a reference for various SQL operations.
 
-
-
-
+This structure organizes the SQL syntax and examples into a comprehensive and easy-to-navigate `README.md` file for your repository. You can add this file to your repository and update the file paths as needed based on your directory structure.
 
