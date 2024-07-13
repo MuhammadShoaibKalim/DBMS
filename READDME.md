@@ -425,6 +425,40 @@ DROP FUNCTION function_name;
 DROP FUNCTION calculate_bonus;
 ```
 
+**Trigers**
+
+**Create Triggers**
+```
+CREATE TRIGGER trigger_name
+ON table_name
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    -- SQL statements
+END;
+```
+**Example**
+```
+CREATE TRIGGER trg_after_insert
+ON employees
+AFTER INSERT
+AS
+BEGIN
+    PRINT 'A new employee record has been inserted.';
+END;
+```
+**Dropping Trigger**
+```
+DROP TRIGGER trigger_name;
+```
+**Example**
+```
+DROP TRIGGER trg_after_insert;
+```
+
+
+This `README.md` file provides a structured overview of essential SQL syntax and includes examples to illustrate each concept. You can add this to your repository to serve as a reference for various SQL operations.
+
 
 
 
