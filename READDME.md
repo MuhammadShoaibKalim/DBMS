@@ -176,3 +176,15 @@ WHERE position = 'Manager';
 
 SELECT * FROM employees;
 ```
+**9. Updating Data**
+```
+UPDATE table_name
+SET column1 = value1, column2 = value2, ...
+WHERE condition;
+```
+**Example**
+```
+UPDATE employees
+SET salary = 80000.00
+WHERE id = 1;
+```
