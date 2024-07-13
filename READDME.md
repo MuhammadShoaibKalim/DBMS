@@ -369,6 +369,22 @@ BEGIN
 END;
 ```
 
+**Executing Stored Procedures**
+```
+EXEC procedure_name;
+```
+**Example**
+```
+EXEC raise_salary;
+```
+**Dropping Stored Procedures**
+```
+DROP PROCEDURE procedure_name;
+```
+**Example**
+```
+DROP PROCEDURE raise_salary;
+```
 
 
 
