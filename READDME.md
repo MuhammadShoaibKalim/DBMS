@@ -297,3 +297,32 @@ DROP INDEX index_name;
 ```
 DROP INDEX idx_salary;
 ```
+**Transaction**
+
+**17. Make Transaction**
+```
+BEGIN TRANSACTION;
+
+-- SQL statements
+
+COMMIT;
+
+-- or if something goes wrong
+
+ROLLBACK;
+```
+**Example**
+```
+BEGIN TRANSACTION;
+
+UPDATE employees
+SET salary = salary * 1.1
+WHERE department_id = 2;
+
+COMMIT;
+
+-- or if something goes wrong
+
+ROLLBACK;
+```
+
