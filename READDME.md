@@ -147,3 +147,16 @@ ALTER TABLE employees
 MODIFY COLUMN name VARCHAR(150);
 ```
 
+### Basic Data Operations
+
+**Inserting Data**
+
+```
+INSERT INTO table_name (column1, column2, column3, ...)
+VALUES (value1, value2, value3, ...);
+```
+**Example**
+```
+INSERT INTO employees (id, name, position, salary)
+VALUES (1, 'John Doe', 'Manager', 75000.00);
+```
