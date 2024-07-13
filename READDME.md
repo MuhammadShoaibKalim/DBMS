@@ -219,5 +219,18 @@ FROM employees
 INNER JOIN departments
 ON employees.department_id = departments.id;
 ```
-
+**11. Left Join**
+```
+SELECT columns
+FROM table1
+LEFT JOIN table2
+ON table1.column = table2.column;
+```
+**Example**
+```
+SELECT employees.name, departments.department_name
+FROM employees
+LEFT JOIN departments
+ON employees.department_id = departments.id;
+```
 
