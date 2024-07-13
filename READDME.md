@@ -386,5 +386,46 @@ DROP PROCEDURE procedure_name;
 DROP PROCEDURE raise_salary;
 ```
 
+# Function
+
+**Create Function**
+```
+CREATE FUNCTION function_name (@param1 datatype, @param2 datatype, ...)
+RETURNS return_datatype
+AS
+BEGIN
+    -- SQL statements
+    RETURN return_value;
+END;
+```
+**Example**
+```
+CREATE FUNCTION calculate_bonus (@salary DECIMAL)
+RETURNS DECIMAL
+AS
+BEGIN
+    RETURN @salary * 0.1;
+END;
+```
+**Execution Function**
+```
+SELECT function_name(param1, param2, ...);
+```
+**Example**
+```
+SELECT calculate_bonus(salary)
+FROM employees;
+```
+**Dropping Function**
+```
+DROP FUNCTION function_name;
+```
+**Example**
+```
+DROP FUNCTION calculate_bonus;
+```
+
+
+
 
 
