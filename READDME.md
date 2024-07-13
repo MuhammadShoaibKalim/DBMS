@@ -73,3 +73,46 @@
 │       ├── Queries.sql
 │       ├── Stored_Procedures.sql
 │       └── Functions.sql
+
+
+ **1. How to create DB**
+ ```
+ CREATE DATABASE database_name;
+ ```
+
+ **2. Using DB**
+ ```
+ USE database_name;
+```
+ **example**
+ ```
+USE my_database;
+ ```
+
+**3. Drop a DB**
+```
+DROP DATABASE database_name;
+```
+ **example**
+ ```
+DROP DATABASE my_database;
+```
+
+**4. Creating Table**
+```
+CREATE TABLE table_name (
+    column1 datatype PRIMARY KEY (optional),
+    column2 datatype,
+    column3 datatype,
+   ....
+);
+```
+**Example**
+```
+CREATE TABLE employees (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    position VARCHAR(100),
+    salary DECIMAL(10, 2)
+);
+```
