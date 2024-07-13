@@ -349,5 +349,26 @@ DROP VIEW view_name;
 ```
 DROP VIEW high_salary_employees;
 ```
+**Stored Procedures**
+
+**19. Create  Stored Procedures**
+```
+CREATE PROCEDURE procedure_name
+AS
+BEGIN
+    -- SQL statements
+END;
+```
+**Example**
+```
+CREATE PROCEDURE raise_salary
+AS
+BEGIN
+    UPDATE employees
+    SET salary = salary * 1.1;
+END;
+```
+
+
 
 
