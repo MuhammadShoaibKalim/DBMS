@@ -149,7 +149,7 @@ MODIFY COLUMN name VARCHAR(150);
 
 ### Basic Data Operations
 
-**Inserting Data**
+**7. Inserting Data**
 
 ```
 INSERT INTO table_name (column1, column2, column3, ...)
@@ -159,4 +159,20 @@ VALUES (value1, value2, value3, ...);
 ```
 INSERT INTO employees (id, name, position, salary)
 VALUES (1, 'John Doe', 'Manager', 75000.00);
+```
+**8. Selecting Data**
+```
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+
+SELECT * FROM table_name;
+```
+**Example**
+```
+SELECT name, salary
+FROM employees
+WHERE position = 'Manager';
+
+SELECT * FROM employees;
 ```
