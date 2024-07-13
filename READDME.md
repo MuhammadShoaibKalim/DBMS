@@ -465,6 +465,72 @@ FROM employees
 WHERE position IN ('Manager', 'Developer');
 ```
 
+**33. IS NULL**
+```
+SELECT column1, column2, ...
+FROM table_name
+WHERE column_name IS NULL;
+```
+**Example**
+```
+SELECT name, salary
+FROM employees
+WHERE salary IS NULL;
+```
+**34. IS NOT NULL**
+```
+SELECT column1, column2, ...
+FROM table_name
+WHERE column_name IS NOT NULL;
+```
+**Example**
+```
+SELECT column1, column2, ...
+FROM table_name
+WHERE column_name IS NOT NULL;
+```
+**35. Using COALESCE**
+```
+SELECT COALESCE(column1, column2, ...) AS alias_name
+FROM table_name;
+```
+**Example**
+```
+SELECT name, COALESCE(bonus, 0) AS bonus
+FROM employees;
+```
+**36.Using LIKE with Wildcards**
+```
+SELECT column1, column2, ...
+FROM table_name
+WHERE column_name LIKE pattern;
+```
+**Note:** 
+The LIKE operator is used in a WHERE clause to search for a specified pattern in a column.
+**Example : %**
+```
+-- Find all employees whose names start with 'J'
+SELECT name
+FROM employees
+WHERE name LIKE 'J%';
+```
+**Example with: _**
+```
+-- Find all employees whose names have 'o' as the second character
+SELECT name
+FROM employees
+WHERE name LIKE '_o%';
+```
+**Combining Both: % _**
+```
+-- Find all employees whose names start with 'J' and have 'n' as the third character
+SELECT name
+FROM employees
+WHERE name LIKE 'J_n%';
+```
+
+
+**Note:** The COALESCE function returns the first non-NULL value in a list of arguments.
 
 
 This structure organizes the SQL syntax and examples into a comprehensive and easy-to-navigate `README.md` file for your repository. You can add this file to your repository and update the file paths as needed based on your directory structure.
