@@ -233,4 +233,17 @@ FROM employees
 LEFT JOIN departments
 ON employees.department_id = departments.id;
 ```
-
+**12. Right Join**
+```
+SELECT columns
+FROM table1
+RIGHT JOIN table2
+ON table1.column = table2.column;
+```
+**Example**
+```
+SELECT employees.name, departments.department_name
+FROM employees
+RIGHT JOIN departments
+ON employees.department_id = departments.id;
+```
