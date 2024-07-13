@@ -116,3 +116,34 @@ CREATE TABLE employees (
     salary DECIMAL(10, 2)
 );
 ```
+**5. Dropping Table**
+```
+DROP TABLE table_name;
+```
+**Example**
+```
+DROP TABLE employees;
+```
+**6. Altering Tables**
+```
+ALTER TABLE table_name
+ADD column_name datatype;
+
+ALTER TABLE table_name
+DROP COLUMN column_name;
+
+ALTER TABLE table_name
+MODIFY COLUMN column_name datatype;
+```
+**Example**
+```
+ALTER TABLE employees
+ADD birthdate DATE;
+
+ALTER TABLE employees
+DROP COLUMN birthdate;
+
+ALTER TABLE employees
+MODIFY COLUMN name VARCHAR(150);
+```
+
