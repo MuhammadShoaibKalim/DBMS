@@ -325,4 +325,29 @@ COMMIT;
 
 ROLLBACK;
 ```
+**VIEW**
+
+**18. Create View**
+```
+CREATE VIEW view_name AS
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+```
+**Example**
+```
+CREATE VIEW high_salary_employees AS
+SELECT name, salary
+FROM employees
+WHERE salary > 50000;
+```
+**Drop View**
+```
+DROP VIEW view_name;
+```
+**Example**
+```
+DROP VIEW high_salary_employees;
+```
+
 
