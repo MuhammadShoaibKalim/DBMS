@@ -743,6 +743,9 @@ GROUP BY department_id, position;
 |       3       | Manager   |       1       |
 |       3       | Developer |       2       |
 ```
+**Point to remember:**
+The `GROUP BY` clause is a powerful tool in SQL for organizing data into **groups** and performing aggregate calculations on those groups. While it is not an **aggregate function itself**, it is often used in **conjunction with aggregate functions** to summarize data.
+
 
 This structure organizes the SQL syntax and examples into a comprehensive and easy-to-navigate `README.md` file for your repository. You can add this file to your repository and update the path paths based on your directory structure.
 
