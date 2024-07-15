@@ -646,11 +646,102 @@ SELECT department_id, AVG(salary)
 FROM employees
 GROUP BY department_id;
 ```
+# GROUP BY Clause 
+**Note:** It is often used with aggregate functions like COUNT, MAX, MIN, SUM, and AVG to perform operations on each data group.
+**44. Count**
+```
+SELECT column1, aggregate_function(column2)
+FROM table_name
+WHERE condition
+GROUP BY column1, column2, ...;
+```
+**Example**
+```
+-- Count the number of employees in each department
+SELECT department_id, COUNT(*)
+FROM employees
+GROUP BY department_id;
+```
+**Output**
+```
+| department_id | COUNT(*) |
+|---------------|----------|
+|       1       |     3    |
+|       2       |     4    |
+|       3       |     3    |
+```
+**45. Avg**
+```
+-- Calculate the average salary for each department
+SELECT department_id, AVG(salary) AS avg_salary
+FROM employees
+GROUP BY department_id;
+```
+**Example**
+```
+-- Calculate the average salary for each department
+SELECT department_id, AVG(salary) AS avg_salary
+FROM employees
+GROUP BY department_id;
+```
+**Output**
+```
+| department_id | avg_salary |
+|---------------|------------|
+|       1       |   60000.00 |
+|       2       |   70000.00 |
+|       3       |   86666.67 |
+```
+**46. Having**
+```
+-- Find departments with an average salary greater than 70000
+SELECT department_id, AVG(salary) AS avg_salary
+FROM employees
+GROUP BY department_id
+HAVING AVG(salary) > 70000;
+```
+**Output**
+```
+| department_id | avg_salary |
+|---------------|------------|
+|       2       |   70000.00 |
+|       3       |   86666.67 |
+```
 
+**47. Combining GROUP BY with ORDER BY**
+```
+-- Count the number of employees in each department and sort by department_id
+SELECT department_id, COUNT(*) AS num_employees
+FROM employees
+GROUP BY department_id
+ORDER BY department_id;
+```
+**Output**
+```
+| department_id | num_employees |
+|---------------|---------------|
+|       1       |       3       |
+|       2       |       4       |
+|       3       |       3       |
+```
+**48. Using Multiple Columns in GROUP BY**
+```
+-- Count the number of employees in each department and position
+SELECT department_id, position, COUNT(*) AS num_employees
+FROM employees
+GROUP BY department_id, position;
+```
+**Output**
+```
+| department_id | position  | num_employees |
+|---------------|-----------|---------------|
+|       1       | Manager   |       1       |
+|       1       | Developer |       2       |
+|       2       | Manager   |       2       |
+|       2       | Developer |       2       |
+|       3       | Manager   |       1       |
+|       3       | Developer |       2       |
+```
 
-
-
-
-
-This structure organizes the SQL syntax and examples into a comprehensive and easy-to-navigate `README.md` file for your repository. You can add this file to your repository and update the file paths as needed based on your directory structure.
+This structure organizes the SQL syntax and examples into a comprehensive and easy-to-navigate `README.md` file for your repository. You can add this file to your repository and update the path paths based on your directory structure.
 
