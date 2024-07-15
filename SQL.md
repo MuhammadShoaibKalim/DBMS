@@ -507,6 +507,7 @@ WHERE column_name LIKE pattern;
 ```
 **Note:** 
 The LIKE operator is used in a WHERE clause to search for a specified pattern in a column.
+
 **Example : %**
 ```
 -- Find all employees whose names start with 'J'
@@ -744,8 +745,60 @@ GROUP BY department_id, position;
 |       3       | Developer |       2       |
 ```
 **Point to remember:**
-The `GROUP BY` clause is a powerful tool in SQL for organizing data into **groups** and performing aggregate calculations on those groups. While it is not an **aggregate function itself**, it is often used in **conjunction with aggregate functions** to summarize data.
-
-
+1. The `GROUP BY` clause is a powerful tool in SQL for organizing data into **groups** and performing aggregate calculations on those groups. While it is not an **aggregate function itself**, it is often used in **conjunction with aggregate functions** to summarize data.
+2. The `WHERE` clause filters rows before any groupings are made and any aggregate functions are applied. It is used to specify conditions on individual rows in a table.
+   **Example**
+```
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+```
+**Output**
+```
+| id |	name	   | salary | department_id |
+|----|---------|--------|---------------|
+| 1	 | Alice   | 50000	 | 1             |
+| 2	 | Bob	    | 60000	 | 1             | 
+| 3	 | Charlie	| 70000	 | 2             |
+| 4	 | David	  | 80000	 | 2             |
+| 5	 | Eve	    | 90000	 | 3             |
+```
+**Example**
+```
+-- Select employees with salary greater than 60000
+SELECT name, salary
+FROM employees
+WHERE salary > 60000;
+```
+**Output**
+```
+| name    | salary |
+|---------|--------|
+| Charlie | 70000  |
+| David   | 80000  |
+| Eve     | 90000  |
+```
+**HAVING Clause**
+```
+SELECT column1, aggregate_function(column2)
+FROM table_name
+GROUP BY column1
+HAVING condition;
+```
+**Example**
+```
+-- Find departments with an average salary greater than 65000
+SELECT department_id, AVG(salary) AS avg_salary
+FROM employees
+GROUP BY department_id
+HAVING AVG(salary) > 65000;
+```
+**Output**
+```
+| department_id | avg_salary |
+|---------------|------------|
+|       2       |  75000.00  |
+|       3       |  90000.00  |
+```
 This structure organizes the SQL syntax and examples into a comprehensive and easy-to-navigate `README.md` file for your repository. You can add this file to your repository and update the path paths based on your directory structure.
 
