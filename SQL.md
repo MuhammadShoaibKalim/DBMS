@@ -18,7 +18,7 @@
 - [Library_Management_System](./Projects/Library_Management_System)
 - [Hospital_Management_System](./Projects/Hospital_Management_System)
 
- ## Creating, Dropping, and Altering Tables
+ ## Creating, Dropping, and Altering Table(DDL)
 
  ### 1. How to create DB
  ```sql
@@ -158,7 +158,7 @@ CHANGE COLUMN old_column_name new_column_name column_definition;
          ALTER TABLE employees
          CHANGE COLUMN salary monthly_salary DECIMAL(15, 2);
    
-# Basic Data Operations
+# Basic Data Operations (DML)
 
 **7. Inserting Data**
 
@@ -200,7 +200,7 @@ SET salary = 80000.00
 WHERE id = 1;
 ```
 
-**9. Deleting Data**
+**9.0 Deleting Data**
 ```
 DELETE FROM table_name
 WHERE condition;
@@ -210,6 +210,39 @@ WHERE condition;
 DELETE FROM employees
 WHERE id = 1;
 ```
+**9.1 On Delete Cascade**
+```
+ALTER TABLE child_table
+ADD CONSTRAINT fk_constraint_name
+FOREIGN KEY (column_name) REFERENCES parent_table (column_name)
+ON DELETE CASCADE;
+```
+**Example**
+```
+ALTER TABLE employees
+ADD CONSTRAINT fk_department
+FOREIGN KEY (department_id) REFERENCES departments(department_id)
+ON DELETE CASCADE;
+```
+**9.1 On Delete Set NULL**
+```
+ALTER TABLE child_table
+ADD CONSTRAINT fk_constraint_name
+FOREIGN KEY (column_name) REFERENCES parent_table (column_name)
+ON DELETE SET NULL;
+```
+**Example**
+```
+ALTER TABLE employees
+ADD CONSTRAINT fk_department
+FOREIGN KEY (department_id) REFERENCES departments(department_id)
+ON DELETE SET NULL;
+```
+**Note:**
+
+**ON DELETE CASCADE:** Deletes all related child records. Use this for the complete removal of dependent data.
+
+**ON DELETE SET NULL:** Sets foreign key to NULL. Use this to keep child records but indicate the parent data is gone.
 
 # Advanced SQL Syntax
 
