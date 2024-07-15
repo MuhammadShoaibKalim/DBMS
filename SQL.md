@@ -755,13 +755,13 @@ WHERE condition;
 ```
 **Output**
 ```
-| id |	name	   | salary | department_id |
-|----|---------|--------|---------------|
-| 1	 | Alice   | 50000	 | 1             |
-| 2	 | Bob	    | 60000	 | 1             | 
-| 3	 | Charlie	| 70000	 | 2             |
-| 4	 | David	  | 80000	 | 2             |
-| 5	 | Eve	    | 90000	 | 3             |
+| id  | name    | salary | department_id |
+|-----|---------|--------|---------------|
+| 1   | Alice   | 50000  | 1             |
+| 2   | Bob     | 60000  | 1             |
+| 3   | Charlie | 70000  | 2             |
+| 4   | David   | 80000  | 2             |
+| 5   | Eve     | 90000  | 3             |
 ```
 **Example**
 ```
