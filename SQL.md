@@ -800,5 +800,49 @@ HAVING AVG(salary) > 65000;
 |       2       |  75000.00  |
 |       3       |  90000.00  |
 ```
+### Check and Unique constraints in Table
+
+**49. Check Constraint**
+```
+CREATE TABLE table_name (
+    column1 datatype CHECK (condition),
+    column2 datatype,
+    ...
+);
+```
+**Example**
+```
+CREATE TABLE employees (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    salary DECIMAL(10, 2) CHECK (salary > 30000),
+    department_id INT
+);
+```
+**Unique Constraint**
+```
+CREATE TABLE table_name (
+    column1 datatype UNIQUE,
+    column2 datatype,
+    ...
+);
+```
+**Example**
+```
+CREATE TABLE employees (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    salary DECIMAL(10, 2),
+    department_id INT
+);
+```
+**Note:**
+
+1. The `UNIQUE constraint` ensures that all values in a column are different. It helps to ensure that no duplicate values are entered in a column.
+2. The `CHECK constraint`` is used to limit the range of values that can be placed in a column. It ensures that all values in a column satisfy certain conditions.
+
+
+
 This structure organizes the SQL syntax and examples into a comprehensive and easy-to-navigate `README.md` file for your repository. You can add this file to your repository and update the path paths based on your directory structure.
 
