@@ -120,7 +120,44 @@ ADD CONSTRAINT constraint_name constraint_type (column_name);
 ALTER TABLE employees
 ADD CONSTRAINT unique_email UNIQUE (email);
 ```
+**6.5 DESC Command**
+```
+DESC table_name;
+-- or
+DESCRIBE table_name;
+```
+**Example**
+```
+DESC employees;
+```
+**6.6 CHANGE Command**
+```
+ALTER TABLE table_name
+CHANGE COLUMN old_column_name new_column_name column_definition;
+```
 
+**Note:**
+
+1. The `DESC` (or DESCRIBE) command is used to display the structure of a table, including the column names, **data types**, and any constraints. This command helps you understand the schema of a table, including details about each column.
+2. The `CHANGE` command is used in MySQL to modify the definition of an existing column in a table. This command allows you to **rename** a column, change its data type, and modify its constraints.
+
+     **Parameter**
+      1. table_name: The name of the table containing the column to be changed.
+      2. old_column_name: The current name of the column.
+      3. new_column_name: The new name for the column.
+      4. column_definition: The new data type and constraints for the column.
+
+       
+        1. Change Column Name and Data Type
+   
+         ALTER TABLE employees
+         CHANGE COLUMN name name VARCHAR(150) NOT NULL;
+         
+       2. Change Column Data Type and Add Constraints
+         
+         ALTER TABLE employees
+         CHANGE COLUMN salary monthly_salary DECIMAL(15, 2);
+   
 # Basic Data Operations
 
 **7. Inserting Data**
