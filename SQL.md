@@ -70,27 +70,55 @@ DROP TABLE table_name;
 ```
 DROP TABLE employees;
 ```
+# Alter Operations
+
 **6. Altering Tables**
+
+**6.0 Drop**
+```
+ALTER TABLE employees
+DROP COLUMN salary;
+```
+**6.1 Modify**
 ```
 ALTER TABLE table_name
-ADD column_name datatype;
-
-ALTER TABLE table_name
-DROP COLUMN column_name;
-
-ALTER TABLE table_name
-MODIFY COLUMN column_name datatype;
+MODIFY COLUMN column_name datatype [constraints];
 ```
 **Example**
 ```
 ALTER TABLE employees
-ADD birthdate DATE;
+MODIFY COLUMN salary DECIMAL(15, 2);
+```
 
+**6.2 Add column**
+```
+ALTER TABLE table_name
+ADD COLUMN column_name datatype [constraints];
+```
+**Example**
+```
 ALTER TABLE employees
-DROP COLUMN birthdate;
-
+ADD COLUMN hire_date DATE;
+```
+**6.3 Rename**
+```
+ALTER TABLE table_name
+RENAME COLUMN old_column_name TO new_column_name;
+```
+**Example**
+```
+ALTER TABLE table_name
+RENAME COLUMN old_column_name TO new_column_name;
+```
+**6.4 Add Constraints**
+```
+ALTER TABLE table_name
+ADD CONSTRAINT constraint_name constraint_type (column_name);
+```
+**Example**
+```
 ALTER TABLE employees
-MODIFY COLUMN name VARCHAR(150);
+ADD CONSTRAINT unique_email UNIQUE (email);
 ```
 
 # Basic Data Operations
