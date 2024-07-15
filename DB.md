@@ -16,7 +16,7 @@ Additional resource: [Introduction to DBMS](https://drive.google.com/file/d/1lNt
 
 - A database is an organized collection of data so that it can be easily accessed and managed.
 - You can organize data into tables, rows, and columns, and index it to make it easier to find relevant information.
-- Database handlers create a database in such a way that only one set of software program provides access to data to all the users.
+- Database handlers create a database in such a way that only one set of software programs provides access to data to all the users.
 - The main purpose of the database is to operate a large amount of information by storing, retrieving, and managing data.
 - There are many dynamic websites on the World Wide Web nowadays that are handled through databases. For example, a model that checks the availability of rooms in a hotel. It is an example of a dynamic website that uses a database.
 - There are many databases available like MySQL, Sybase, Oracle, MongoDB, Informix, PostgreSQL, SQL Server, etc.
@@ -85,7 +85,7 @@ Additional resource: [Introduction to DBMS](https://drive.google.com/file/d/1lNt
 
 #### 3. Relational Database
 
-- This database is based on the relational data model, which stores data in the form of rows (tuples) and columns (attributes), and together forms a table (relation).
+- This database is based on the relational data model, which stores data in the form of rows (tuples) and columns (attributes), and together form a table (relation).
 - A relational database uses SQL for storing, manipulating, as well as maintaining the data. E.F. Codd invented the database in 1970.
 - Each table in the database carries a key that makes the data unique from others.
 - Examples of Relational databases are MySQL, Microsoft SQL Server, Oracle, etc.
@@ -151,7 +151,7 @@ There are four commonly known properties of a relational model known as ACID pro
 #### 9. Personal Database
 
 - Collecting and storing data on the user's system defines a Personal Database.
-- This database is basically designed for a single user.
+- This database is designed for a single user.
 
 **Advantages of Personal Database:**
 
@@ -160,7 +160,7 @@ There are four commonly known properties of a relational model known as ACID pro
 
 #### 10. Operational Database
 
-- The type of database which creates and updates the database in real-time.
+- The type of database that creates and updates the database in real time.
 - The operational database stores data related to operations in an organization.
 
 #### 11. Enterprise Database
@@ -171,7 +171,7 @@ There are four commonly known properties of a relational model known as ACID pro
 
 #### 12. Data Warehouses
 
-- A type of database used for data analysis. It performs queries and analysis on the historical data.
+- A type of database used for data analysis. It performs queries and analyses on the historical data.
 - Data in the data warehouse is collected from multiple sources and stored in the database.
 - Here, the end-users can access data through the Business Intelligence (BI) tools, SQL clients, and spreadsheets.
 
@@ -193,7 +193,7 @@ There are four commonly known properties of a relational model known as ACID pro
 #### 3. View Level
 
 - It is the highest level of data abstraction that describes only part of the entire database.
-- Even though the view level is the highest level, it is usually the one that is most used.
+- Even though the view level is the highest, it is usually the one that is most used.
 - The end-users usually work at this level of abstraction.
 
 ### Schema in DBMS
@@ -217,14 +217,14 @@ There are four commonly known properties of a relational model known as ACID pro
 
 ### Keys in DBMS
 
-- Keys play an important role in Database Management System (DBMS). It is used to identify the record uniquely.
+- Keys play an important role in a Database Management System (DBMS). It is used to identify the record uniquely.
 - A Key is an attribute or set of attributes that can identify each record uniquely.
 - Keys are also used to establish and identify relationships between tables.
 
 **Types of Keys:**
 
 1. **Primary Key:**
-    - A primary key is used to uniquely identify each record in a table. It must contain unique values and cannot contain null values. There can be only one primary key in a table.
+    - A primary key is used to `uniquely` identify each record in a table. It must contain unique values and cannot contain `null values`. There can be only `one primary key` in a table.
     
 2. **Super Key:**
     - A super key is a set of one or more columns (attributes) to uniquely identify rows in a table. A super key may have additional attributes that are not necessary for unique identification.
@@ -236,7 +236,7 @@ There are four commonly known properties of a relational model known as ACID pro
     - Alternate keys are the candidate keys that are not selected as the primary key of the table.
     
 5. **Foreign Key:**
-    - A foreign key is an attribute or set of attributes in one table that references the primary key of another table. It acts as a cross-reference between tables.
+    - A foreign key is an attribute or set of attributes in one table that `references the primary key` of another table. It acts as a cross-reference between tables.
     
 6. **Composite Key:**
     - A composite key is a combination of two or more columns that uniquely identify rows in a table. Each column in a composite key can individually allow duplicate values, but when combined, they uniquely identify each record.
@@ -246,7 +246,7 @@ There are four commonly known properties of a relational model known as ACID pro
 - The Entity-Relationship (ER) model is a high-level conceptual data model that defines the data elements and their relationships for a specified system.
 - It is used to develop a conceptual design for the database.
 - The ER model is based on real-world entities and relationships among them.
-- An entity is a real-world object with a distinct existence. Each entity has attributes which represent properties of the entity.
+- An entity is a real-world object with a distinct existence. Each entity has attributes that represent the properties of the entity.
 - Relationships are associations between entities.
 
 **Components of ER Diagram:**
