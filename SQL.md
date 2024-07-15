@@ -800,7 +800,7 @@ HAVING AVG(salary) > 65000;
 |       2       |  75000.00  |
 |       3       |  90000.00  |
 ```
-### Check and Unique constraints in Table
+# Check and Unique constraints in Table
 
 **49. Check Constraint**
 ```
@@ -819,7 +819,7 @@ CREATE TABLE employees (
     department_id INT
 );
 ```
-**Unique Constraint**
+**50. Unique Constraint**
 ```
 CREATE TABLE table_name (
     column1 datatype UNIQUE,
@@ -837,10 +837,28 @@ CREATE TABLE employees (
     department_id INT
 );
 ```
+**51. Default Constraint**
+```
+CREATE TABLE table_name (
+    column1 datatype DEFAULT default_value,
+    column2 datatype,
+    ...
+);
+```
+**Example**
+```
+CREATE TABLE employees (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    salary DECIMAL(10, 2) DEFAULT 40000,
+    department_id INT
+);
+```
 **Note:**
 
 1. The `UNIQUE constraint` ensures that all values in a column are different. It helps to ensure that no duplicate values are entered in a column.
-2. The `CHECK constraint`` is used to limit the range of values that can be placed in a column. It ensures that all values in a column satisfy certain conditions.
+2. The `CHECK constraint` is used to limit the range of values that can be placed in a column. It ensures that all values in a column satisfy certain conditions.
+3. The `DEFAULT constraint` provides a default value for a column when no value is specified during the insertion of a record. This is useful for ensuring that columns have meaningful default values.
 
 
 
