@@ -648,6 +648,7 @@ GROUP BY department_id;
 ```
 # GROUP BY Clause 
 **Note:** It is often used with aggregate functions like COUNT, MAX, MIN, SUM, and AVG to perform operations on each data group.
+
 **44. Count**
 ```
 SELECT column1, aggregate_function(column2)
