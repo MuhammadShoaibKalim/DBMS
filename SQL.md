@@ -12,7 +12,7 @@
 - [Triggers.sql](./SQL_Syntax/Triggers.sql)
 - [Functions.sql](./SQL_Syntax/Functions.sql)
 
-# 01. Using AND, OR, NOT, BETWEEN, and IN 
+# 01. Using AND, OR, NOT, BETWEEN, and IN in SQL
 
 **28. AND**
 ```
@@ -89,7 +89,7 @@ SELECT name, salary
 FROM employees
 WHERE salary IS NULL;
 ```
-# 02. Wildcards Characters
+# 02. Wildcards Characters in SQL
 
 **36.Using LIKE with Wildcards**
 ```
@@ -145,7 +145,7 @@ FROM table_name;
 SELECT name, COALESCE(bonus, 0) AS bonus
 FROM employees;
 ```
-# 03. Sorting Data with ORDER BY
+# 03. Sorting Data with ORDER BY in SQL
 
 **37. Sorting Data with ORDER BY**
 
@@ -191,7 +191,7 @@ FROM employees;
 SELECT DISTINCT department_id, position
 FROM employees;
 ```
-# 04. Aggregate Functions (COUNT, MAX, MIN, SUM, AVG)
+ **Aggregate Functions (COUNT, MAX, MIN, SUM, AVG) in SQL**
 
 **39. Count**
 ```
@@ -264,9 +264,10 @@ SELECT department_id, AVG(salary)
 FROM employees
 GROUP BY department_id;
 ```
-
-# GROUP BY Clause 
 **Note:** It is often used with aggregate functions like COUNT, MAX, MIN, SUM, and AVG to perform operations on each data group.
+
+
+# 04. GROUP BY Clause in SQL 
 
 **44. Count**
 ```
@@ -381,7 +382,7 @@ WHERE salary > 60000;
 | Eve     | 90000  |
 ```
 
-# 05. Having  Clause
+# 05. Having  Clause in SQL 
 
 **46. Having**
 ```
@@ -420,7 +421,7 @@ HAVING AVG(salary) > 65000;
 |       2       |  75000.00  |
 |       3       |  90000.00  |
 ```
-# 06. Check, Unique and Default constraints in Table
+# 06. Check, Unique and Default constraints in SQL 
 
 **49. Check Constraint**
 ```
@@ -570,7 +571,7 @@ CHANGE COLUMN old_column_name new_column_name column_definition;
          CHANGE COLUMN salary monthly_salary DECIMAL(15, 2);
    ```
    
-   # 08. Basic Data Operations (DML) in SQL
+# 08. Basic Data Operations (DML) in SQL
 
 **7. Inserting Data**
 
@@ -676,7 +677,7 @@ DROP TABLE table_name;
 DROP TABLE employees;
 ```
 
-# 10. On Delete, on Delete Cascade
+# 10. On Delete, on Delete Cascade in SQL 
 
 **9.1 On Delete Cascade**
 ```
@@ -736,7 +737,7 @@ Simplifies the logic for upsert (insert or update) operations by handling both i
 2. `Update` is used if data is not present.
 3. If a row is not present `replace` will add a row and `update` will do nothing.
 
-   # 12. JOIN  Advanced topic in SQL  
+# 12. JOIN  Advanced topic in SQL  
 
 **10. Inner Join**
 ```
@@ -948,7 +949,8 @@ WHERE salary > (SELECT AVG(salary)
   (*) The WHERE clause in the outer query compares each employee's salary to the average salary of their department.
   (*) This ensures that only employees whose salary is greater than the average salary of their department are selected.
 
-  # 14. Sub Queries in SQL 
+# 14. Sub Queries in SQL 
+
 **14. Sub Queries** 
 ```
 SELECT column1
@@ -969,7 +971,7 @@ WHERE salary > (SELECT AVG(salary) FROM employees);
 2. The inner query is independent and executes the first and the outer query is dependent on the inner query.
 3. It is called a nested query.
 
-   **VIEW**
+# 15. VIEW in SQL 
 
 **18. Create View**
 ```
@@ -995,8 +997,8 @@ DROP VIEW high_salary_employees;
 ```
 
 
- --------------------------------------------------------16 Index-----------------------------------------------------------------------------------------
-**Index**
+
+# Index
 
 **15. Create Index**
 ```
@@ -1017,9 +1019,8 @@ DROP INDEX index_name;
 DROP INDEX idx_salary;
 ```
 
- --------------------------------------------------------Transaction----------------------------------------------------------------------------------------
 
-**Transaction**
+# Transaction
 
 **17. Make Transaction**
 ```
@@ -1048,9 +1049,8 @@ COMMIT;
 ROLLBACK;
 ```
 
- -----------------------------------------------------------------Stored Procedures--------------------------------------------------------------------------------
- 
-**Stored Procedures**
+
+# Stored Procedures
 
 **20. Create  Stored Procedures**
 ```
@@ -1086,7 +1086,7 @@ DROP PROCEDURE procedure_name;
 ```
 DROP PROCEDURE raise_salary;
 ```
- -----------------------------------------------------------------Function--------------------------------------------------------------------------------
+
 # Function
 
 **23. Create Function**
@@ -1126,8 +1126,7 @@ DROP FUNCTION function_name;
 DROP FUNCTION calculate_bonus;
 ```
 
- -----------------------------------------------------------------Trigers--------------------------------------------------------------------------------
-**Trigers**
+# Trigers
 
 **26. Create Triggers**
 ```
@@ -1157,7 +1156,7 @@ DROP TRIGGER trigger_name;
 ```
 DROP TRIGGER trg_after_insert;
 ```
- 
+
 This structure organizes the SQL syntax and examples into a comprehensive and easy-to-navigate `README.md` file for your repository. You can add this file to your 
 repository and update the path paths based on your directory structure.
 
