@@ -496,6 +496,21 @@ SELECT name FROM employees
 EXCEPT
 SELECT name FROM departments;
 ```
+**Emulation using INNER JOIN:**
+```
+SELECT e.name
+FROM employees e
+INNER JOIN departments d
+ON e.name = d.department_name;
+```
+**Emulating EXCEPT (MINUS)**
+```
+SELECT e.name
+FROM employees e
+LEFT JOIN departments d
+ON e.name = d.department_name
+WHERE d.department_name IS NULL;
+```
 
 
 **Note:**
@@ -506,6 +521,7 @@ SELECT name FROM departments;
     differences.
 5.  **Column Compatibility:** The number of columns and their data types in the SELECT statements must be the same for all set operations.
 6.  **Order of Results:** The order of rows in the result set is not guaranteed unless you use an ORDER BY clause at the end of the query.
+7.  Emulating `INTERSECT` and `EXCEPT (or MINUS)` operations in SQL can be done using **JOIN** and **LEFT JOIN** with **WHERE** conditions.
 
 
 
