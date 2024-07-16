@@ -191,6 +191,7 @@ WHERE position = 'Manager';
 
 SELECT * FROM employees;
 ```
+
 **9. Updating Data**
 ```
 UPDATE table_name
@@ -365,6 +366,7 @@ ON e.department_id = d.id;
    1. Aliases in SQL are used to give a table or a column a temporary name. This is often useful to make your SQL queries more readable
    and manageable, especially when dealing with joins.
    2. MySQL does not directly support FULL OUTER JOIN. You can achieve the same result using a UNION of LEFT JOIN and RIGHT JOIN.
+   3. In join we place one column from a table with another table column via inner/left/right/full join. 
  ```
 SELECT columns
 FROM table1 AS alias1
@@ -448,6 +450,69 @@ DROP INDEX idx_salary;
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --------------------------------------------------------13 Set-----------------------------------------------------------------------------------------
+
+**Union:**
+```
+SELECT column1, column2, ...
+FROM table1
+UNION
+SELECT column1, column2, ...
+FROM table2;
+```
+**Example**
+```
+SELECT name FROM employees
+UNION
+SELECT name FROM departments;
+```
+
+
+**Intersection:**
+```
+SELECT column1, column2, ...
+FROM table1
+INTERSECT
+SELECT column1, column2, ...
+FROM table2;
+```
+**Example**
+```
+SELECT name FROM employees
+INTERSECT
+SELECT name FROM departments;
+```
+
+**Minus(Except):**
+```
+SELECT column1, column2, ...
+FROM table1
+EXCEPT
+SELECT column1, column2, ...
+FROM table2;
+```
+**Example**
+```
+SELECT name FROM employees
+EXCEPT
+SELECT name FROM departments;
+```
+
+
+**Note:**
+1.  **Set Operations** (e.g., `UNION`, `UNION ALL`, `INTERSECT`, `EXCEPT`): These are used for combining rows from two or more result sets into a single result set. 
+2.  They operate on entire rows and the columns involved must be compatible in number and data type.
+3.  THe `INTERSECTION` is not used so we emulate by inner join.
+4.  The operation `Union` is used to select common and ignore duplication. While `Union ALL` is used to select all included duplicates too. In syntax, there is an ALL keyword
+    differences.
+5.  **Column Compatibility:** The number of columns and their data types in the SELECT statements must be the same for all set operations.
+6.  **Order of Results:** The order of rows in the result set is not guaranteed unless you use an ORDER BY clause at the end of the query.
+
+
+
+
+
+-------------------------------------------------------Transction--------------------------------------------------------------------------------------
+
 
 **Transaction**
 
