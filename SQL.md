@@ -12,46 +12,422 @@
 - [Triggers.sql](./SQL_Syntax/Triggers.sql)
 - [Functions.sql](./SQL_Syntax/Functions.sql)
 
-## Projects
-- [Employee_Management_System](./Projects/Employee_Management_System)
-- [Online_Retail_Database](./Projects/Online_Retail_Database)
-- [Library_Management_System](./Projects/Library_Management_System)
-- [Hospital_Management_System](./Projects/Hospital_Management_System)
+# 01. Using AND, OR, NOT, BETWEEN, and IN 
 
------------------------------------------------------------------07 DDL--------------------------------------------------------------------------
- ## Creating, Dropping, and Altering Table(DDL)
-
- ### 1. How to create DB
- ```sql
- CREATE DATABASE database_name;
+**28. AND**
+```
+SELECT name, salary
+FROM Employees
+WHERE position = 'Manager' AND salary > 70000;
+```
+**Example**
+```
+SELECT name, salary
+FROM employees
+WHERE position = 'Manager' AND salary > 70000;
 ```
 
- **2. Using DB**
+**29. OR**
+```
+SELECT name, salary
+FROM Employees
+WHERE position = 'Manager' OR position = 'Developer';
+```
+**Example**
+```
+SELECT name, salary
+FROM employees
+WHERE position = 'Manager' OR position = 'Developer';
+```
+**30. NOT**
+```
+SELECT name, salary
+FROM Employees
+WHERE NOT position = 'Manager';
+```
 
- ```
- USE database_name;
+**Example**
 ```
- **example**
- ```
-USE my_database;
- ```
+SELECT name, salary
+FROM employees
+WHERE NOT position = 'Manager';
+```
+**31. BETWEEN**
+```
+SELECT name, salary
+FROM Employees
+WHERE salary BETWEEN 50000 AND 80000;
+```
+**Example**
+```
+SELECT name, salary
+FROM employees
+WHERE salary BETWEEN 50000 AND 80000;
+```
+**32. IN**
+```
+SELECT name, salary
+FROM Employees
+WHERE position IN ('Manager', 'Developer');
+```
+**Example**
+```
+SELECT name, salary
+FROM employees
+WHERE position IN ('Manager', 'Developer');
+```
+ 
+**33. IS NULL**
+```
+SELECT column1, column2, ...
+FROM table_name
+WHERE column_name IS NULL;
+```
+**Example**
+```
+SELECT name, salary
+FROM employees
+WHERE salary IS NULL;
+```
+# 02. Wildcards Characters
 
-**3. Drop a DB**
+**36.Using LIKE with Wildcards**
 ```
-DROP DATABASE database_name;
+SELECT column1, column2, ...
+FROM table_name
+WHERE column_name LIKE pattern;
 ```
- **example**
- ```
-DROP DATABASE my_database;
+**Note:** 
+The LIKE operator is used in a WHERE clause to search for a specified pattern in a column.
+
+**Example : %**
+```
+-- Find all employees whose names start with 'J'
+SELECT name
+FROM employees
+WHERE name LIKE 'J%';
+```
+**Example with: _**
+```
+-- Find all employees whose names have 'o' as the second character
+SELECT name
+FROM employees
+WHERE name LIKE '_o%';
+```
+**Combining Both: % _**
+```
+-- Find all employees whose names start with 'J' and have 'n' as the third character
+SELECT name
+FROM employees
+WHERE name LIKE 'J_n%';
+```
+**Note:** The COALESCE function returns the first non-NULL value in a list of arguments.
+
+**34. IS NOT NULL**
+```
+SELECT column1, column2, ...
+FROM table_name
+WHERE column_name IS NOT NULL;
+```
+**Example**
+```
+SELECT column1, column2, ...
+FROM table_name
+WHERE column_name IS NOT NULL;
+```
+**35. Using COALESCE**
+```
+SELECT COALESCE(column1, column2, ...) AS alias_name
+FROM table_name;
+```
+**Example**
+```
+SELECT name, COALESCE(bonus, 0) AS bonus
+FROM employees;
+```
+# 03. Sorting Data with ORDER BY
+
+**37. Sorting Data with ORDER BY**
+
+```
+SELECT column1, column2, ...
+FROM table_name
+ORDER BY column1 [ASC|DESC], column2 [ASC|DESC], ...;
+```
+**Ascending order**
+```
+-- Select all employees sorted by their salary in ascending order
+SELECT name, salary
+FROM employees
+ORDER BY salary ASC;
+```
+**Descending order**
+```
+-- Select all employees sorted by their salary in descending order
+SELECT name, salary
+FROM employees
+ORDER BY salary DESC;
+```
+**Multiple Columns**
+```
+-- Select all employees sorted by department and then by name within each department in ascending order
+SELECT name, department_id, salary
+FROM employees
+ORDER BY department_id ASC, name ASC;
+```
+**38. Using Distinct**
+```
+SELECT DISTINCT column1, column2, ...
+FROM table_name;
+```
+**Example**
+```
+-- Select unique positions from the employees table
+SELECT DISTINCT position
+FROM employees;
+```
+```
+-- Select unique combinations of department_id and position
+SELECT DISTINCT department_id, position
+FROM employees;
+```
+# 04. Aggregate Functions (COUNT, MAX, MIN, SUM, AVG)
+
+**39. Count**
+```
+-- Count the total number of employees
+SELECT COUNT(*)
+FROM employees;
+
+Output:
+| COUNT(*) |
+|----------|
+|    10    |
+
+```
+**Exmaple**
+```
+-- Count the number of employees in each department
+SELECT department_id, COUNT(*)
+FROM employees
+GROUP BY department_id;
+```
+**40. Max**
+```
+-- Find the highest salary among all employees
+SELECT MAX(salary)
+FROM employees;
+```
+**Example**
+```
+-- Find the highest salary in each department
+SELECT department_id, MAX(salary)
+FROM employees
+GROUP BY department_id;
 ```
 
-**4. Creating Table**
+**41. MIN**
+```
+-- Find the lowest salary among all employees
+SELECT MIN(salary)
+FROM employees;
+```
+```
+-- Find the lowest salary in each department
+SELECT department_id, MIN(salary)
+FROM employees
+GROUP BY department_id;
+```
+**42. SUM**
+```
+-- Calculate the total salary paid to all employees
+SELECT SUM(salary)
+FROM employees;
+```
+**Exmaple**
+```
+-- Calculate the total salary paid in each department
+SELECT department_id, SUM(salary)
+FROM employees
+GROUP BY department_id;
+```
+**43. AVG**
+```
+-- Calculate the average salary of all employees
+SELECT AVG(salary)
+FROM employees;
+```
+**Example**
+```
+-- Calculate the average salary in each department
+SELECT department_id, AVG(salary)
+FROM employees
+GROUP BY department_id;
+```
+
+# GROUP BY Clause 
+**Note:** It is often used with aggregate functions like COUNT, MAX, MIN, SUM, and AVG to perform operations on each data group.
+
+**44. Count**
+```
+SELECT column1, aggregate_function(column2)
+FROM table_name
+WHERE condition
+GROUP BY column1, column2, ...;
+```
+**Example**
+```
+-- Count the number of employees in each department
+SELECT department_id, COUNT(*)
+FROM employees
+GROUP BY department_id;
+```
+**Output**
+```
+| department_id | COUNT(*) |
+|---------------|----------|
+|       1       |     3    |
+|       2       |     4    |
+|       3       |     3    |
+```
+**45. Avg**
+```
+-- Calculate the average salary for each department
+SELECT department_id, AVG(salary) AS avg_salary
+FROM employees
+GROUP BY department_id;
+```
+**Example**
+```
+-- Calculate the average salary for each department
+SELECT department_id, AVG(salary) AS avg_salary
+FROM employees
+GROUP BY department_id;
+```
+**Output**
+```
+| department_id | avg_salary |
+|---------------|------------|
+|       1       |   60000.00 |
+|       2       |   70000.00 |
+|       3       |   86666.67 |
+```
+**47. Combining GROUP BY with ORDER BY**
+```
+-- Count the number of employees in each department and sort by department_id
+SELECT department_id, COUNT(*) AS num_employees
+FROM employees
+GROUP BY department_id
+ORDER BY department_id;
+```
+**Output**
+```
+| department_id | num_employees |
+|---------------|---------------|
+|       1       |       3       |
+|       2       |       4       |
+|       3       |       3       |
+```
+**48. Using Multiple Columns in GROUP BY**
+```
+-- Count the number of employees in each department and position
+SELECT department_id, position, COUNT(*) AS num_employees
+FROM employees
+GROUP BY department_id, position;
+```
+**Output**
+```
+| department_id | position  | num_employees |
+|---------------|-----------|---------------|
+|       1       | Manager   |       1       |
+|       1       | Developer |       2       |
+|       2       | Manager   |       2       |
+|       2       | Developer |       2       |
+|       3       | Manager   |       1       |
+|       3       | Developer |       2       |
+```
+**Point to remember:**
+1. The `GROUP BY` clause is a powerful tool in SQL for organizing data into **groups** and performing aggregate calculations on those groups. While it is not an **aggregate function itself**, it is often used in **conjunction with aggregate functions** to summarize data.
+2. The `WHERE` clause filters rows before any groupings are made and any aggregate functions are applied. It is used to specify conditions on individual rows in a table.
+   **Example**
+```
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+```
+**Output**
+```
+| id  | name    | salary | department_id |
+|-----|---------|--------|---------------|
+| 1   | Alice   | 50000  | 1             |
+| 2   | Bob     | 60000  | 1             |
+| 3   | Charlie | 70000  | 2             |
+| 4   | David   | 80000  | 2             |
+| 5   | Eve     | 90000  | 3             |
+```
+**Example**
+```
+-- Select employees with salary greater than 60000
+SELECT name, salary
+FROM employees
+WHERE salary > 60000;
+```
+**Output**
+```
+| name    | salary |
+|---------|--------|
+| Charlie | 70000  |
+| David   | 80000  |
+| Eve     | 90000  |
+```
+
+# 05. Having  Clause
+
+**46. Having**
+```
+-- Find departments with an average salary greater than 70000
+SELECT department_id, AVG(salary) AS avg_salary
+FROM employees
+GROUP BY department_id
+HAVING AVG(salary) > 70000;
+```
+**Output**
+```
+| department_id | avg_salary |
+|---------------|------------|
+|       2       |   70000.00 |
+|       3       |   86666.67 |
+```
+**HAVING Clause**
+```
+SELECT column1, aggregate_function(column2)
+FROM table_name
+GROUP BY column1
+HAVING condition;
+```
+**Example**
+```
+-- Find departments with an average salary greater than 65000
+SELECT department_id, AVG(salary) AS avg_salary
+FROM employees
+GROUP BY department_id
+HAVING AVG(salary) > 65000;
+```
+**Output**
+```
+| department_id | avg_salary |
+|---------------|------------|
+|       2       |  75000.00  |
+|       3       |  90000.00  |
+```
+# 06. Check, Unique and Default constraints in Table
+
+**49. Check Constraint**
 ```
 CREATE TABLE table_name (
-    column1 datatype PRIMARY KEY (optional),
+    column1 datatype CHECK (condition),
     column2 datatype,
-    column3 datatype,
-   ....
+    ...
 );
 ```
 **Example**
@@ -59,19 +435,53 @@ CREATE TABLE table_name (
 CREATE TABLE employees (
     id INT PRIMARY KEY,
     name VARCHAR(100),
-    position VARCHAR(100),
-    salary DECIMAL(10, 2)
+    salary DECIMAL(10, 2) CHECK (salary > 30000),
+    department_id INT
 );
 ```
-**5. Dropping Table**
+**50. Unique Constraint**
 ```
-DROP TABLE table_name;
+CREATE TABLE table_name (
+    column1 datatype UNIQUE,
+    column2 datatype,
+    ...
+);
 ```
 **Example**
 ```
-DROP TABLE employees;
+CREATE TABLE employees (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    salary DECIMAL(10, 2),
+    department_id INT
+);
 ```
-# Alter Operations
+**51. Default Constraint**
+```
+CREATE TABLE table_name (
+    column1 datatype DEFAULT default_value,
+    column2 datatype,
+    ...
+);
+```
+**Example**
+```
+CREATE TABLE employees (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    salary DECIMAL(10, 2) DEFAULT 40000,
+    department_id INT
+);
+```
+**Note:**
+
+1. The `UNIQUE constraint` ensures that all values in a column are different. It helps to ensure that no duplicate values are entered in a column.
+2. The `CHECK constraint` is used to limit the range of values that can be placed in a column. It ensures that all values in a column satisfy certain conditions.
+3. The `DEFAULT constraint` provides a default value for a column when no value is specified during the insertion of a record. This is useful for ensuring that
+   columns have meaningful default values.
+ 
+# 07. Alter Operations in SQL
 
 **6. Altering Tables**
 
@@ -155,14 +565,12 @@ CHANGE COLUMN old_column_name new_column_name column_definition;
          CHANGE COLUMN name name VARCHAR(150) NOT NULL;
          
        2. Change Column Data Type and Add Constraints
-         
+   ```  
          ALTER TABLE employees
          CHANGE COLUMN salary monthly_salary DECIMAL(15, 2);
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------08 DML------------------------------------------------------------------------------------
-# Basic Data Operations (DML)
+   ```
+   
+   # 08. Basic Data Operations (DML) in SQL
 
 **7. Inserting Data**
 
@@ -215,9 +623,60 @@ WHERE condition;
 DELETE FROM employees
 WHERE id = 1;
 ```
------------------------------------------------------------------------------------------------------------------------------------------------------
+# 09. Creating, Dropping, and Altering Table(DDL) in SQL
 
-----------------------------------------------------------09 On Delete, on Delete Cascade------------------------------------------------------------
+ ### 1. How to create DB
+ ```sql
+ CREATE DATABASE database_name;
+```
+
+ **2. Using DB**
+
+ ```
+ USE database_name;
+```
+ **example**
+ ```
+USE my_database;
+ ```
+
+**3. Drop a DB**
+```
+DROP DATABASE database_name;
+```
+ **example**
+ ```
+DROP DATABASE my_database;
+```
+
+**4. Creating Table**
+```
+CREATE TABLE table_name (
+    column1 datatype PRIMARY KEY (optional),
+    column2 datatype,
+    column3 datatype,
+   ....
+);
+```
+**Example**
+```
+CREATE TABLE employees (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    position VARCHAR(100),
+    salary DECIMAL(10, 2)
+);
+```
+**5. Dropping Table**
+```
+DROP TABLE table_name;
+```
+**Example**
+```
+DROP TABLE employees;
+```
+
+# 10. On Delete, on Delete Cascade
 
 **9.1 On Delete Cascade**
 ```
@@ -253,9 +712,7 @@ ON DELETE SET NULL;
 
 **ON DELETE SET NULL:** Sets foreign key to NULL. Use this to keep child records but indicate the parent data is gone.
 
--------------------------------------------------------------------------------------------------------------------------------------------------------
-
-----------------------------------------------------11 Replace, Update---------------------------------------------------------------------------------
+# 11. Replace, Update in SQL
 
 **9.2 REPLACE**
 ```
@@ -278,14 +735,8 @@ Simplifies the logic for upsert (insert or update) operations by handling both i
 1. `Replace` is used if data is already present. 
 2. `Update` is used if data is not present.
 3. If a row is not present `replace` will add a row and `update` will do nothing.
-   
-   ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-   --------------------------------------------------------------12 JOIN -----------------------------------------------------------------------------------
-   
-# Advanced SQL Syntax 
-
-### Joins
+   # 12. JOIN  Advanced topic in SQL  
 
 **10. Inner Join**
 ```
@@ -408,54 +859,7 @@ ON e.department_id = d.id;
 3. In `right join` all data of the left table but also added matching data of the left table is called right join.
 
 
- -------------------------------------------------------------------------------------------------------------------------------------------------------
-
- -------------------------------------------------14 Sub Queries----------------------------------------------------------------------------------------
- 
-**14. Sub Queries** 
-```
-SELECT column1
-FROM table_name
-WHERE column2 = (SELECT column2
-                 FROM table_name
-                 WHERE condition);
-```
-**Example**
-```
-SELECT name
-FROM employees
-WHERE salary > (SELECT AVG(salary) FROM employees);
-```
-
-**Note:**
-1. It is an alternative to join means where join is used it can be used easily.
-2. The inner query is independent and executes the first and the outer query is dependent on the inner query.
-3. It is called a nested query.
- --------------------------------------------------------16 Index-----------------------------------------------------------------------------------------
-**Index**
-
-**15. Create Index**
-```
-CREATE INDEX index_name
-ON table_name (column1, column2, ...);
-```
-**Example**
-```
-CREATE INDEX idx_salary
-ON employees (salary);
-```
-**16. Dropping Index**
-```
-DROP INDEX index_name;
-```
-**Example**
-```
-DROP INDEX idx_salary;
-```
--------------------------------------------------------------------------------------------------------------------------------------------------------
-
---------------------------------------------------------13 Set-----------------------------------------------------------------------------------------
-
+# 13. Set Operation in SQL 
 **Union:**
 ```
 SELECT column1, column2, ...
@@ -470,8 +874,6 @@ SELECT name FROM employees
 UNION
 SELECT name FROM departments;
 ```
-
-
 **Intersection:**
 ```
 SELECT column1, column2, ...
@@ -516,8 +918,6 @@ LEFT JOIN departments d
 ON e.name = d.department_name
 WHERE d.department_name IS NULL;
 ```
-
-
 **Note:**
 1.  **Set Operations** (e.g., `UNION`, `UNION ALL`, `INTERSECT`, `EXCEPT`): These are used for combining rows from two or more result sets into a single result set. 
 2.  They operate on entire rows and the columns involved must be compatible in number and data type.
@@ -547,12 +947,77 @@ WHERE salary > (SELECT AVG(salary)
   (*) The subquery calculates the average salary for each department_id in the employee's table (aliased as e2).
   (*) The WHERE clause in the outer query compares each employee's salary to the average salary of their department.
   (*) This ensures that only employees whose salary is greater than the average salary of their department are selected.
-  
+
+  # 14. Sub Queries in SQL 
+**14. Sub Queries** 
+```
+SELECT column1
+FROM table_name
+WHERE column2 = (SELECT column2
+                 FROM table_name
+                 WHERE condition);
+```
+**Example**
+```
+SELECT name
+FROM employees
+WHERE salary > (SELECT AVG(salary) FROM employees);
+```
+
+**Note:**
+1. It is an alternative to join means where join is used it can be used easily.
+2. The inner query is independent and executes the first and the outer query is dependent on the inner query.
+3. It is called a nested query.
+
+   **VIEW**
+
+**18. Create View**
+```
+CREATE VIEW view_name AS
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+```
+**Example**
+```
+CREATE VIEW high_salary_employees AS
+SELECT name, salary
+FROM employees
+WHERE salary > 50000;
+```
+**19. Drop View**
+```
+DROP VIEW view_name;
+```
+**Example**
+```
+DROP VIEW high_salary_employees;
+```
 
 
+ --------------------------------------------------------16 Index-----------------------------------------------------------------------------------------
+**Index**
 
--------------------------------------------------------Transction--------------------------------------------------------------------------------------
+**15. Create Index**
+```
+CREATE INDEX index_name
+ON table_name (column1, column2, ...);
+```
+**Example**
+```
+CREATE INDEX idx_salary
+ON employees (salary);
+```
+**16. Dropping Index**
+```
+DROP INDEX index_name;
+```
+**Example**
+```
+DROP INDEX idx_salary;
+```
 
+ --------------------------------------------------------Transaction----------------------------------------------------------------------------------------
 
 **Transaction**
 
@@ -582,34 +1047,8 @@ COMMIT;
 
 ROLLBACK;
 ```
--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
--------------------------------------------------------15 View-----------------------------------------------------------------------------------------------
-**VIEW**
-
-**18. Create View**
-```
-CREATE VIEW view_name AS
-SELECT column1, column2, ...
-FROM table_name
-WHERE condition;
-```
-**Example**
-```
-CREATE VIEW high_salary_employees AS
-SELECT name, salary
-FROM employees
-WHERE salary > 50000;
-```
-**19. Drop View**
-```
-DROP VIEW view_name;
-```
-**Example**
-```
-DROP VIEW high_salary_employees;
-```
- ------------------------------06--------------------------------------------------------------------------------------------------------------------
+ -----------------------------------------------------------------Stored Procedures--------------------------------------------------------------------------------
  
 **Stored Procedures**
 
@@ -647,7 +1086,7 @@ DROP PROCEDURE procedure_name;
 ```
 DROP PROCEDURE raise_salary;
 ```
-
+ -----------------------------------------------------------------Function--------------------------------------------------------------------------------
 # Function
 
 **23. Create Function**
@@ -687,6 +1126,7 @@ DROP FUNCTION function_name;
 DROP FUNCTION calculate_bonus;
 ```
 
+ -----------------------------------------------------------------Trigers--------------------------------------------------------------------------------
 **Trigers**
 
 **26. Create Triggers**
@@ -717,493 +1157,7 @@ DROP TRIGGER trigger_name;
 ```
 DROP TRIGGER trg_after_insert;
 ```
- ------------------------------01---------------------------------------------------------------------------------------------------------------------
  
-# Using AND, OR, NOT, BETWEEN, and IN 
-
-**28. AND**
-```
-SELECT name, salary
-FROM Employees
-WHERE position = 'Manager' AND salary > 70000;
-```
-**Example**
-```
-SELECT name, salary
-FROM employees
-WHERE position = 'Manager' AND salary > 70000;
-```
-
-**29. OR**
-```
-SELECT name, salary
-FROM Employees
-WHERE position = 'Manager' OR position = 'Developer';
-```
-**Example**
-```
-SELECT name, salary
-FROM employees
-WHERE position = 'Manager' OR position = 'Developer';
-```
-**30. NOT**
-```
-SELECT name, salary
-FROM Employees
-WHERE NOT position = 'Manager';
-```
-
-**Example**
-```
-SELECT name, salary
-FROM employees
-WHERE NOT position = 'Manager';
-```
-**31. BETWEEN**
-```
-SELECT name, salary
-FROM Employees
-WHERE salary BETWEEN 50000 AND 80000;
-```
-**Example**
-```
-SELECT name, salary
-FROM employees
-WHERE salary BETWEEN 50000 AND 80000;
-```
-**32. IN**
-```
-SELECT name, salary
-FROM Employees
-WHERE position IN ('Manager', 'Developer');
-```
-**Example**
-```
-SELECT name, salary
-FROM employees
-WHERE position IN ('Manager', 'Developer');
-```
- 
-**33. IS NULL**
-```
-SELECT column1, column2, ...
-FROM table_name
-WHERE column_name IS NULL;
-```
-**Example**
-```
-SELECT name, salary
-FROM employees
-WHERE salary IS NULL;
-```
-----------------------------------------------------------------------------------------------------------------------------------------------------
-
-**34. IS NOT NULL**
-```
-SELECT column1, column2, ...
-FROM table_name
-WHERE column_name IS NOT NULL;
-```
-**Example**
-```
-SELECT column1, column2, ...
-FROM table_name
-WHERE column_name IS NOT NULL;
-```
-**35. Using COALESCE**
-```
-SELECT COALESCE(column1, column2, ...) AS alias_name
-FROM table_name;
-```
-**Example**
-```
-SELECT name, COALESCE(bonus, 0) AS bonus
-FROM employees;
-```
-------------------------------------02------------------------------------------------------------------------------------------------------------------
-**36.Using LIKE with Wildcards**
-```
-SELECT column1, column2, ...
-FROM table_name
-WHERE column_name LIKE pattern;
-```
-**Note:** 
-The LIKE operator is used in a WHERE clause to search for a specified pattern in a column.
-
-**Example : %**
-```
--- Find all employees whose names start with 'J'
-SELECT name
-FROM employees
-WHERE name LIKE 'J%';
-```
-**Example with: _**
-```
--- Find all employees whose names have 'o' as the second character
-SELECT name
-FROM employees
-WHERE name LIKE '_o%';
-```
-**Combining Both: % _**
-```
--- Find all employees whose names start with 'J' and have 'n' as the third character
-SELECT name
-FROM employees
-WHERE name LIKE 'J_n%';
-```
-**Note:** The COALESCE function returns the first non-NULL value in a list of arguments.
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------
-
-----------------------------------03----------------------------------------------------------------------------------------------------------------------
-
-**37. Sorting Data with ORDER BY**
-
-```
-SELECT column1, column2, ...
-FROM table_name
-ORDER BY column1 [ASC|DESC], column2 [ASC|DESC], ...;
-```
-**Ascending order**
-```
--- Select all employees sorted by their salary in ascending order
-SELECT name, salary
-FROM employees
-ORDER BY salary ASC;
-```
-**Descending order**
-```
--- Select all employees sorted by their salary in descending order
-SELECT name, salary
-FROM employees
-ORDER BY salary DESC;
-```
-**Multiple Columns**
-```
--- Select all employees sorted by department and then by name within each department in ascending order
-SELECT name, department_id, salary
-FROM employees
-ORDER BY department_id ASC, name ASC;
-```
-**38. Using Distinct**
-```
-SELECT DISTINCT column1, column2, ...
-FROM table_name;
-```
-**Example**
-```
--- Select unique positions from the employees table
-SELECT DISTINCT position
-FROM employees;
-```
-```
--- Select unique combinations of department_id and position
-SELECT DISTINCT department_id, position
-FROM employees;
-```
- ---------------------------------------------------------------------------------------------------------------------------------------------------------
-
- --------------------------------------04-----------------------------------------------------------------------------------------------------------------
-# Aggregate Functions (COUNT, MAX, MIN, SUM, AVG)
-**39. Count**
-```
--- Count the total number of employees
-SELECT COUNT(*)
-FROM employees;
-
-Output:
-| COUNT(*) |
-|----------|
-|    10    |
-
-```
-**Exmaple**
-```
--- Count the number of employees in each department
-SELECT department_id, COUNT(*)
-FROM employees
-GROUP BY department_id;
-```
-**40. Max**
-```
--- Find the highest salary among all employees
-SELECT MAX(salary)
-FROM employees;
-```
-**Example**
-```
--- Find the highest salary in each department
-SELECT department_id, MAX(salary)
-FROM employees
-GROUP BY department_id;
-```
-
-**41. MIN**
-```
--- Find the lowest salary among all employees
-SELECT MIN(salary)
-FROM employees;
-```
-```
--- Find the lowest salary in each department
-SELECT department_id, MIN(salary)
-FROM employees
-GROUP BY department_id;
-```
-**42. SUM**
-```
--- Calculate the total salary paid to all employees
-SELECT SUM(salary)
-FROM employees;
-```
-**Exmaple**
-```
--- Calculate the total salary paid in each department
-SELECT department_id, SUM(salary)
-FROM employees
-GROUP BY department_id;
-```
-**43. AVG**
-```
--- Calculate the average salary of all employees
-SELECT AVG(salary)
-FROM employees;
-```
-**Example**
-```
--- Calculate the average salary in each department
-SELECT department_id, AVG(salary)
-FROM employees
-GROUP BY department_id;
-```
- ------------------------------------------------------------------------------------------------------------------------------------------------------
-
- -------------------------------------------------04---------------------------------------------------------------------------------------------------
-# GROUP BY Clause 
-**Note:** It is often used with aggregate functions like COUNT, MAX, MIN, SUM, and AVG to perform operations on each data group.
-
-**44. Count**
-```
-SELECT column1, aggregate_function(column2)
-FROM table_name
-WHERE condition
-GROUP BY column1, column2, ...;
-```
-**Example**
-```
--- Count the number of employees in each department
-SELECT department_id, COUNT(*)
-FROM employees
-GROUP BY department_id;
-```
-**Output**
-```
-| department_id | COUNT(*) |
-|---------------|----------|
-|       1       |     3    |
-|       2       |     4    |
-|       3       |     3    |
-```
-**45. Avg**
-```
--- Calculate the average salary for each department
-SELECT department_id, AVG(salary) AS avg_salary
-FROM employees
-GROUP BY department_id;
-```
-**Example**
-```
--- Calculate the average salary for each department
-SELECT department_id, AVG(salary) AS avg_salary
-FROM employees
-GROUP BY department_id;
-```
-**Output**
-```
-| department_id | avg_salary |
-|---------------|------------|
-|       1       |   60000.00 |
-|       2       |   70000.00 |
-|       3       |   86666.67 |
-```
-
------------------------------------------------------05 HAVING ------------------------------------------------------------------------------------------
-
-**46. Having**
-```
--- Find departments with an average salary greater than 70000
-SELECT department_id, AVG(salary) AS avg_salary
-FROM employees
-GROUP BY department_id
-HAVING AVG(salary) > 70000;
-```
-**Output**
-```
-| department_id | avg_salary |
-|---------------|------------|
-|       2       |   70000.00 |
-|       3       |   86666.67 |
-```
--------------------------------------------------------------------------------------------------------------------------------------------------------
-
------------------------------------------------03-------------------------------------------------------------------------------------------------------
-**47. Combining GROUP BY with ORDER BY**
-```
--- Count the number of employees in each department and sort by department_id
-SELECT department_id, COUNT(*) AS num_employees
-FROM employees
-GROUP BY department_id
-ORDER BY department_id;
-```
-**Output**
-```
-| department_id | num_employees |
-|---------------|---------------|
-|       1       |       3       |
-|       2       |       4       |
-|       3       |       3       |
-```
-**48. Using Multiple Columns in GROUP BY**
-```
--- Count the number of employees in each department and position
-SELECT department_id, position, COUNT(*) AS num_employees
-FROM employees
-GROUP BY department_id, position;
-```
-**Output**
-```
-| department_id | position  | num_employees |
-|---------------|-----------|---------------|
-|       1       | Manager   |       1       |
-|       1       | Developer |       2       |
-|       2       | Manager   |       2       |
-|       2       | Developer |       2       |
-|       3       | Manager   |       1       |
-|       3       | Developer |       2       |
-```
-**Point to remember:**
-1. The `GROUP BY` clause is a powerful tool in SQL for organizing data into **groups** and performing aggregate calculations on those groups. While it is not an **aggregate function itself**, it is often used in **conjunction with aggregate functions** to summarize data.
-2. The `WHERE` clause filters rows before any groupings are made and any aggregate functions are applied. It is used to specify conditions on individual rows in a table.
-   **Example**
-```
-SELECT column1, column2, ...
-FROM table_name
-WHERE condition;
-```
-**Output**
-```
-| id  | name    | salary | department_id |
-|-----|---------|--------|---------------|
-| 1   | Alice   | 50000  | 1             |
-| 2   | Bob     | 60000  | 1             |
-| 3   | Charlie | 70000  | 2             |
-| 4   | David   | 80000  | 2             |
-| 5   | Eve     | 90000  | 3             |
-```
-**Example**
-```
--- Select employees with salary greater than 60000
-SELECT name, salary
-FROM employees
-WHERE salary > 60000;
-```
-**Output**
-```
-| name    | salary |
-|---------|--------|
-| Charlie | 70000  |
-| David   | 80000  |
-| Eve     | 90000  |
-```
-**HAVING Clause**
-```
-SELECT column1, aggregate_function(column2)
-FROM table_name
-GROUP BY column1
-HAVING condition;
-```
-**Example**
-```
--- Find departments with an average salary greater than 65000
-SELECT department_id, AVG(salary) AS avg_salary
-FROM employees
-GROUP BY department_id
-HAVING AVG(salary) > 65000;
-```
-**Output**
-```
-| department_id | avg_salary |
-|---------------|------------|
-|       2       |  75000.00  |
-|       3       |  90000.00  |
-```
----------------------------------------------------------------------------------------------------------------------------------------------------
-
--------------------------------------------06 UNIQUE, CHECK, DEFAULT -------------------------------------------------------------------------------
-# Check and Unique constraints in Table
-
-**49. Check Constraint**
-```
-CREATE TABLE table_name (
-    column1 datatype CHECK (condition),
-    column2 datatype,
-    ...
-);
-```
-**Example**
-```
-CREATE TABLE employees (
-    id INT PRIMARY KEY,
-    name VARCHAR(100),
-    salary DECIMAL(10, 2) CHECK (salary > 30000),
-    department_id INT
-);
-```
-**50. Unique Constraint**
-```
-CREATE TABLE table_name (
-    column1 datatype UNIQUE,
-    column2 datatype,
-    ...
-);
-```
-**Example**
-```
-CREATE TABLE employees (
-    id INT PRIMARY KEY,
-    name VARCHAR(100),
-    email VARCHAR(100) UNIQUE,
-    salary DECIMAL(10, 2),
-    department_id INT
-);
-```
-**51. Default Constraint**
-```
-CREATE TABLE table_name (
-    column1 datatype DEFAULT default_value,
-    column2 datatype,
-    ...
-);
-```
-**Example**
-```
-CREATE TABLE employees (
-    id INT PRIMARY KEY,
-    name VARCHAR(100),
-    salary DECIMAL(10, 2) DEFAULT 40000,
-    department_id INT
-);
-```
-**Note:**
-
-1. The `UNIQUE constraint` ensures that all values in a column are different. It helps to ensure that no duplicate values are entered in a column.
-2. The `CHECK constraint` is used to limit the range of values that can be placed in a column. It ensures that all values in a column satisfy certain conditions.
-3. The `DEFAULT constraint` provides a default value for a column when no value is specified during the insertion of a record. This is useful for ensuring that
-   columns have meaningful default values.
-   
- ------------------------------01.3----------------------------------------------------------------------------------------------------------------------------
-
-
 This structure organizes the SQL syntax and examples into a comprehensive and easy-to-navigate `README.md` file for your repository. You can add this file to your 
 repository and update the path paths based on your directory structure.
 
