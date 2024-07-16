@@ -264,6 +264,7 @@ Simplifies the logic for upsert (insert or update) operations by handling both i
 **Note:**
 1. `Replace` is used if data is already present. 
 2. `Update` is used if data is not present.
+3. If a row is not present `replace` will add a row and `update` will do nothing.
 # Advanced SQL Syntax
 
 ### Joins
