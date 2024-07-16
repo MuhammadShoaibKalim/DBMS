@@ -426,6 +426,11 @@ SELECT name
 FROM employees
 WHERE salary > (SELECT AVG(salary) FROM employees);
 ```
+
+**Note:**
+1. It is an alternative to join means where join is used it can be used easily.
+2. The inner query is independent and executes the first and the outer query is dependent on the inner query.
+3. It is called a nested query.
  --------------------------------------------------------16 Index-----------------------------------------------------------------------------------------
 **Index**
 
@@ -523,7 +528,26 @@ WHERE d.department_name IS NULL;
 6.  **Order of Results:** The order of rows in the result set is not guaranteed unless you use an ORDER BY clause at the end of the query.
 7.  Emulating `INTERSECT` and `EXCEPT (or MINUS)` operations in SQL can be done using **JOIN** and **LEFT JOIN** with **WHERE** conditions.
 
-
+**Correlated Sub Query**
+```
+SELECT column1, column2, ...
+FROM table_name AS t1
+WHERE column_name OPERATOR (SELECT column_name FROM another_table AS t2 WHERE t2.column_name = t1.column_name);
+```
+**Example**
+```
+SELECT name, salary
+FROM employees AS e1
+WHERE salary > (SELECT AVG(salary)
+                FROM employees AS e2
+                WHERE e2.department_id = e1.department_id);
+```
+**Note:**
+  (*) The outer query selects the name and salary columns from the employee's table (aliased as e1).
+  (*) The subquery calculates the average salary for each department_id in the employee's table (aliased as e2).
+  (*) The WHERE clause in the outer query compares each employee's salary to the average salary of their department.
+  (*) This ensures that only employees whose salary is greater than the average salary of their department are selected.
+  
 
 
 
