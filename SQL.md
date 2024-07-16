@@ -18,6 +18,7 @@
 - [Library_Management_System](./Projects/Library_Management_System)
 - [Hospital_Management_System](./Projects/Hospital_Management_System)
 
+---------------------------------------------------07 DDL-----------------------------------------------------------------------
  ## Creating, Dropping, and Altering Table(DDL)
 
  ### 1. How to create DB
@@ -157,7 +158,10 @@ CHANGE COLUMN old_column_name new_column_name column_definition;
          
          ALTER TABLE employees
          CHANGE COLUMN salary monthly_salary DECIMAL(15, 2);
-   
+
+---------------------------------------------------------------------------------------------------------------------------
+
+-----------------------------------------------------08 DML---------------------------------------------------------------------
 # Basic Data Operations (DML)
 
 **7. Inserting Data**
@@ -210,6 +214,9 @@ WHERE condition;
 DELETE FROM employees
 WHERE id = 1;
 ```
+---------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------09 On Delete, on Delete Cascade-------------------------------------
 **9.1 On Delete Cascade**
 ```
 ALTER TABLE child_table
@@ -243,7 +250,9 @@ ON DELETE SET NULL;
 **ON DELETE CASCADE:** Deletes all related child records. Use this for the complete removal of dependent data.
 
 **ON DELETE SET NULL:** Sets foreign key to NULL. Use this to keep child records but indicate the parent data is gone.
+---------------------------------------------------------------------------------------------------------------------------
 
+----------------------------------------------------11 Replace, Update-----------------------------------------------------
 **9.2 REPLACE**
 ```
 REPLACE INTO table_name (column1, column2, column3, ...)
@@ -265,7 +274,10 @@ Simplifies the logic for upsert (insert or update) operations by handling both i
 1. `Replace` is used if data is already present. 
 2. `Update` is used if data is not present.
 3. If a row is not present `replace` will add a row and `update` will do nothing.
-# Advanced SQL Syntax
+   ---------------------------------------------------------------------------------------------------------------------------
+
+   --------------------------------------------------------------12 JOIN -----------------------------------------------------
+# Advanced SQL Syntax 
 
 ### Joins
 
@@ -326,7 +338,9 @@ FROM employees
 FULL OUTER JOIN departments
 ON employees.department_id = departments.id;
 ```
+ ----------------------------------------------------------------------------------------------------------------------------
 
+ -------------------------------------------------14 Sub Queries-------------------------------------------------------------
 **14. Sub Queries** 
 ```
 SELECT column1
@@ -341,6 +355,7 @@ SELECT name
 FROM employees
 WHERE salary > (SELECT AVG(salary) FROM employees);
 ```
+ ------------------------------16 Index---------------------------------------------------------------------------------------------
 **Index**
 
 **15. Create Index**
@@ -353,7 +368,7 @@ ON table_name (column1, column2, ...);
 CREATE INDEX idx_salary
 ON employees (salary);
 ```
-**16. Droppig Index**
+**16. Dropping Index**
 ```
 DROP INDEX index_name;
 ```
@@ -361,6 +376,9 @@ DROP INDEX index_name;
 ```
 DROP INDEX idx_salary;
 ```
+---------------------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------13 Set-----------------------------------------------------------------
 **Transaction**
 
 **17. Make Transaction**
@@ -389,6 +407,9 @@ COMMIT;
 
 ROLLBACK;
 ```
+---------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------15 View------------------------------------------------------------------
 **VIEW**
 
 **18. Create View**
@@ -413,6 +434,7 @@ DROP VIEW view_name;
 ```
 DROP VIEW high_salary_employees;
 ```
+ ------------------------------06---------------------------------------------------------------------------------------------
 **Stored Procedures**
 
 **20. Create  Stored Procedures**
@@ -519,7 +541,8 @@ DROP TRIGGER trigger_name;
 ```
 DROP TRIGGER trg_after_insert;
 ```
-# Using AND, OR, NOT, BETWEEN, and IN
+ ------------------------------01----------------------------------------------------------------------------------------
+# Using AND, OR, NOT, BETWEEN, and IN 
 
 **28. AND**
 ```
@@ -583,7 +606,7 @@ SELECT name, salary
 FROM employees
 WHERE position IN ('Manager', 'Developer');
 ```
-
+ 
 **33. IS NULL**
 ```
 SELECT column1, column2, ...
@@ -596,6 +619,8 @@ SELECT name, salary
 FROM employees
 WHERE salary IS NULL;
 ```
+---------------------------------------------------------------------------------------------------------------------------
+
 **34. IS NOT NULL**
 ```
 SELECT column1, column2, ...
@@ -618,6 +643,7 @@ FROM table_name;
 SELECT name, COALESCE(bonus, 0) AS bonus
 FROM employees;
 ```
+------------------------------------02--------------------------------------------------------------------------------------
 **36.Using LIKE with Wildcards**
 ```
 SELECT column1, column2, ...
@@ -650,6 +676,9 @@ WHERE name LIKE 'J_n%';
 ```
 **Note:** The COALESCE function returns the first non-NULL value in a list of arguments.
 
+---------------------------------------------------------------------------------------------------------------------------
+
+----------------------------------03---------------------------------------------------------------------------------------
 **37. Sorting Data with ORDER BY**
 
 ```
@@ -694,6 +723,9 @@ FROM employees;
 SELECT DISTINCT department_id, position
 FROM employees;
 ```
+ ---------------------------------------------------------------------------------------------------------------------------
+
+ --------------------------------------04------------------------------------------------------------------------------------
 # Aggregate Functions (COUNT, MAX, MIN, SUM, AVG)
 **39. Count**
 ```
@@ -766,6 +798,9 @@ SELECT department_id, AVG(salary)
 FROM employees
 GROUP BY department_id;
 ```
+ ---------------------------------------------------------------------------------------------------------------------------
+
+ -------------------------------------------------04-------------------------------------------------------------------------
 # GROUP BY Clause 
 **Note:** It is often used with aggregate functions like COUNT, MAX, MIN, SUM, and AVG to perform operations on each data group.
 
@@ -813,6 +848,8 @@ GROUP BY department_id;
 |       2       |   70000.00 |
 |       3       |   86666.67 |
 ```
+
+-----------------------------------------------------05 HAVING ---------------------------------------------------------------------
 **46. Having**
 ```
 -- Find departments with an average salary greater than 70000
@@ -828,7 +865,9 @@ HAVING AVG(salary) > 70000;
 |       2       |   70000.00 |
 |       3       |   86666.67 |
 ```
+---------------------------------------------------------------------------------------------------------------------------
 
+-----------------------------------------------03---------------------------------------------------------------------------
 **47. Combining GROUP BY with ORDER BY**
 ```
 -- Count the number of employees in each department and sort by department_id
@@ -919,6 +958,9 @@ HAVING AVG(salary) > 65000;
 |       2       |  75000.00  |
 |       3       |  90000.00  |
 ```
+---------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------06 UNIQUE, CHECK, DEFAULT -------------------------------------------------------------------------------
 # Check and Unique constraints in Table
 
 **49. Check Constraint**
@@ -978,7 +1020,7 @@ CREATE TABLE employees (
 1. The `UNIQUE constraint` ensures that all values in a column are different. It helps to ensure that no duplicate values are entered in a column.
 2. The `CHECK constraint` is used to limit the range of values that can be placed in a column. It ensures that all values in a column satisfy certain conditions.
 3. The `DEFAULT constraint` provides a default value for a column when no value is specified during the insertion of a record. This is useful for ensuring that columns have meaningful default values.
-
+ ------------------------------01.3---------------------------------------------------------------------------------------------
 
 
 This structure organizes the SQL syntax and examples into a comprehensive and easy-to-navigate `README.md` file for your repository. You can add this file to your repository and update the path paths based on your directory structure.
