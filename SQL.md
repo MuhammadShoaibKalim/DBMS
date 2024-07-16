@@ -244,6 +244,23 @@ ON DELETE SET NULL;
 
 **ON DELETE SET NULL:** Sets foreign key to NULL. Use this to keep child records but indicate the parent data is gone.
 
+**9.2 REPLACE**
+```
+REPLACE INTO table_name (column1, column2, column3, ...)
+VALUES (value1, value2, value3, ...);
+```
+**Example**
+```
+REPLACE INTO employees (id, name, salary, department_id)
+VALUES (2, 'Bob', 65000, 1);
+```
+**Use Case:** 
+When you need to ensure that a row with a specific key is present in the table, either by inserting a new row or 
+updating an existing one.
+
+**Benefits:** 
+Simplifies the logic for upsert (insert or update) operations by handling both insertion and updating in a single command.
+
 # Advanced SQL Syntax
 
 ### Joins
