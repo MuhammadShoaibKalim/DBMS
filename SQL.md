@@ -261,6 +261,9 @@ updating an existing one.
 **Benefits:** 
 Simplifies the logic for upsert (insert or update) operations by handling both insertion and updating in a single command.
 
+**Note:**
+1. `Replace` is used if data is already present. 
+2. `Update` is used if data is not present.
 # Advanced SQL Syntax
 
 ### Joins
