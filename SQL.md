@@ -295,34 +295,6 @@ FROM employees
 INNER JOIN departments
 ON employees.department_id = departments.id;
 ```
-**10.1 Using Aliases (AS) with INNER JOIN**
-```
-SELECT columns
-FROM table1 AS alias1
-INNER JOIN table2 AS alias2
-ON alias1.column = alias2.column;
-```
-**Example**
-```
-SELECT e.name, d.department_name
-FROM employees AS e
-INNER JOIN departments AS d
-ON e.department_id = d.id;
-```
-
-(*) `employees` table is aliased as `e`.
-
-(*) `departments` table is aliased as `d`.
-
-(*) `e.name` refers to the `name` column from the `employees` table.
-
-(*) `d.department_name` refers to the `department_name` column from the `departments` table.
-
-(*) `ON` clause uses the aliases to refer to the `department_id` in the `employees` table and the `id` in the `departments` table.
-
-**Note:**
-1. Aliases in SQL are used to give a table or a column a temporary name. This is often useful to make your SQL queries more readable
-   and manageable, especially when dealing with joins.
    
 ### Outer Join
 
@@ -369,9 +341,66 @@ FROM employees
 FULL OUTER JOIN departments
 ON employees.department_id = departments.id;
 ```
+**10.0 Using Aliases (AS) with INNERLEFT/RIGHT JOIN**
+```
+SELECT columns
+FROM table1 AS alias1
+INNER JOIN table2 AS alias2
+ON alias1.column = alias2.column;
+```
+**Example**
+```
+SELECT e.name, d.department_name
+FROM employees AS e
+INNER JOIN departments AS d
+ON e.department_id = d.id;
+```
+
 **Note:**
-1. To apply to join, there should be at least common attributes in both tables.
-2. 
+   1. Aliases in SQL are used to give a table or a column a temporary name. This is often useful to make your SQL queries more readable
+   and manageable, especially when dealing with joins.
+   2. MySQL does not directly support FULL OUTER JOIN. You can achieve the same result using a UNION of LEFT JOIN and RIGHT JOIN.
+ ```
+SELECT columns
+FROM table1 AS alias1
+LEFT JOIN table2 AS alias2
+ON alias1.column = alias2.column
+UNION
+SELECT columns
+FROM table1 AS alias1
+RIGHT JOIN table2 AS alias2
+ON alias1.column = alias2.column;
+```
+ **Example**
+ ```
+SELECT e.name, d.department_name
+FROM employees AS e
+LEFT JOIN departments AS d
+ON e.department_id = d.id
+UNION
+SELECT e.name, d.department_name
+FROM employees AS e
+RIGHT JOIN departments AS d
+ON e.department_id = d.id;
+```
+
+(*) `employees` table is aliased as `e`.
+
+(*) `departments` table is aliased as `d`.
+
+(*) `e.name` refers to the `name` column from the `employees` table.
+
+(*) `d.department_name` refers to the `department_name` column from the `departments` table.
+
+(*) `ON` clause uses the aliases to refer to the `department_id` in the `employees` table and the `id` in the `departments` table.
+
+
+**Note:**
+1. To apply to `join`, there should be at least common attributes in both tables.
+2. In `left join` all data of the left table but also added matching data of the right table is called left join.
+3. In `right join` all data of the left table but also added matching data of the left table is called right join.
+
+
  ----------------------------------------------------------------------------------------------------------------------------
 
  -------------------------------------------------14 Sub Queries-------------------------------------------------------------
