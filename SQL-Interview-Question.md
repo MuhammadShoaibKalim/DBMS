@@ -73,8 +73,9 @@ INSERT INTO Title (Worker_id_ref, Worker_title, Affected_from) VALUES
 ```
 
 -- Q-1. Write an SQL query to fetch “FIRST_NAME” from Worker table using the alias name as <WORKER_NAME>.
-select first_name AS WORKER_NAME from worker;
-
+  select First_name AS WORKER_NAME from Worker;
+   Done 
+  
 -- Q-2. Write an SQL query to fetch “FIRST_NAME” from Worker table in upper case.
 select UPPER(first_name) from worker;
 
