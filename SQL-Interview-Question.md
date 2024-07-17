@@ -109,25 +109,37 @@ select distinct department, LEN(department) from worker;
 -- Q-9. Write an SQL query to print the FIRST_NAME from Worker table after replacing ‘a’ with ‘A’.
 select replace(first_name, 'A','a') from Worker;
    Done
+
 -- Q-10. Write an SQL query to print the FIRST_NAME and LAST_NAME from Worker table into a single column COMPLETE_NAME.
 -- A space char should separate them.
 select CONCAT(first_name, ' ', last_name) AS COMPLETE_NAME from worker;
+           OR
+select CONCAT(first_name, ' ', last_name) from worker;
+
   Done
+
 -- Q-11. Write an SQL query to print all Worker details from the Worker table order by FIRST_NAME Ascending.
 select * from worker ORDER by first_name;
-
+    Done
 -- Q-12. Write an SQL query to print all Worker details from the Worker table order by 
 -- FIRST_NAME Ascending and DEPARTMENT Descending.
 select * from worker order by first_name, department DESC;
+  Done 
 
 -- Q-13. Write an SQL query to print details for Workers with the first name as “Vipul” and “Satish” from Worker table.
 select * from worker where first_name IN ('Vipul', 'Satish');
+     Done 
 
--- Q-14. Write an SQL query to print details of workers excluding first names, “Vipul” and “Satish” from Worker table.
-select * from worker where first_name NOT IN ('Vipul', 'Satish');
 
--- Q-15. Write an SQL query to print details of Workers with DEPARTMENT name as “Admin*”.
+-- Q-14. Write an SQL query to print details of workers excluding first names, 'Sara' and 'John' from Worker table.
+select * from worker where first_name NOT IN ('Sara', 'John');
+      Done
+
+
+-- Q-15. Write an SQL query to print details of Workers with DEPARTMENT name as 'HR'.
 select * from worker where department LIKE 'Admin%';
+        OR
+Select * from Worker  where Department='HR'; 
 
 -- Q-16. Write an SQL query to print details of the Workers whose FIRST_NAME contains ‘a’.
 select * from worker where first_name LIKE '%a%';
