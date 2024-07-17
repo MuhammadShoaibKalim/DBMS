@@ -85,15 +85,18 @@ select UPPER(first_name) from Worker;
 SELECT distinct department from worker;
   Done 
   Here distinct means all department names without repetition. 
+
 -- Q-4. Write an SQL query to print the first three characters of  FIRST_NAME from Worker table.
 select substring(first_name, 1, 3) from worker;
+   Done
 
--- Q-5. Write an SQL query to find the position of the alphabet (‘b’) in the first name column ‘Amitabh’ from Worker table.
-select INSTR(first_name, 'B') from worker where first_name = 'Amitabh';
-
+-- Q-5. Write an SQL query to find the position of the alphabet (‘b’) in the first name column 'javaid' from Worker table.
+SELECT CHARINDEX('a', First_name) FROM Worker WHERE First_name = 'javaid';    
+Done
 -- Q-6. Write an SQL query to print the FIRST_NAME from Worker table after removing white spaces from the right side.
 select RTRIM(first_name) from worker;
-
+//select RTRIM(first_name) as trimmed_first_name from worker;
+ Done
 -- Q-7. Write an SQL query to print the DEPARTMENT from Worker table after removing white spaces from the left side.
 select LTRIM(first_name) from worker;
 
