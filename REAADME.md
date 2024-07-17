@@ -19,7 +19,7 @@ This repository provides a comprehensive guide to understanding Database Managem
 13. [Database Security](#database-security)
 14. [Additional Concepts](#additional-concepts)
 15. [Conclusion](#conclusion)
-
+--shoaib
 ## Introduction to DBMS
 
 A Database Management System (DBMS) is software that interacts with end-users, applications, and the database itself to capture and analyze data. 
