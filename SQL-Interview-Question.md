@@ -77,11 +77,14 @@ INSERT INTO Title (Worker_id_ref, Worker_title, Affected_from) VALUES
    Done 
   
 -- Q-2. Write an SQL query to fetch “FIRST_NAME” from Worker table in upper case.
-select UPPER(first_name) from worker;
+select UPPER(first_name) from Worker;
+
+  Done
 
 -- Q-3. Write an SQL query to fetch unique values of DEPARTMENT from Worker table.
 SELECT distinct department from worker;
-
+  Done 
+  Here distinct means all department names without repetition. 
 -- Q-4. Write an SQL query to print the first three characters of  FIRST_NAME from Worker table.
 select substring(first_name, 1, 3) from worker;
 
