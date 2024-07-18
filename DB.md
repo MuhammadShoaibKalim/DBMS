@@ -442,6 +442,8 @@ Preparing for SQL interviews involves understanding both theoretical concepts an
 
 Preparing for SQL interviews involves understanding key concepts and practicing common questions. This guide covers a range of questions from basic to advanced levels to help you prepare effectively.
 
+```
+---
 
 # Why We Need Normalization?
 
