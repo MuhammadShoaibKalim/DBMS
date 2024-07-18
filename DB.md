@@ -579,7 +579,7 @@ Understanding and applying ACID properties and managing transactions are crucial
 
 ### 13. Practical Guide: Implementing a Database Schema
 
-**README.md**
+
 
 ```markdown
 # Practical Guide: Implementing a Database Schema
