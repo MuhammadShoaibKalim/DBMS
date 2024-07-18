@@ -380,9 +380,8 @@ Transforming an ERD into a Relational Database Model involves mapping entities t
 
 ### 10. Common SQL Interview Questions
 
-**README.md**
 
-```markdown
+
 # Common SQL Interview Questions
 
 ## Overview
@@ -442,7 +441,7 @@ Preparing for SQL interviews involves understanding both theoretical concepts an
 
 Preparing for SQL interviews involves understanding key concepts and practicing common questions. This guide covers a range of questions from basic to advanced levels to help you prepare effectively.
 
-```
+
 ---
 
 # Why We Need Normalization?
@@ -474,38 +473,38 @@ Normalization is the process of organizing data in a database to reduce redundan
 
 ### Example
 
-#### Unnormalized Table
-
+#### Un normalized Table
+```
 | OrderID | CustomerName | ProductName | Quantity | Price |
 |---------|--------------|-------------|----------|-------|
 | 1       | Alice        | Laptop      | 1        | 1000  |
 | 2       | Bob          | Phone       | 2        | 500   |
 | 3       | Alice        | Phone       | 1        | 500   |
-
+```
 #### Normalized Tables
 
 **Customer Table**
-
+```
 | CustomerID | CustomerName |
 |------------|--------------|
 | 1          | Alice        |
 | 2          | Bob          |
-
+```
 **Product Table**
-
+```
 | ProductID | ProductName | Price |
 |-----------|-------------|-------|
 | 1         | Laptop      | 1000  |
 | 2         | Phone       | 500   |
-
+```
 **Order Table**
-
+```
 | OrderID | CustomerID | ProductID | Quantity |
 |---------|------------|-----------|----------|
 | 1       | 1          | 1         | 1        |
 | 2       | 2          | 2         | 2        |
 | 3       | 1          | 2         | 1        |
-
+```
 ### Conclusion
 
 Normalization is essential for reducing redundancy, improving data integrity, and enhancing database performance. Understanding and applying normalization principles helps in designing efficient and maintainable databases.
