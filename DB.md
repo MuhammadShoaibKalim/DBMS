@@ -187,7 +187,7 @@ Creating an Entity-Relationship Diagram (ERD) involves several steps, each requi
 
 ### Conclusion
 
-Thinking and formulating an ERD involves a systematic approach to identifying entities, defining attributes, and establishing relationships. Following these steps and best practices ensures a clear and accurate representation of the database structure.
+Thinking and formulating an ERD involves systematically identifying entities, defining attributes, and establishing relationships. Following these steps and best practices ensures a clear and accurate representation of the database structure.
 
 
 
@@ -542,32 +542,32 @@ A transaction is a unit of work that must be entirely completed or entirely fail
 
 Consider a simple banking system where we transfer money from Account A to Account B.
 
-```sql
+```
 BEGIN;
 
 UPDATE Account
 SET balance = balance - 100
 WHERE account_id = 'A';
-
+```
+```
 UPDATE Account
 SET balance = balance + 100
 WHERE account_id = 'B';
 
 COMMIT;
+```
 
 If an error occurs during the transaction, we can use ROLLBACK to undo the changes.
 
 ```
 BEGIN;
-
 UPDATE Account
 SET balance = balance - 100
 WHERE account_id = 'A';
-
--- An error occurs here, such as insufficient balance in Account A
-
+         -- An error occurs here, such as insufficient balance in Account A
 ROLLBACK;
 ```
+
 Conclusion
 Understanding and applying ACID properties and managing transactions are crucial for ensuring data integrity and reliability in database systems. These principles help maintain consistent and durable data in the event of system failures or concurrent access.
 
@@ -578,9 +578,6 @@ Understanding and applying ACID properties and managing transactions are crucial
 
 ### 13. Practical Guide: Implementing a Database Schema
 
-
-
-```markdown
 # Practical Guide: Implementing a Database Schema
 
 ## Overview
@@ -613,26 +610,29 @@ Relationships: Customer places Order, Order contains Product
 
 #### Step 2: Create Tables
 
-```sql
+```
 CREATE TABLE Customer (
     CustomerID INT PRIMARY KEY,
     Name VARCHAR(50),
     Email VARCHAR(100) UNIQUE
 );
-
+```
+```
 CREATE TABLE Product (
     ProductID INT PRIMARY KEY,
     ProductName VARCHAR(100),
     Price DECIMAL(10, 2)
 );
-
+```
+```
 CREATE TABLE "Order" (
     OrderID INT PRIMARY KEY,
     OrderDate DATE,
     CustomerID INT,
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
 );
-
+```
+```
 CREATE TABLE OrderProduct (
     OrderID INT,
     ProductID INT,
@@ -653,20 +653,23 @@ CREATE TABLE Customer (
     Name VARCHAR(50) NOT NULL,
     Email VARCHAR(100) UNIQUE NOT NULL
 );
-
+```
+```
 CREATE TABLE Product (
     ProductID INT PRIMARY KEY,
     ProductName VARCHAR(100) NOT NULL,
     Price DECIMAL(10, 2) CHECK (Price > 0)
 );
-
+```
+```
 CREATE TABLE "Order" (
     OrderID INT PRIMARY KEY,
     OrderDate DATE NOT NULL,
     CustomerID INT NOT NULL,
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
 );
-
+```
+```
 CREATE TABLE OrderProduct (
     OrderID INT,
     ProductID INT,
@@ -678,7 +681,7 @@ CREATE TABLE OrderProduct (
 ```
 
 ### Step 5: Normalize Tables
-Ensure that each table is normalized to reduce redundancy and improve data integrity.
+Could you ensure that each table is normalized to reduce redundancy and improve data integrity?
 
 ### Conclusion
 Implementing a database schema involves creating tables, defining keys, and applying constraints to ensure data integrity. Following a structured process helps in designing an efficient and maintainable database schema.
@@ -686,14 +689,9 @@ Implementing a database schema involves creating tables, defining keys, and appl
 
 ---
 
-
----
-
 ### 14. Real-World Case Study: E-Commerce Database
 
-**README.md**
 
-```markdown
 # Real-World Case Study: E-Commerce Database
 
 ## Overview
@@ -749,7 +747,7 @@ Designing a database for an e-commerce platform involves understanding the vario
 
 ### Database Schema
 
-```sql
+```
 CREATE TABLE User (
     UserID INT PRIMARY KEY,
     Name VARCHAR(100),
@@ -757,12 +755,14 @@ CREATE TABLE User (
     Password VARCHAR(100) NOT NULL,
     IsAdmin BOOLEAN DEFAULT FALSE
 );
-
+```
+```
 CREATE TABLE Category (
     CategoryID INT PRIMARY KEY,
     CategoryName VARCHAR(100) NOT NULL
 );
-
+```
+```
 CREATE TABLE Product (
     ProductID INT PRIMARY KEY,
     ProductName VARCHAR(100) NOT NULL,
@@ -771,14 +771,16 @@ CREATE TABLE Product (
     CategoryID INT,
     FOREIGN KEY (CategoryID) REFERENCES Category(CategoryID)
 );
-
+```
+```
 CREATE TABLE "Order" (
     OrderID INT PRIMARY KEY,
     OrderDate DATE NOT NULL,
     UserID INT,
     FOREIGN KEY (UserID) REFERENCES User(UserID)
 );
-
+```
+```
 CREATE TABLE OrderItem (
     OrderItemID INT PRIMARY KEY,
     OrderID INT,
@@ -787,7 +789,8 @@ CREATE TABLE OrderItem (
     FOREIGN KEY (OrderID) REFERENCES "Order"(OrderID),
     FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
 );
-
+```
+```
 CREATE TABLE Review (
     ReviewID INT PRIMARY KEY,
     ProductID INT,
@@ -876,7 +879,7 @@ SQL (Structured Query Language) databases are designed to manage relational data
 
 ### Conclusion
 
-Both NoSQL and SQL databases have their own strengths and are suited for different types of applications. Understanding their differences and use cases can help in selecting the right database technology for your specific needs.
+Both NoSQL and SQL databases have their strengths and are suited for different types of applications. Understanding their differences and use cases can help in selecting the right database technology for your specific needs.
 
 ---
 
@@ -1177,7 +1180,7 @@ Master-Slave architecture is a database replication model where one server (the 
 - **Scalability**: Easy to add more slaves to handle increasing read traffic.
 - **Fault Tolerance**: If the master fails, a slave can be promoted to master to ensure continuity.
 
-### Disadvantages```markdown
+### Disadvantages
 - **Complexity**: Requires additional configuration and management to ensure consistency and handle failovers.
 - **Data Consistency**: Asynchronous replication may lead to eventual consistency issues, where slaves lag behind the master.
 
