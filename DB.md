@@ -575,8 +575,73 @@ Understanding and applying ACID properties and managing transactions are crucial
 
 
 ---
+### 13 How to Implement Atomicity and Durability | Practically approach  
+# How to Implement Atomicity and Durability? | DBMS Interview Question
 
-### 13. Practical Guide: Implementing a Database Schema
+## Overview
+
+Atomicity and Durability are two important properties of ACID (Atomicity, Consistency, Isolation, Durability) that ensure reliable transaction processing in databases. Understanding and implementing these properties is essential for maintaining data integrity and reliability.
+
+### Atomicity
+
+**Atomicity** ensures that all operations within a transaction are completed successfully; if not, the transaction is aborted and no operations are applied.
+
+#### Implementation Techniques
+
+1. **Write-Ahead Logging (WAL)**
+   - Changes are recorded in a log before being applied to the database.
+   - If a transaction fails, the log is used to undo the changes.
+
+2. **Two-Phase Commit (2PC)**
+   - Used in distributed systems to ensure all participating nodes agree on a transaction.
+   - Consists of a Prepare Phase and a Commit Phase.
+
+3. **Shadow Paging**
+   - Uses a copy of database pages for modifications.
+   - Changes are made to the shadow page and swapped with the original only upon successful transaction completion.
+
+### Durability
+
+**Durability** ensures that once a transaction is committed, it remains committed even in the event of a system failure.
+
+#### Implementation Techniques
+
+1. **Write-Ahead Logging (WAL)**
+   - Ensures changes are written to a durable log before applying them to the database.
+   - The log can be used to redo changes after a crash.
+
+2. **Checkpointing**
+   - Periodically saves the current state of the database to durable storage.
+   - Helps restart the system from the last checkpoint after a crash.
+
+3. **Replication**
+   - Maintains multiple copies of the database across different nodes.
+   - Ensures data can be restored from replicas in case of failure.
+
+### Shadow Paging Scheme
+
+Shadow Paging is a technique to implement both atomicity and durability.
+
+- **Process**:
+  - Changes are made to a shadow copy of the page.
+  - The page table is updated to point to the new shadow pages upon successful transaction completion.
+  - If the transaction fails, the shadow pages are discarded.
+
+- **Advantages**:
+  - Simplifies rollback since no undo information is needed.
+  - Isolates changes until the transaction is committed, ensuring atomicity and durability.
+
+- **Disadvantages**:
+  - Increased storage requirements due to maintaining shadow copies.
+  - Performance overhead from copying and swapping pages.
+
+### Conclusion
+
+Implementing atomicity and durability is crucial for reliable transaction processing in DBMS. Techniques like Write-Ahead Logging, Two-Phase Commit, and Shadow Paging ensure that transactions are processed correctly and committed changes are preserved even in the event of failures. Understanding these techniques is essential for building robust and reliable database systems.
+
+
+---
+### 14. Practical Guide: Implementing a Database Schema
 
 # Practical Guide: Implementing a Database Schema
 
