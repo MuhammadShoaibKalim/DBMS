@@ -638,7 +638,7 @@ Shadow Paging is a technique to implement both atomicity and durability.
 ### Conclusion
 
 Implementing atomicity and durability is crucial for reliable transaction processing in DBMS. Techniques like Write-Ahead Logging, Two-Phase Commit, and Shadow Paging ensure that transactions are processed correctly and committed changes are preserved even in the event of failures. Understanding these techniques is essential for building robust and reliable database systems.
-
+#### Best reference : https://www.geeksforgeeks.org/how-to-implement-atomicity-and-durability-in-transactions-in-dbms/
 
 ---
 ### 14. Practical Guide: Implementing a Database Schema
