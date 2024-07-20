@@ -1273,6 +1273,9 @@ Database scaling patterns are strategies used to handle increasing loads and dat
 
 Database scaling patterns are essential for managing increasing loads and data volumes, providing strategies to enhance performance, reliability, and scalability in database systems.
 
+### Additional Information :
+1. https://www.freecodecamp.org/news/understanding-database-scaling-patterns/ (best ever article)
+
 ---
 # CAP Theorem
 
