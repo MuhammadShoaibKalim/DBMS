@@ -1275,6 +1275,7 @@ Database scaling patterns are essential for managing increasing loads and data v
 
 ### Additional Information :
 1. https://www.freecodecamp.org/news/understanding-database-scaling-patterns/ (best ever article)
+2. https://drive.google.com/drive/folders/1D60_CcBgRcINeyGpaHjSswuccY7bOZPO 
 
 ---
 # CAP Theorem
@@ -1314,7 +1315,9 @@ The CAP Theorem, also known as Brewer's Theorem, is a fundamental principle in d
 ### Conclusion
 
 The CAP Theorem provides a critical framework for understanding the trade-offs in distributed database systems, helping architects and developers make informed decisions about system design based on their specific requirements and constraints.
-
+### Additional Information: 
+1. https://avssridhar.medium.com/choosing-the-right-database-using-cap-theorem-43ced137cba5 
+2. https://www.dataversity.net/no-database-is-perfect-applying-cap-theorem-to-database-choice/ 
 ---
 
 # Master-Slave Architecture
@@ -1354,3 +1357,7 @@ Master-Slave architecture is a database replication model where one server (the 
 
 Master-Slave architecture is a widely used replication model that enhances performance, scalability, and fault tolerance for database systems. By distributing read operations across multiple servers, it ensures efficient load management and improves overall system reliability.
 
+### Additional Information:
+1. https://medium.com/@ayogun/master-slave-database-architecture-in-a-nutshell-e20a73e979d1
+2. https://dennylesmana.medium.com/master-slave-replication-database-concept-for-beginners-300b3f9a8228 
+---
