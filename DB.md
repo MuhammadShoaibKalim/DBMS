@@ -1218,7 +1218,9 @@ Partitioning and sharding are techniques used in database management to divide a
 ### Conclusion
 
 Both partitioning and sharding are critical techniques for managing large datasets, providing enhanced performance, scalability, and fault tolerance to ensure efficient and robust database operations.
-
+###Additional Information:
+1. https://planetscale.com/learn/articles/sharding-vs-partitioning-whats-the-difference
+2. https://www.geeksforgeeks.org/difference-between-database-sharding-and-partitioning/ 
 ---
 # Database Scaling Patterns
 
