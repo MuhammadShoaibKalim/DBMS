@@ -1170,7 +1170,10 @@ Clustering and replication are techniques used in database management to enhance
 ### Conclusion
 
 Both clustering and replication are essential techniques in modern database management, providing scalability, high availability, and fault tolerance to ensure robust and efficient database operations.
-
+ ### Additioal information:
+ 1. https://stackoverflow.com/questions/765021/what-is-a-cluster-in-a-rdbms
+ 2. https://www.geeksforgeeks.org/difference-between-classification-and-clustering-in-dbms/ 
+ 3. https://www.javatpoint.com/dbms-cluster-file-organization 
 ---
 ### Lecture # 18
 # Partitioning and Sharding
