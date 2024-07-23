@@ -309,6 +309,9 @@ Relational Database Management (RDBMS) refers to a type of database management s
 
 Relational Database Management is fundamental for organizing and managing structured data efficiently. Understanding its principles and operations is essential for database administrators and developers.
 
+### Additional Information :
+1. https://www.freecodecamp.org/news/acid-databases-explained/ 
+2. https://www.linkedin.com/pulse/acid-properties-how-implement-dbms-vaishali-singh/ 
 
 
 # Transform ERD Model to Relational Database Model
@@ -571,8 +574,9 @@ ROLLBACK;
 Conclusion
 Understanding and applying ACID properties and managing transactions are crucial for ensuring data integrity and reliability in database systems. These principles help maintain consistent and durable data in the event of system failures or concurrent access.
 
-
-
+### Additional Information: 
+1. https://www.geeksforgeeks.org/transaction-in-dbms/ (simple explain)
+2. https://medium.com/@datasciencenexus/sqls-commit-and-rollback-statements-a-comprehensive-guide-8a771af4dc8f (best explain of commit/rollback)
 
 ---
 ### 13 How to Implement Atomicity and Durability | Practically approach  
@@ -955,7 +959,9 @@ Indexing involves creating a data structure that improves the speed of data retr
 
 Indexing is a powerful tool for optimizing database performance. By understanding the types and benefits of indexes, as well as best practices for their use, you can significantly improve the efficiency of data retrieval operations in your database systems. Proper indexing is crucial for maintaining a balance between fast query performance and efficient write operations.
 
-
+### Additional Information :
+1. https://medium.com/@mkcode0323/indexing-in-dbms-enhancing-performance-and-efficiency-88a9ab0914bb 
+2. 
 ---
 ### Lecture # 15
 # NoSQL Databases and SQL Databases
