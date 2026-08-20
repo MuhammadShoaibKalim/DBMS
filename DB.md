@@ -7,17 +7,18 @@
 
 ---
 
-## Table of Contents
+## Interactive Table of Contents
 
-1. [Part 1: Complete DBMS Overview, Classification & Decision Framework](#part-1-complete-dbms-overview-classification--decision-framework)
-2. [Part 2: Relational Database Management Systems (RDBMS)](#part-2-relational-database-management-systems-rdbms)
-3. [Part 3: Non-Relational Database Systems (NoSQL)](#part-3-non-relational-database-systems-nosql)
-4. [Part 4: Advanced Database Engineering, Internals & Architecture](#part-4-advanced-database-engineering-internals--architecture)
-5. [Part 5: Master Interview Preparation Bank (Detailed Q&A)](#part-5-master-interview-preparation-bank-detailed-qa)
+- [PART 1: Complete DBMS Overview, Classification & Decision Framework](#part-1-complete-dbms-overview-classification--decision-framework)
+- [PART 2: Relational Database Management Systems (RDBMS)](#part-2-relational-database-management-systems-rdbms)
+- [PART 3: Non-Relational Database Systems (NoSQL)](#part-3-non-relational-database-systems-nosql)
+- [PART 4: Advanced Database Engineering, Internals & Architecture](#part-4-advanced-database-engineering-internals--architecture)
+- [PART 5: Master Interview Preparation Bank (Detailed Q&A)](#part-5-master-interview-preparation-bank-detailed-qa)
 
 ---
 
-# Part 1: Complete DBMS Overview, Classification & Decision Framework
+<details open>
+<summary><h2>[PART 1] Complete DBMS Overview, Classification & Decision Framework</h2></summary>
 
 <details open>
 <summary><b>[SECTION 1.1] DBMS Core Fundamentals & ANSI-SPARC Architecture</b></summary>
@@ -86,8 +87,6 @@ The standard DBMS architecture is divided into three distinct abstraction levels
 
 </details>
 
----
-
 <details>
 <summary><b>[SECTION 1.2] Database Classification & Taxonomy Matrix</b></summary>
 
@@ -106,8 +105,6 @@ The standard DBMS architecture is divided into three distinct abstraction levels
 | **Distributed SQL / NewSQL** | Relational Tables with Distributed Consensus | Standard SQL | Full ACID compliance + horizontal write/read scaling | Higher network latency across distributed nodes | Google Cloud Spanner, CockroachDB, YugabyteDB, TiDB |
 
 </details>
-
----
 
 <details>
 <summary><b>[SECTION 1.3] ACID vs. BASE & Distributed Systems Theorems (CAP & PACELC)</b></summary>
@@ -165,8 +162,6 @@ PACELC states that **IF** there is a **Partition (P)**, trade off **Availability
 
 </details>
 
----
-
 <details>
 <summary><b>[SECTION 1.4] The Ultimate Database Selection Guide (Why, When, Which & How to Choose)</b></summary>
 
@@ -221,11 +216,14 @@ PACELC states that **IF** there is a **Partition (P)**, trade off **Availability
 
 </details>
 
+</details>
+
 ---
 
-# Part 2: Relational Database Management Systems (RDBMS)
+<details>
+<summary><h2>[PART 2] Relational Database Management Systems (RDBMS)</h2></summary>
 
-<details open>
+<details>
 <summary><b>[SECTION 2.1] Relational Theory, Normalization & Integrity Constraints</b></summary>
 
 ### 1. The Relational Model
@@ -258,29 +256,32 @@ Senior DB Engineers denormalize intentionally to:
 
 </details>
 
----
-
 <details>
 <summary><b>[SECTION 2.2] PostgreSQL - The Advanced Open-Source Relational Database</b></summary>
 
-### 1. Architecture & Core Mechanics
+<details>
+<summary><b>[POSTGRES-1] Architecture, Process Model & MVCC Mechanics</b></summary>
+
 - **Process-Based Model**: PostgreSQL creates a separate backend process for each client connection (managed by `postmaster`).
 - **MVCC (Multi-Version Concurrency Control)**: Writes do not block reads, and reads do not block writes. When a row is updated, PostgreSQL inserts a brand-new row tuple with `xmin` (creation transaction ID) and updates `xmax` (deletion transaction ID) on the old tuple.
 - **Vacuuming**: Old dead tuples are cleaned up by `VACUUM` and `AUTOVACUUM` to reclaim disk space and prevent transaction ID wraparound.
 - **Write-Ahead Logging (WAL)**: All changes are recorded sequentially in WAL logs before being flushed to the main data files (`base/`), ensuring durability and enabling point-in-time recovery (PITR).
 
----
+</details>
 
-### 2. Supported Index Types
+<details>
+<summary><b>[POSTGRES-2] Supported Index Types (B-Tree, GIN, GiST, BRIN, Hash)</b></summary>
+
 - **B-Tree**: Default index for equality (`=`) and range queries (`<`, `<=`, `>`, `>=`).
 - **GIN (Generalized Inverted Index)**: Used for composite items like JSONB, full-text search vectors, and arrays.
 - **GiST (Generalized Search Tree)**: Used for geometric data, network addresses, and range types.
 - **BRIN (Block Range Index)**: Extremely lightweight index for huge append-only chronological tables (e.g., logs, timestamps) where data is naturally ordered on disk.
 - **Hash Index**: Optimized for exact single-value equality matches.
 
----
+</details>
 
-### 3. Hands-on Implementation & Production SQL
+<details>
+<summary><b>[POSTGRES-3] Hands-on Implementation & Production SQL</b></summary>
 
 ```sql
 -- Create a high-performance eCommerce Orders schema in PostgreSQL
@@ -320,9 +321,11 @@ SELECT
 FROM orders;
 ```
 
----
+</details>
 
-### 4. Complete Learning Roadmap: PostgreSQL
+<details>
+<summary><b>[POSTGRES-4] Complete Learning Roadmap: PostgreSQL</b></summary>
+
 ```
 [Level 1: Beginner]
 - SQL Basics (DDL, DML, DQL), Data Types (NUMERIC, TIMESTAMPTZ, UUID)
@@ -341,9 +344,10 @@ FROM orders;
 - EXPLAIN (ANALYZE, BUFFERS) query optimization and index selectivity
 ```
 
----
+</details>
 
-### 5. PostgreSQL Senior Interview Questions & Answers
+<details>
+<summary><b>[POSTGRES-5] Senior Interview Questions & In-Depth Answers</b></summary>
 
 #### Q1: How does PostgreSQL implement MVCC under the hood, and what is the role of VACUUM?
 > **Answer**: PostgreSQL implements MVCC by creating a new version of a row whenever an `UPDATE` occurs, marking the old row with an `xmax` value corresponding to the updating transaction ID. The new row has an `xmin` set to that transaction ID. Readers inspect their active transaction snapshot against these `xmin`/`xmax` values to see only valid historical row states without locking.  
@@ -355,12 +359,14 @@ FROM orders;
 
 </details>
 
----
+</details>
 
 <details>
 <summary><b>[SECTION 2.3] MySQL & MariaDB - Enterprise Web-Scale Relational Engines</b></summary>
 
-### 1. MySQL Architecture & Storage Engines
+<details>
+<summary><b>[MYSQL-1] Architecture & Storage Engines (InnoDB vs. MyISAM vs. Aria)</b></summary>
+
 MySQL features a modular pluggable storage engine architecture:
 - **InnoDB (Default & Standard)**: Fully ACID compliant, supports row-level locking, foreign keys, MVCC, and crash recovery via Redo/Undo logs.
 - **MyISAM (Legacy)**: Table-level locking only, no transaction support, prone to corruption on crash, used historically for fast full-table read counts.
@@ -382,16 +388,19 @@ MySQL features a modular pluggable storage engine architecture:
 +-------------------------------------------------------------+
 ```
 
----
+</details>
 
-### 2. InnoDB Mechanics: Buffer Pool, Redo Log & Undo Log
+<details>
+<summary><b>[MYSQL-2] InnoDB Mechanics: Buffer Pool, Redo Log & Undo Log</b></summary>
+
 - **InnoDB Buffer Pool**: The dedicated RAM cache where InnoDB caches data pages and index pages. Tuning `innodb_buffer_pool_size` (typically 70-80% of total RAM on dedicated servers) is the #1 performance booster.
 - **Redo Log (Write-Ahead)**: Fixed-size circular disk log files (`ib_logfile0`, `ib_logfile1`). Ensures crash recovery (Durability) by recording physical page modifications before they are flushed to tablespace files (`.ibd`).
 - **Undo Log**: Stores previous versions of modified records to provide read isolation (MVCC) and support transaction `ROLLBACK`.
 
----
+</details>
 
-### 3. Hands-on Implementation & Query Optimization
+<details>
+<summary><b>[MYSQL-3] Hands-on SQL & Transactions</b></summary>
 
 ```sql
 -- MySQL / MariaDB Table Creation with InnoDB
@@ -412,9 +421,10 @@ UPDATE accounts SET balance = balance + 250.00 WHERE account_id = 102;
 COMMIT;
 ```
 
----
+</details>
 
-### 4. MySQL Senior Interview Questions & Answers
+<details>
+<summary><b>[MYSQL-4] Senior Interview Questions & Answers</b></summary>
 
 #### Q1: What is a Clustered Index vs. a Secondary Index in InnoDB?
 > **Answer**: In InnoDB, every table has exactly one **Clustered Index**, which is the Primary Key. The leaf nodes of the clustered index B+ tree contain the **actual physical row data**.  
@@ -425,19 +435,23 @@ COMMIT;
 
 </details>
 
----
+</details>
 
 <details>
 <summary><b>[SECTION 2.4] SQLite - Embedded Serverless Relational Database</b></summary>
 
-### 1. Architecture & Characteristics
+<details>
+<summary><b>[SQLITE-1] Architecture & Single File Storage</b></summary>
+
 - **Serverless & In-Process**: SQLite is not a standalone client-server daemon. It is a C library embedded directly inside the host application process.
 - **Single File Storage**: An entire SQLite database (tables, views, indices, triggers) is stored as a single cross-platform file on disk.
 - **Zero Configuration**: No installation, user management, or network port configuration required.
 
----
+</details>
 
-### 2. SQLite Concurrency: Rollback Journal vs. WAL (Write-Ahead Logging) Mode
+<details>
+<summary><b>[SQLITE-2] Rollback Journal vs. WAL (Write-Ahead Logging) Mode</b></summary>
+
 By default, SQLite uses a rollback journal which permits only **one writer OR one reader** at any time.  
 In **WAL mode** (`PRAGMA journal_mode=WAL;`):
 - Multiple readers can read simultaneously while a writer is writing.
@@ -451,9 +465,10 @@ PRAGMA foreign_keys = ON;          -- Enforce foreign key constraints
 PRAGMA cache_size = -64000;        -- Allocate 64MB memory cache
 ```
 
----
+</details>
 
-### 3. SQLite Interview Questions & Answers
+<details>
+<summary><b>[SQLITE-3] Interview Questions & Answers</b></summary>
 
 #### Q1: When is SQLite the optimal choice, and when is it an anti-pattern?
 > **Answer**:  
@@ -462,38 +477,51 @@ PRAGMA cache_size = -64000;        -- Allocate 64MB memory cache
 
 </details>
 
----
+</details>
 
 <details>
 <summary><b>[SECTION 2.5] Microsoft SQL Server & Oracle Database</b></summary>
 
-### 1. Microsoft SQL Server (MSSQL)
+<details>
+<summary><b>[MSSQL-1] Microsoft SQL Server Architecture & Enterprise Features</b></summary>
+
 - **Engine Highlights**: T-SQL dialect, dynamic memory management, Columnstore indexes for real-time operational analytics (HTAP), AlwaysOn Availability Groups for High Availability (HA) and Disaster Recovery (DR).
 - **Key Feature - Filtered Index**: An index created with a `WHERE` clause to index only a subset of rows (e.g., indexing only active records `WHERE status = 'ACTIVE'`), saving storage and memory.
 
----
+</details>
 
-### 2. Oracle Database
+<details>
+<summary><b>[ORACLE-1] Oracle Database (RAC, SGA/PGA, TableSpaces)</b></summary>
+
 - **Engine Highlights**: Enterprise-grade powerhouse. Memory structure divided into **SGA (System Global Area)** shared across all processes and **PGA (Program Global Area)** dedicated per server process.
 - **Real Application Clusters (RAC)**: Multiple active-active server instances sharing a single centralized storage subsystem, providing instant failover and load balancing.
 - **Partitioning**: Range, List, Hash, Composite partitioning natively managed for multi-petabyte financial tables.
 
----
+</details>
 
-### 3. MSSQL / Oracle Interview Q&A
+<details>
+<summary><b>[ENTERPRISE-SQL-2] Senior Interview Q&A</b></summary>
+
 #### Q1: Explain the difference between Row-store and Columnstore index in SQL Server.
 > **Answer**: Standard **Row-store** indexes store table pages row-by-row, ideal for OLTP point lookups and single-row inserts/updates. **Columnstore** indexes store data column-by-column in compressed column segments (with up to 10x data compression), enabling analytical queries (OLAP) to scan only the specific columns needed for aggregations (`SUM`, `AVG`, `COUNT`), skipping billions of unreferenced row bytes.
 
 </details>
 
+</details>
+
+</details>
+
 ---
 
-# Part 3: Non-Relational Database Systems (NoSQL)
+<details>
+<summary><h2>[PART 3] Non-Relational Database Systems (NoSQL)</h2></summary>
 
-<details open>
+<details>
 <summary><b>[SECTION 3.1] Document Stores - MongoDB & Couchbase</b></summary>
 
-### 1. MongoDB Architecture
+<details>
+<summary><b>[MONGO-1] Architecture, Replica Sets & Sharding</b></summary>
+
 - **Data Model**: JSON-like hierarchical documents serialized into binary **BSON** format.
 - **Replica Set Architecture**: Primary node accepts all writes; Secondary nodes asynchronously replicate data using the internal `oplog` (Operations Log). Automatic election occurs via Raft-like consensus if the Primary fails.
 - **Horizontal Sharding**: Data is distributed across shards via a **Shard Key** (Ranged or Hashed) routed by `mongos` query routers and `config servers`.
@@ -510,9 +538,11 @@ PRAGMA cache_size = -64000;        -- Allocate 64MB memory cache
          +----------+  +---------+  +----------+
 ```
 
----
+</details>
 
-### 2. Data Modeling: Embedding vs. Referencing
+<details>
+<summary><b>[MONGO-2] Data Modeling: Embedding vs. Referencing</b></summary>
+
 - **Embedding (Denormalized)**: Store related child data inside the same parent document (1:1 or bounded 1:Few).
   - *Advantage*: Single atomic read/write operation; zero JOINs needed.
   - *Limit*: Document size cannot exceed 16MB.
@@ -520,9 +550,10 @@ PRAGMA cache_size = -64000;        -- Allocate 64MB memory cache
   - *Advantage*: Avoids data duplication; prevents exceeding the 16MB document limit.
   - *Tradeoff*: Requires `$lookup` (aggregation join), which is more CPU and memory intensive.
 
----
+</details>
 
-### 3. Practical MongoDB Aggregation Pipeline
+<details>
+<summary><b>[MONGO-3] MongoDB Aggregation Pipeline Implementation</b></summary>
 
 ```javascript
 // Complex Aggregation Pipeline: Calculate Total Revenue by Customer Category
@@ -550,9 +581,10 @@ db.orders.aggregate([
 ]);
 ```
 
----
+</details>
 
-### 4. MongoDB Senior Interview Questions & Answers
+<details>
+<summary><b>[MONGO-4] Senior Interview Questions & Answers</b></summary>
 
 #### Q1: How do MongoDB Write Concerns and Read Concerns work?
 > **Answer**:  
@@ -567,12 +599,14 @@ db.orders.aggregate([
 
 </details>
 
----
+</details>
 
 <details>
 <summary><b>[SECTION 3.2] In-Memory Key-Value Stores - Redis & Memcached</b></summary>
 
-### 1. Redis Core Architecture & Data Types
+<details>
+<summary><b>[REDIS-1] Core Data Structures & In-Memory Mechanics</b></summary>
+
 Redis is an in-memory, single-threaded (event-loop based) key-value data structure server providing sub-millisecond execution.
 
 | Redis Data Structure | Underlying Internal Encoding | Primary Use Case | Sample Commands |
@@ -585,9 +619,11 @@ Redis is an in-memory, single-threaded (event-loop based) key-value data structu
 | **HyperLogLog** | Probabilistic Cardinality Register | Estimating Unique Visitor Count with fixed 12KB RAM | `PFADD`, `PFCOUNT` |
 | **Bitmaps** | Bit arrays mapped over Strings | Daily Active User (DAU) retention flags | `SETBIT`, `GETBIT`, `BITCOUNT` |
 
----
+</details>
 
-### 2. Redis Persistence Models: RDB vs. AOF
+<details>
+<summary><b>[REDIS-2] Persistence Models (RDB vs. AOF)</b></summary>
+
 1. **RDB (Redis Database Snapshot)**: Point-in-time snapshot of the entire memory dataset written to disk at specified intervals via background `bgsave` (using OS `fork()`).
    - *Pros*: Compact single-file backup, fast server restarts.
    - *Cons*: Risk of data loss between snapshots if system crashes.
@@ -595,15 +631,18 @@ Redis is an in-memory, single-threaded (event-loop based) key-value data structu
    - *Modes*: `appendfsync always` (slow, safe), `everysec` (industry standard: max 1s data loss), `no` (fast, OS-managed).
    - *AOF Rewrite*: Automatically compresses log commands in the background to prevent disk bloat.
 
----
+</details>
 
-### 3. Redis High Availability & Clustering
+<details>
+<summary><b>[REDIS-3] High Availability, Sentinel & Clustering</b></summary>
+
 - **Redis Sentinel**: Provides automatic monitoring, notification, and failover from Master to Replica without manual intervention.
 - **Redis Cluster**: Automatic sharding across **16,384 Hash Slots** distributed across multiple Master nodes with multi-key slot hashing (`CRC16(key) % 16384`).
 
----
+</details>
 
-### 4. Redis Interview Questions & Answers
+<details>
+<summary><b>[REDIS-4] Senior Interview Questions & Answers</b></summary>
 
 #### Q1: What is the difference between Cache-Aside, Write-Through, and Write-Behind caching patterns?
 > **Answer**:
@@ -619,12 +658,14 @@ Redis is an in-memory, single-threaded (event-loop based) key-value data structu
 
 </details>
 
----
+</details>
 
 <details>
 <summary><b>[SECTION 3.3] Wide-Column Stores - Apache Cassandra & ScyllaDB</b></summary>
 
-### 1. Architecture: Masterless Ring & LSM-Tree Engine
+<details>
+<summary><b>[CASSANDRA-1] Architecture: Masterless Ring & LSM-Tree Engine</b></summary>
+
 - **Decentralized Peer-to-Peer Ring**: Every node in the Cassandra cluster is identical; there is no master or single point of failure (SPOF).
 - **Gossip Protocol**: Nodes continuously exchange node state and heartbeat metadata across the cluster.
 - **Consistent Hashing**: Data is distributed around the token ring using the partition key's Murmur3 hash.
@@ -636,9 +677,6 @@ Redis is an in-memory, single-threaded (event-loop based) key-value data structu
      [Node C: Token 67 - 100%] --- [Node B: Token 34 - 66%]
 ```
 
----
-
-### 2. Write Path & LSM-Tree Storage
 Cassandra achieves write throughput by never performing in-place disk updates:
 1. Write arrives at Coordinator Node -> Written sequentially to disk **CommitLog** (for durability).
 2. Data is written to in-memory **Memtable**.
@@ -646,9 +684,11 @@ Cassandra achieves write throughput by never performing in-place disk updates:
 4. When Memtable fills, it is flushed to disk as an immutable **SSTable** (Sorted String Table).
 5. Background **Compaction** merges multiple SSTables and discards overwritten/tombstoned records.
 
----
+</details>
 
-### 3. Data Modeling Rules in CQL
+<details>
+<summary><b>[CASSANDRA-2] Query-First CQL Data Modeling</b></summary>
+
 - **Rule 1**: Design tables around specific read queries, NOT around business entities (Query-First Modeling).
 - **Rule 2**: Avoid multi-partition queries and `ALLOW FILTERING` in production.
 - **Partition Key**: Determines which physical node in the cluster stores the data.
@@ -666,9 +706,10 @@ CREATE TABLE sensor_readings (
 ) WITH CLUSTERING ORDER BY (recorded_at DESC);
 ```
 
----
+</details>
 
-### 4. Cassandra Interview Questions & Answers
+<details>
+<summary><b>[CASSANDRA-3] Senior Interview Questions & Answers</b></summary>
 
 #### Q1: How does Tunable Consistency work in Cassandra, and how do you achieve Strong Consistency?
 > **Answer**: In Cassandra, read and write consistency levels can be configured per query:
@@ -679,20 +720,23 @@ CREATE TABLE sensor_readings (
 
 </details>
 
----
+</details>
 
 <details>
 <summary><b>[SECTION 3.4] Graph Databases - Neo4j</b></summary>
 
-### 1. The Property Graph Model & Index-Free Adjacency
+<details>
+<summary><b>[NEO4J-1] Property Graph Model & Index-Free Adjacency</b></summary>
+
 - **Nodes**: Entities (e.g., `(:User)`, `(:Company)`).
 - **Relationships**: Directed connections with explicit type and direction (e.g., `-[:WORKS_FOR]->`, `-[:FOLLOWS]->`).
 - **Properties**: Key-value pairs stored on both nodes and relationships.
 - **Index-Free Adjacency**: Each node stores direct physical memory pointers to its adjacent neighboring nodes. Graph traversals execute in O(1) time per hop, regardless of the total size of the entire graph database (unlike relational recursive SQL JOINs which slow down exponentially).
 
----
+</details>
 
-### 2. Practical Cypher Query Language (CQL)
+<details>
+<summary><b>[NEO4J-2] Practical Cypher Query Language (CQL)</b></summary>
 
 ```cypher
 // Create Social Network Graph
@@ -709,20 +753,24 @@ RETURN fof.name AS RecommendedFriend, COUNT(*) AS MutualFriendsCount
 ORDER BY MutualFriendsCount DESC;
 ```
 
----
+</details>
 
-### 3. Neo4j Interview Q&A
+<details>
+<summary><b>[NEO4J-3] Senior Interview Q&A</b></summary>
+
 #### Q1: What makes Graph databases superior to RDBMS for relationship-heavy data?
 > **Answer**: In an RDBMS, querying multi-hop connections (such as finding 4th-degree social connections or fraud transaction chains) requires multiple self-joins across large join tables, resulting in combinatorial explosion and CPU bottlenecks. Graph databases use **Index-Free Adjacency**, traversing connected pointers in constant time per hop without scanning indexes or join tables.
 
 </details>
 
----
+</details>
 
 <details>
 <summary><b>[SECTION 3.5] Search Engines - Elasticsearch & OpenSearch</b></summary>
 
-### 1. Core Mechanics: The Inverted Index & Lucene
+<details>
+<summary><b>[ELASTIC-1] Inverted Index & Lucene Architecture</b></summary>
+
 Elasticsearch is a distributed JSON document search engine built on Apache Lucene.
 - **Inverted Index**: Instead of mapping `Document -> Words`, it tokenizes text and maps `Word/Token -> List of Document IDs (Posting List)`.
 - **Segments**: Lucene indexes are composed of immutable disk segments. Deletions mark documents in a `.del` bitmap rather than modifying segment files immediately.
@@ -739,36 +787,46 @@ INVERTED INDEX:
 "SQL"         -> [Doc2]
 ```
 
----
+</details>
 
-### 2. Cluster Architecture: Shards & Replicas
+<details>
+<summary><b>[ELASTIC-2] Cluster Sharding & Routing Formula</b></summary>
+
 - **Primary Shards**: The fundamental Lucene instance containing a subset of documents. Set at index creation.
 - **Replica Shards**: Exact copies of primary shards for read throughput and high availability.
 - **Routing Formula**: `shard_id = Murmur3(routing_key) % number_of_primary_shards`.
 
----
+</details>
 
-### 3. Elasticsearch Interview Q&A
+<details>
+<summary><b>[ELASTIC-3] Senior Interview Q&A</b></summary>
+
 #### Q1: Why should Elasticsearch NOT be used as the primary transactional source of truth?
 > **Answer**: Elasticsearch prioritizes search speed over strict ACID transactional guarantees. By default, changes are made searchable during periodic index refreshes (every 1 second), meaning reads are **near real-time (NRT)**. It does not support multi-document ACID transactions, foreign keys, or rollbacks, and segment merging can cause transient performance spikes during heavy write bursts.
 
 </details>
 
----
+</details>
 
 <details>
 <summary><b>[SECTION 3.6] Time-Series Databases - TimescaleDB & InfluxDB</b></summary>
 
-### 1. What Makes Time-Series Unique?
+<details>
+<summary><b>[TIMESERIES-1] Hypertables & Automatic Chunking</b></summary>
+
 Time-series workloads are characterised by:
 - 95%+ append-only sequential writes ordered by timestamp.
 - Queries analyze ranges and aggregations over time windows (e.g., 5-minute averages).
 - Data decreases in utility over time, requiring automatic downsampling and retention policies.
 
-### 2. TimescaleDB: Hypertables & Chunking
 TimescaleDB is built as an extension on top of PostgreSQL:
 - **Hypertable**: Appears as a standard SQL table to users, but internally partitions data automatically into two-dimensional **Chunks** based on time interval and optional space partitioning.
 - **Automatic Data Tiering**: Automatically compresses historical chunks by up to 95% and moves cold chunks to cheaper object storage (e.g., S3).
+
+</details>
+
+<details>
+<summary><b>[TIMESERIES-2] Hands-on Time-Bucket Analytics SQL</b></summary>
 
 ```sql
 -- Converting a Standard Postgres Table to a TimescaleDB Hypertable
@@ -794,28 +852,33 @@ ORDER BY five_min_window DESC;
 
 </details>
 
----
+</details>
 
 <details>
 <summary><b>[SECTION 3.7] Vector Databases - Milvus, Pinecone, Qdrant & pgvector</b></summary>
 
-### 1. Vector Embeddings & Similarity Search
+<details>
+<summary><b>[VECTOR-1] Vector Embeddings & Distance Metrics</b></summary>
+
 - **Embedding**: A fixed-dimension list of floating-point numbers (e.g., 768 or 1536 dimensions) generated by deep learning models (OpenAI, BERT) that captures semantic meaning.
 - **Similarity Metrics**:
   - **Cosine Similarity**: Measures the cosine of the angle between vectors (scale-invariant).
   - **Euclidean Distance (L2)**: Measures straight-line distance in vector space.
   - **Dot Product (Inner Product)**: Measures both magnitude and direction.
 
----
+</details>
 
-### 2. Approximate Nearest Neighbor (ANN) Index Types
+<details>
+<summary><b>[VECTOR-2] ANN Index Types (HNSW vs. IVFFlat)</b></summary>
+
 Exact K-Nearest Neighbor (k-NN) scans every single vector (O(N)), which is impossible for millions of embeddings. ANN indexes provide trade-offs between speed and recall accuracy:
 - **HNSW (Hierarchical Navigable Small World)**: Graph-based multi-layer indexing. Fastest search latency and highest recall, but uses higher RAM.
 - **IVFFlat (Inverted File Flat)**: Clustered indexing using Voronoi cells. Lower memory footprint, fast build time, slightly lower recall under heavy load.
 
----
+</details>
 
-### 3. Implementation with PostgreSQL & `pgvector`
+<details>
+<summary><b>[VECTOR-3] Implementation with PostgreSQL & `pgvector`</b></summary>
 
 ```sql
 -- Enable Vector Extension in PostgreSQL
@@ -838,9 +901,11 @@ ORDER BY embedding <=> '[0.012, -0.045, ...]' ASC
 LIMIT 5;
 ```
 
----
+</details>
 
-### 4. Vector DB Interview Q&A
+<details>
+<summary><b>[VECTOR-4] Vector DB Senior Interview Questions & Answers</b></summary>
+
 #### Q1: When should you use a dedicated Vector DB (Milvus/Pinecone) vs. an integrated extension (pgvector)?
 > **Answer**:  
 > - Use **pgvector** when you have under 5-10 million vectors and your application already relies on PostgreSQL. It allows querying metadata and relational tables alongside vector embeddings in a single ACID transaction without syncing data across different systems.  
@@ -848,11 +913,16 @@ LIMIT 5;
 
 </details>
 
+</details>
+
+</details>
+
 ---
 
-# Part 4: Advanced Database Engineering, Internals & Architecture
+<details>
+<summary><h2>[PART 4] Advanced Database Engineering, Internals & Architecture</h2></summary>
 
-<details open>
+<details>
 <summary><b>[SECTION 4.1] Storage Engines & Index Structures (B+ Tree vs. LSM-Tree)</b></summary>
 
 ### Deep-Dive Index Architecture Comparison
@@ -888,8 +958,6 @@ LSM-TREE STRUCTURE:
 
 </details>
 
----
-
 <details>
 <summary><b>[SECTION 4.2] Concurrency Control, Isolation Levels & Anomalies</b></summary>
 
@@ -919,8 +987,6 @@ LSM-TREE STRUCTURE:
 
 </details>
 
----
-
 <details>
 <summary><b>[SECTION 4.3] Distributed Scaling: Replication, Sharding & High Availability</b></summary>
 
@@ -945,8 +1011,6 @@ Distributed NewSQL databases (CockroachDB, TiDB, Google Spanner) utilize consens
 
 </details>
 
----
-
 <details>
 <summary><b>[SECTION 4.4] Query Optimization & Performance Tuning</b></summary>
 
@@ -965,73 +1029,104 @@ Key metrics to analyze in query plans:
 
 </details>
 
----
-
-# Part 5: Master Interview Preparation Bank (Detailed Q&A)
-
-<details open>
-<summary><b>[SECTION 5.1] Core DBMS Architecture & Theoretical Fundamentals Q&A</b></summary>
-
-#### Q1: Explain the difference between Clustered and Non-Clustered Indexes from a physical disk storage perspective.
-> **Answer**:  
-> - **Clustered Index**: Determines the physical order of data on disk. The leaf nodes of the clustered index B+ tree contain the actual data rows. Because physical rows can only be sorted in one order on disk, a table can have **only one** clustered index (usually the Primary Key).  
-> - **Non-Clustered Index**: A separate physical structure containing a sorted list of indexed key values alongside a row locator (pointer). In heap tables, the pointer is the physical file/page address (RID); in clustered tables (like InnoDB), the pointer is the clustered index Primary Key value.
-
-#### Q2: What is the difference between a Hard Parse and a Soft Parse in SQL engines?
-> **Answer**:  
-> - **Hard Parse**: When a query string is executed for the first time, the database must check syntax, validate semantic permissions against the data dictionary, allocate memory, and run the cost-based query optimizer (CBO) to generate an execution plan. This is CPU-intensive.  
-> - **Soft Parse**: When a query matching an existing parameterized prepared statement (`SELECT * FROM users WHERE id = ?`) is executed, the engine locates the compiled plan in the shared SQL cache, bypassing the optimization step and reducing CPU usage.
-
-#### Q3: What is the 3-Schema Architecture and how does it guarantee Data Independence?
-> **Answer**: The 3-Schema (ANSI-SPARC) architecture divides database structures into External (User Views), Conceptual (Logical Tables & Constraints), and Internal (Physical Disk Layout & Indexes). It achieves **Logical Data Independence** by allowing modifications to conceptual structures (like adding tables) without impacting external views, and **Physical Data Independence** by allowing changes to disk storage or index structures without altering logical table definitions.
-
 </details>
 
 ---
 
 <details>
+<summary><h2>[PART 5] Master Interview Preparation Bank (Detailed Q&A)</h2></summary>
+
+<details>
+<summary><b>[SECTION 5.1] Core DBMS Architecture & Theoretical Fundamentals Q&A</b></summary>
+
+<details>
+<summary><b>Q1: Explain the difference between Clustered and Non-Clustered Indexes from a physical disk storage perspective.</b></summary>
+
+> **Answer**:  
+> - **Clustered Index**: Determines the physical order of data on disk. The leaf nodes of the clustered index B+ tree contain the actual data rows. Because physical rows can only be sorted in one order on disk, a table can have **only one** clustered index (usually the Primary Key).  
+> - **Non-Clustered Index**: A separate physical structure containing a sorted list of indexed key values alongside a row locator (pointer). In heap tables, the pointer is the physical file/page address (RID); in clustered tables (like InnoDB), the pointer is the clustered index Primary Key value.
+
+</details>
+
+<details>
+<summary><b>Q2: What is the difference between a Hard Parse and a Soft Parse in SQL engines?</b></summary>
+
+> **Answer**:  
+> - **Hard Parse**: When a query string is executed for the first time, the database must check syntax, validate semantic permissions against the data dictionary, allocate memory, and run the cost-based query optimizer (CBO) to generate an execution plan. This is CPU-intensive.  
+> - **Soft Parse**: When a query matching an existing parameterized prepared statement (`SELECT * FROM users WHERE id = ?`) is executed, the engine locates the compiled plan in the shared SQL cache, bypassing the optimization step and reducing CPU usage.
+
+</details>
+
+<details>
+<summary><b>Q3: What is the 3-Schema Architecture and how does it guarantee Data Independence?</b></summary>
+
+> **Answer**: The 3-Schema (ANSI-SPARC) architecture divides database structures into External (User Views), Conceptual (Logical Tables & Constraints), and Internal (Physical Disk Layout & Indexes). It achieves **Logical Data Independence** by allowing modifications to conceptual structures (like adding tables) without impacting external views, and **Physical Data Independence** by allowing changes to disk storage or index structures without altering logical table definitions.
+
+</details>
+
+</details>
+
+<details>
 <summary><b>[SECTION 5.2] Advanced RDBMS & SQL Deep-Dive Q&A</b></summary>
 
-#### Q1: What is Write Skew, and why does Repeatable Read isolation fail to prevent it?
+<details>
+<summary><b>Q1: What is Write Skew, and why does Repeatable Read isolation fail to prevent it?</b></summary>
+
 > **Answer**: **Write Skew** occurs when two concurrent transactions read overlapping datasets, verify a shared constraint, and then make updates to separate rows that together violate that constraint.  
 > *Example*: An on-call hospital doctor schedule requires at least one doctor on duty. Two doctors (A and B) both submit a request to go off-duty at the same time:
 > 1. Transaction 1 checks: "Are there >= 2 doctors on duty?" -> Yes (A and B). Sets Doctor A to off-duty.
 > 2. Transaction 2 checks: "Are there >= 2 doctors on duty?" -> Yes (A and B). Sets Doctor B to off-duty.
 > Under **Repeatable Read** (using snapshot isolation/MVCC), both transactions read their snapshot and neither modifies the row modified by the other. Both commit successfully, leaving zero doctors on duty and violating the business rule. Write skew can only be prevented using **Serializable** isolation or explicit locking (`SELECT ... FOR UPDATE`).
 
-#### Q2: What is the difference between `DELETE`, `TRUNCATE`, and `DROP`?
+</details>
+
+<details>
+<summary><b>Q2: What is the difference between DELETE, TRUNCATE, and DROP?</b></summary>
+
 > **Answer**:  
 > - **`DELETE`**: A DML command that removes rows one-by-one based on an optional `WHERE` clause. It logs every deleted row in transaction/undo logs, fires `ON DELETE` triggers, and can be rolled back. It does not reset identity/auto-increment sequences or reclaim disk high-water mark space immediately.  
 > - **`TRUNCATE`**: A DDL command that deallocates all data pages belonging to the table. It is faster than `DELETE` because it logs only page deallocations, resets identity sequences, and reclaims disk space immediately. It cannot have a `WHERE` clause and will not fire individual row triggers.  
 > - **`DROP`**: A DDL command that removes both the data rows and the entire table definition/schema from the data dictionary.
 
-#### Q3: How do Window Functions differ from `GROUP BY` aggregations?
+</details>
+
+<details>
+<summary><b>Q3: How do Window Functions differ from GROUP BY aggregations?</b></summary>
+
 > **Answer**: An aggregate query with `GROUP BY` collapses multiple rows into a single summary output row per group. A **Window Function** (using the `OVER(PARTITION BY ... ORDER BY ...)` clause) performs calculations across a defined set of table rows while **retaining individual row identities and returning the original row count**.
 
 </details>
 
----
+</details>
 
 <details>
 <summary><b>[SECTION 5.3] NoSQL & Distributed Systems Q&A</b></summary>
 
-#### Q1: Explain Consistent Hashing and how Virtual Nodes solve hotspotting in distributed clusters.
+<details>
+<summary><b>Q1: Explain Consistent Hashing and how Virtual Nodes solve hotspotting in distributed clusters.</b></summary>
+
 > **Answer**: Standard modulo hashing (`hash(key) % N`) requires remapping nearly all keys whenever nodes are added or removed, causing massive network rebalancing.  
 > **Consistent Hashing** maps both data keys and cluster nodes onto a circular 2^32-1 token ring. A key is stored on the first node encountered moving clockwise on the ring. When a node is added or removed, only keys in the adjacent range need to be migrated.  
 > **Virtual Nodes (VNodes)**: If physical nodes are sparsely distributed, some nodes may receive disproportionately large ranges of the ring. VNodes assign multiple virtual token locations across the ring to each physical machine, ensuring uniform data distribution and load balancing.
 
-#### Q2: What is the Split-Brain scenario in high-availability clusters and how is it resolved?
+</details>
+
+<details>
+<summary><b>Q2: What is the Split-Brain scenario in high-availability clusters and how is it resolved?</b></summary>
+
 > **Answer**: Split-Brain occurs when a network partition separates a cluster into two disconnected segments, and nodes on both sides believe the other side has failed. If both sides elect a new Primary/Master node and accept independent writes, data divergence and corruption occur.  
 > **Resolution**: Clusters enforce **Quorum Consensus** (Q = floor(N/2) + 1). A cluster partition is only allowed to elect a leader or accept writes if it contains a strict majority of voting members. The minority partition stops accepting writes, preventing split-brain states.
 
 </details>
 
----
+</details>
 
 <details>
 <summary><b>[SECTION 5.4] Real-World Database System Design Scenarios</b></summary>
 
-### Scenario 1: Design the Database Architecture for an E-Commerce Platform
+<details>
+<summary><b>Scenario 1: Design the Database Architecture for an E-Commerce Platform</b></summary>
+
 - **Requirements**:
   - High read traffic for product catalogs.
   - Strict ACID guarantees for payments, orders, and inventory decrements.
@@ -1043,9 +1138,11 @@ Key metrics to analyze in query plans:
   3. **Product Search & Filtering**: **Elasticsearch** synced from the primary catalog via Change Data Capture (CDC / Debezium). Provides instant faceted search, fuzzy matching, and autocomplete.
   4. **Carts & Sessions**: **Redis** cluster with TTL for fast, temporary shopping cart data.
 
----
+</details>
 
-### Scenario 2: Design the Database Architecture for a Real-Time Chat & Messaging App
+<details>
+<summary><b>Scenario 2: Design the Database Architecture for a Real-Time Chat & Messaging App</b></summary>
+
 - **Requirements**:
   - Millions of messages ingested per minute.
   - Fast message retrieval ordered chronologically per channel/chat.
@@ -1055,15 +1152,21 @@ Key metrics to analyze in query plans:
   2. **User Presence & Ephemeral State**: **Redis** with Pub/Sub and Key-Expiry (`EXPIRE`) for typing indicators and online heartbeat status.
   3. **User Relationships & Profiles**: **PostgreSQL** for user accounts, contacts, and permission metadata.
 
----
+</details>
 
-### Scenario 3: Design the Database Architecture for an AI / RAG Application
+<details>
+<summary><b>Scenario 3: Design the Database Architecture for an AI / RAG Application</b></summary>
+
 - **Requirements**:
   - Ingesting thousands of PDFs, articles, and knowledge documents.
   - Chunking text, generating 1536-dimension embeddings, and performing semantic search in sub-50ms.
 - **Architecture Solution**:
   1. **Relational / Metadata Layer**: **PostgreSQL** storing user accounts, document metadata, chunk text, and access control.
   2. **Vector Indexing**: **pgvector** using an **HNSW** index with cosine distance operators for datasets under 10M vectors. For enterprise scale (>50M vectors), deploy a dedicated **Qdrant** or **Milvus** cluster.
+
+</details>
+
+</details>
 
 </details>
 
