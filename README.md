@@ -1,8 +1,8 @@
-# Database Management Systems (DBMS) - Senior DB Engineer Master Guide
+# Database Management Systems (DBMS) & SQL: Senior DB Engineer Master Guide
 
 > **Author**: Senior Database Engineer (15+ Years Industry Experience)  
 > **Target Audience**: Software Engineers, Backend Developers, Data Engineers, Database Administrators (DBAs), and System Architects  
-> **Format**: Structured Reference Guide with Collapsible Toggle Sections, Architecture Breakdowns, Code Samples, Comparison Tables, and Comprehensive Interview Questions & Answers.  
+> **Format**: Unified Master Reference with Collapsible Toggle Sections, Architecture Breakdowns, Code Samples, Comparison Tables, SQL Syntax & 50+ Real-World Interview Practice Queries.  
 > **Note**: Strictly formatted without emojis. Clear technical text badges and diagrams are used throughout.
 
 ---
@@ -13,7 +13,8 @@
 - [PART 2: Relational Database Management Systems (RDBMS)](#part-2-relational-database-management-systems-rdbms)
 - [PART 3: Non-Relational Database Systems (NoSQL)](#part-3-non-relational-database-systems-nosql)
 - [PART 4: Advanced Database Engineering, Internals & Architecture](#part-4-advanced-database-engineering-internals--architecture)
-- [PART 5: Master Interview Preparation Bank (Detailed Q&A)](#part-5-master-interview-preparation-bank-detailed-qa)
+- [PART 5: Complete SQL Master Syntax & Engineering Reference](#part-5-complete-sql-master-syntax--engineering-reference)
+- [PART 6: Master Interview Preparation & 50 Practical SQL Interview Challenges](#part-6-master-interview-preparation--50-practical-sql-interview-challenges)
 
 ---
 
@@ -1034,137 +1035,483 @@ Key metrics to analyze in query plans:
 ---
 
 <details>
-<summary><h2>[PART 5] Master Interview Preparation Bank (Detailed Q&A)</h2></summary>
+<summary><h2>[PART 5] Complete SQL Master Syntax & Engineering Reference</h2></summary>
 
 <details>
-<summary><b>[SECTION 5.1] Core DBMS Architecture & Theoretical Fundamentals Q&A</b></summary>
+<summary><b>[SQL-1] DDL & Schema Management</b></summary>
 
-<details>
-<summary><b>Q1: Explain the difference between Clustered and Non-Clustered Indexes from a physical disk storage perspective.</b></summary>
+```sql
+-- Create Department Table
+CREATE TABLE departments (
+    dept_id SERIAL PRIMARY KEY,
+    dept_name VARCHAR(100) NOT NULL UNIQUE,
+    budget NUMERIC(14, 2) NOT NULL CHECK (budget > 0),
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
-> **Answer**:  
-> - **Clustered Index**: Determines the physical order of data on disk. The leaf nodes of the clustered index B+ tree contain the actual data rows. Because physical rows can only be sorted in one order on disk, a table can have **only one** clustered index (usually the Primary Key).  
-> - **Non-Clustered Index**: A separate physical structure containing a sorted list of indexed key values alongside a row locator (pointer). In heap tables, the pointer is the physical file/page address (RID); in clustered tables (like InnoDB), the pointer is the clustered index Primary Key value.
+-- Create Employee Table with Foreign Keys
+CREATE TABLE employees (
+    emp_id BIGSERIAL PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    salary NUMERIC(12, 2) NOT NULL CHECK (salary >= 30000.00),
+    hire_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    dept_id INT NOT NULL REFERENCES departments(dept_id) ON DELETE RESTRICT,
+    manager_id BIGINT NULL REFERENCES employees(emp_id) ON DELETE SET NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'ON_LEAVE', 'TERMINATED'))
+);
+
+-- Alter Operations
+ALTER TABLE employees ADD COLUMN phone_number VARCHAR(20) NULL;
+ALTER TABLE employees DROP COLUMN phone_number;
+```
 
 </details>
 
 <details>
-<summary><b>Q2: What is the difference between a Hard Parse and a Soft Parse in SQL engines?</b></summary>
+<summary><b>[SQL-2] DML Operations & Upserts</b></summary>
 
-> **Answer**:  
-> - **Hard Parse**: When a query string is executed for the first time, the database must check syntax, validate semantic permissions against the data dictionary, allocate memory, and run the cost-based query optimizer (CBO) to generate an execution plan. This is CPU-intensive.  
-> - **Soft Parse**: When a query matching an existing parameterized prepared statement (`SELECT * FROM users WHERE id = ?`) is executed, the engine locates the compiled plan in the shared SQL cache, bypassing the optimization step and reducing CPU usage.
+```sql
+-- Bulk Insert
+INSERT INTO employees (first_name, last_name, email, salary, dept_id)
+VALUES 
+    ('Alice', 'Smith', 'alice@company.com', 95000.00, 1),
+    ('Bob', 'Jones', 'bob@company.com', 85000.00, 1);
 
-</details>
+-- Upsert (PostgreSQL)
+INSERT INTO product_inventory (product_id, quantity)
+VALUES (101, 50)
+ON CONFLICT (product_id) 
+DO UPDATE SET quantity = product_inventory.quantity + EXCLUDED.quantity;
 
-<details>
-<summary><b>Q3: What is the 3-Schema Architecture and how does it guarantee Data Independence?</b></summary>
-
-> **Answer**: The 3-Schema (ANSI-SPARC) architecture divides database structures into External (User Views), Conceptual (Logical Tables & Constraints), and Internal (Physical Disk Layout & Indexes). It achieves **Logical Data Independence** by allowing modifications to conceptual structures (like adding tables) without impacting external views, and **Physical Data Independence** by allowing changes to disk storage or index structures without altering logical table definitions.
-
-</details>
-
-</details>
-
-<details>
-<summary><b>[SECTION 5.2] Advanced RDBMS & SQL Deep-Dive Q&A</b></summary>
-
-<details>
-<summary><b>Q1: What is Write Skew, and why does Repeatable Read isolation fail to prevent it?</b></summary>
-
-> **Answer**: **Write Skew** occurs when two concurrent transactions read overlapping datasets, verify a shared constraint, and then make updates to separate rows that together violate that constraint.  
-> *Example*: An on-call hospital doctor schedule requires at least one doctor on duty. Two doctors (A and B) both submit a request to go off-duty at the same time:
-> 1. Transaction 1 checks: "Are there >= 2 doctors on duty?" -> Yes (A and B). Sets Doctor A to off-duty.
-> 2. Transaction 2 checks: "Are there >= 2 doctors on duty?" -> Yes (A and B). Sets Doctor B to off-duty.
-> Under **Repeatable Read** (using snapshot isolation/MVCC), both transactions read their snapshot and neither modifies the row modified by the other. Both commit successfully, leaving zero doctors on duty and violating the business rule. Write skew can only be prevented using **Serializable** isolation or explicit locking (`SELECT ... FOR UPDATE`).
+-- Conditional Update
+UPDATE employees
+SET salary = CASE 
+    WHEN dept_id = 1 THEN salary * 1.08
+    ELSE salary * 1.03
+END;
+```
 
 </details>
 
 <details>
-<summary><b>Q2: What is the difference between DELETE, TRUNCATE, and DROP?</b></summary>
+<summary><b>[SQL-3] Joins, CTEs & Window Functions</b></summary>
 
-> **Answer**:  
-> - **`DELETE`**: A DML command that removes rows one-by-one based on an optional `WHERE` clause. It logs every deleted row in transaction/undo logs, fires `ON DELETE` triggers, and can be rolled back. It does not reset identity/auto-increment sequences or reclaim disk high-water mark space immediately.  
-> - **`TRUNCATE`**: A DDL command that deallocates all data pages belonging to the table. It is faster than `DELETE` because it logs only page deallocations, resets identity sequences, and reclaims disk space immediately. It cannot have a `WHERE` clause and will not fire individual row triggers.  
-> - **`DROP`**: A DDL command that removes both the data rows and the entire table definition/schema from the data dictionary.
+```sql
+-- 1. Complex Inner & Left Joins
+SELECT e.first_name, e.salary, d.dept_name, m.first_name AS manager_name
+FROM employees e
+INNER JOIN departments d ON e.dept_id = d.dept_id
+LEFT JOIN employees m ON e.manager_id = m.emp_id;
 
-</details>
+-- 2. CTE with Analytical Aggregations
+WITH HighEarningDepts AS (
+    SELECT dept_id, AVG(salary) AS avg_sal
+    FROM employees
+    GROUP BY dept_id
+    HAVING AVG(salary) > 75000
+)
+SELECT e.first_name, e.salary, d.dept_name
+FROM employees e
+INNER JOIN HighEarningDepts h ON e.dept_id = h.dept_id
+INNER JOIN departments d ON e.dept_id = d.dept_id;
 
-<details>
-<summary><b>Q3: How do Window Functions differ from GROUP BY aggregations?</b></summary>
-
-> **Answer**: An aggregate query with `GROUP BY` collapses multiple rows into a single summary output row per group. A **Window Function** (using the `OVER(PARTITION BY ... ORDER BY ...)` clause) performs calculations across a defined set of table rows while **retaining individual row identities and returning the original row count**.
-
-</details>
-
-</details>
-
-<details>
-<summary><b>[SECTION 5.3] NoSQL & Distributed Systems Q&A</b></summary>
-
-<details>
-<summary><b>Q1: Explain Consistent Hashing and how Virtual Nodes solve hotspotting in distributed clusters.</b></summary>
-
-> **Answer**: Standard modulo hashing (`hash(key) % N`) requires remapping nearly all keys whenever nodes are added or removed, causing massive network rebalancing.  
-> **Consistent Hashing** maps both data keys and cluster nodes onto a circular 2^32-1 token ring. A key is stored on the first node encountered moving clockwise on the ring. When a node is added or removed, only keys in the adjacent range need to be migrated.  
-> **Virtual Nodes (VNodes)**: If physical nodes are sparsely distributed, some nodes may receive disproportionately large ranges of the ring. VNodes assign multiple virtual token locations across the ring to each physical machine, ensuring uniform data distribution and load balancing.
-
-</details>
-
-<details>
-<summary><b>Q2: What is the Split-Brain scenario in high-availability clusters and how is it resolved?</b></summary>
-
-> **Answer**: Split-Brain occurs when a network partition separates a cluster into two disconnected segments, and nodes on both sides believe the other side has failed. If both sides elect a new Primary/Master node and accept independent writes, data divergence and corruption occur.  
-> **Resolution**: Clusters enforce **Quorum Consensus** (Q = floor(N/2) + 1). A cluster partition is only allowed to elect a leader or accept writes if it contains a strict majority of voting members. The minority partition stops accepting writes, preventing split-brain states.
-
-</details>
+-- 3. Advanced Window Analytics
+SELECT 
+    emp_id,
+    dept_id,
+    salary,
+    DENSE_RANK() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS dept_salary_rank,
+    LAG(salary, 1) OVER (PARTITION BY dept_id ORDER BY hire_date) AS prev_hired_salary,
+    SUM(salary) OVER (PARTITION BY dept_id ORDER BY hire_date ROWS UNBOUNDED PRECEDING) AS running_payroll
+FROM employees;
+```
 
 </details>
 
 <details>
-<summary><b>[SECTION 5.4] Real-World Database System Design Scenarios</b></summary>
+<summary><b>[SQL-4] Programmability: Procedures, Functions & Triggers</b></summary>
+
+```sql
+-- Stored Procedure with Transaction Control
+CREATE OR REPLACE PROCEDURE transfer_budget(sender INT, receiver INT, amount NUMERIC)
+LANGUAGE plpgsql AS $$
+BEGIN
+    UPDATE departments SET budget = budget - amount WHERE dept_id = sender;
+    UPDATE departments SET budget = budget + amount WHERE dept_id = receiver;
+    COMMIT;
+END;
+$$;
+
+-- Audit Trigger Function
+CREATE OR REPLACE FUNCTION audit_salary_update()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+BEGIN
+    IF OLD.salary <> NEW.salary THEN
+        INSERT INTO employee_audit_log (emp_id, old_salary, new_salary, changed_at)
+        VALUES (OLD.emp_id, OLD.salary, NEW.salary, CURRENT_TIMESTAMP);
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER trg_audit_salary
+AFTER UPDATE ON employees
+FOR EACH ROW EXECUTE FUNCTION audit_salary_update();
+```
+
+</details>
+
+</details>
+
+---
 
 <details>
-<summary><b>Scenario 1: Design the Database Architecture for an E-Commerce Platform</b></summary>
+<summary><h2>[PART 6] Master Interview Preparation & 50 Practical SQL Interview Challenges</h2></summary>
 
-- **Requirements**:
-  - High read traffic for product catalogs.
-  - Strict ACID guarantees for payments, orders, and inventory decrements.
-  - Sub-millisecond user session storage and shopping cart management.
-  - Full-text search with typo tolerance and facet filters.
-- **Polyglot Architecture Solution**:
-  1. **Primary OLTP (Orders & Payments)**: **PostgreSQL** or **MySQL (InnoDB)** with Primary-Replica streaming replication. Strict ACID transactions prevent double-selling inventory using pessimistic locking (`SELECT FOR UPDATE`) or optimistic version checks.
-  2. **Product Catalog & Metadata**: **MongoDB** for flexible product schemas with varied attribute sets across categories.
-  3. **Product Search & Filtering**: **Elasticsearch** synced from the primary catalog via Change Data Capture (CDC / Debezium). Provides instant faceted search, fuzzy matching, and autocomplete.
-  4. **Carts & Sessions**: **Redis** cluster with TTL for fast, temporary shopping cart data.
+<details open>
+<summary><b>[SETUP] Practice Schema & Dataset Initialization (Worker, Bonus, Title)</b></summary>
+
+```sql
+CREATE DATABASE ORG;
+USE ORG;
+
+CREATE TABLE Worker (
+    Worker_id INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    First_name CHAR(25),
+    Last_name CHAR(25),
+    Salary INT,
+    Joining_Date DATE,
+    Department CHAR(25)
+);
+
+INSERT INTO Worker (First_name, Last_name, Salary, Joining_Date, Department) VALUES
+('Ali', 'Khan', 850000, '2023-10-19', 'HR'),
+('Sara', 'Ahmed', 900000, '2023-11-10', 'IT'),
+('John', 'Doe', 750000, '2023-09-15', 'Finance'),
+('Jane', 'Smith', 820000, '2023-08-20', 'Marketing'),
+('Michael', 'Brown', 870000, '2023-07-30', 'Sales'),
+('Emily', 'Davis', 880000, '2023-06-25', 'Admin'),
+('David', 'Wilson', 860000, '2023-05-18', 'R&D');
+
+CREATE TABLE Bonus (
+    Worker_id_ref INT,
+    Bonus_amount DECIMAL(10, 2),
+    Bonus_date DATE,
+    FOREIGN KEY (Worker_id_ref) REFERENCES Worker(Worker_id) ON DELETE CASCADE
+);
+
+INSERT INTO Bonus (Worker_id_ref, Bonus_amount, Bonus_date) VALUES
+(1, 5000.00, '2023-12-10'),
+(2, 4500.00, '2023-12-12'),
+(3, 4000.00, '2023-12-14'),
+(4, 5500.00, '2023-12-16'),
+(5, 4700.00, '2023-12-18'),
+(6, 5300.00, '2023-12-20'),
+(7, 4800.00, '2023-12-22');
+
+CREATE TABLE Title (
+    Worker_id_ref INT,
+    Worker_title CHAR(25),
+    Affected_from DATE,
+    FOREIGN KEY (Worker_id_ref) REFERENCES Worker(Worker_id) ON DELETE CASCADE
+);
+
+INSERT INTO Title (Worker_id_ref, Worker_title, Affected_from) VALUES
+(1, 'Manager', '2022-01-01'),
+(2, 'Assistant', '2022-02-01'),
+(3, 'Clerk', '2022-03-01'),
+(4, 'Supervisor', '2022-04-01'),
+(5, 'Technician', '2022-05-01'),
+(6, 'Executive', '2022-06-01'),
+(7, 'HR', '2022-07-01');
+```
 
 </details>
 
 <details>
-<summary><b>Scenario 2: Design the Database Architecture for a Real-Time Chat & Messaging App</b></summary>
+<summary><b>[CHALLENGES 1-25] Basic to Intermediate SQL Query Interview Questions & Answers</b></summary>
 
-- **Requirements**:
-  - Millions of messages ingested per minute.
-  - Fast message retrieval ordered chronologically per channel/chat.
-  - Presence status ("Online", "Typing...").
-- **Architecture Solution**:
-  1. **Message History Store**: **Apache Cassandra** or **ScyllaDB**. Table partitioned by `conversation_id` with `message_id / timestamp` as the clustering column sorted descending. Sequential append writes handle massive ingestion without locking bottlenecks.
-  2. **User Presence & Ephemeral State**: **Redis** with Pub/Sub and Key-Expiry (`EXPIRE`) for typing indicators and online heartbeat status.
-  3. **User Relationships & Profiles**: **PostgreSQL** for user accounts, contacts, and permission metadata.
+- **Q-01: Fetch `FIRST_NAME` from Worker table using alias `<WORKER_NAME>`.**
+  ```sql
+  SELECT First_name AS WORKER_NAME FROM Worker;
+  ```
+
+- **Q-02: Fetch `FIRST_NAME` from Worker table in uppercase.**
+  ```sql
+  SELECT UPPER(First_name) FROM Worker;
+  ```
+
+- **Q-03: Fetch unique values of `DEPARTMENT` from Worker table.**
+  ```sql
+  SELECT DISTINCT Department FROM Worker;
+  ```
+
+- **Q-04: Print the first three characters of `FIRST_NAME` from Worker table.**
+  ```sql
+  SELECT SUBSTRING(First_name, 1, 3) FROM Worker;
+  ```
+
+- **Q-05: Find position of alphabet ('a') in first name 'javaid'.**
+  ```sql
+  SELECT CHARINDEX('a', First_name) FROM Worker WHERE First_name = 'javaid';
+  ```
+
+- **Q-06: Print `FIRST_NAME` after removing right-side whitespace.**
+  ```sql
+  SELECT RTRIM(First_name) FROM Worker;
+  ```
+
+- **Q-07: Print `DEPARTMENT` after removing left-side whitespace.**
+  ```sql
+  SELECT LTRIM(Department) FROM Worker;
+  ```
+
+- **Q-08: Fetch unique values of `DEPARTMENT` and print its character length.**
+  ```sql
+  SELECT DISTINCT Department, LEN(Department) AS Dept_Length FROM Worker;
+  ```
+
+- **Q-09: Print `FIRST_NAME` after replacing 'a' with 'A'.**
+  ```sql
+  SELECT REPLACE(First_name, 'a', 'A') FROM Worker;
+  ```
+
+- **Q-10: Print `FIRST_NAME` and `LAST_NAME` into single column `COMPLETE_NAME` separated by space.**
+  ```sql
+  SELECT CONCAT(First_name, ' ', Last_name) AS COMPLETE_NAME FROM Worker;
+  ```
+
+- **Q-11: Print all Worker details ordered by `FIRST_NAME` Ascending.**
+  ```sql
+  SELECT * FROM Worker ORDER BY First_name ASC;
+  ```
+
+- **Q-12: Print Worker details ordered by `FIRST_NAME` Ascending and `DEPARTMENT` Descending.**
+  ```sql
+  SELECT * FROM Worker ORDER BY First_name ASC, Department DESC;
+  ```
+
+- **Q-13: Print details for Workers with first names 'Vipul' and 'Satish'.**
+  ```sql
+  SELECT * FROM Worker WHERE First_name IN ('Vipul', 'Satish');
+  ```
+
+- **Q-14: Print details of workers excluding first names 'Sara' and 'John'.**
+  ```sql
+  SELECT * FROM Worker WHERE First_name NOT IN ('Sara', 'John');
+  ```
+
+- **Q-15: Print details of Workers with `DEPARTMENT` name as 'HR'.**
+  ```sql
+  SELECT * FROM Worker WHERE Department = 'HR';
+  ```
+
+- **Q-16: Print details of Workers whose `FIRST_NAME` contains 'a'.**
+  ```sql
+  SELECT * FROM Worker WHERE First_name LIKE '%a%';
+  ```
+
+- **Q-17: Print details of Workers whose `FIRST_NAME` ends with 'a'.**
+  ```sql
+  SELECT * FROM Worker WHERE First_name LIKE '%a';
+  ```
+
+- **Q-18: Print details of Workers whose `FIRST_NAME` ends with 'd' and contains 5 characters.**
+  ```sql
+  SELECT * FROM Worker WHERE First_name LIKE '____d';
+  ```
+
+- **Q-19: Print details of Workers whose `SALARY` lies between 100,000 and 500,000.**
+  ```sql
+  SELECT * FROM Worker WHERE Salary BETWEEN 100000 AND 500000;
+  ```
+
+- **Q-20: Print details of Workers who joined in February 2014.**
+  ```sql
+  SELECT * FROM Worker WHERE YEAR(Joining_Date) = 2014 AND MONTH(Joining_Date) = 2;
+  ```
+
+- **Q-21: Fetch count of employees working in the 'Admin' department.**
+  ```sql
+  SELECT COUNT(*) AS Admin_Staff_Count FROM Worker WHERE Department = 'Admin';
+  ```
+
+- **Q-22: Fetch full names of workers with salaries >= 50,000 and <= 100,000.**
+  ```sql
+  SELECT CONCAT(First_name, ' ', Last_name) AS Full_Name FROM Worker WHERE Salary BETWEEN 50000 AND 100000;
+  ```
+
+- **Q-23: Fetch number of workers for each department in descending order.**
+  ```sql
+  SELECT Department, COUNT(Worker_id) AS Worker_Count FROM Worker GROUP BY Department ORDER BY Worker_Count DESC;
+  ```
+
+- **Q-24: Print details of Workers who hold the title 'HR'.**
+  ```sql
+  SELECT w.* FROM Worker w INNER JOIN Title t ON w.Worker_id = t.Worker_id_ref WHERE t.Worker_title = 'HR';
+  ```
+
+- **Q-25: Fetch duplicate titles held by more than 1 worker.**
+  ```sql
+  SELECT Worker_title, COUNT(*) AS Title_Count FROM Title GROUP BY Worker_title HAVING COUNT(*) > 1;
+  ```
 
 </details>
 
 <details>
-<summary><b>Scenario 3: Design the Database Architecture for an AI / RAG Application</b></summary>
+<summary><b>[CHALLENGES 26-50] Advanced SQL Query Interview Questions & Answers</b></summary>
 
-- **Requirements**:
-  - Ingesting thousands of PDFs, articles, and knowledge documents.
-  - Chunking text, generating 1536-dimension embeddings, and performing semantic search in sub-50ms.
-- **Architecture Solution**:
-  1. **Relational / Metadata Layer**: **PostgreSQL** storing user accounts, document metadata, chunk text, and access control.
-  2. **Vector Indexing**: **pgvector** using an **HNSW** index with cosine distance operators for datasets under 10M vectors. For enterprise scale (>50M vectors), deploy a dedicated **Qdrant** or **Milvus** cluster.
+- **Q-26: Show only odd rows from Worker table.**
+  ```sql
+  SELECT * FROM Worker WHERE Worker_id % 2 != 0;
+  ```
 
-</details>
+- **Q-27: Show only even rows from Worker table.**
+  ```sql
+  SELECT * FROM Worker WHERE Worker_id % 2 = 0;
+  ```
+
+- **Q-28: Clone a new table structure and data from another table.**
+  ```sql
+  -- MySQL:
+  CREATE TABLE Worker_Clone LIKE Worker;
+  INSERT INTO Worker_Clone SELECT * FROM Worker;
+  -- SQL Server / Postgres:
+  SELECT * INTO Worker_Clone FROM Worker;
+  ```
+
+- **Q-29: Fetch intersecting records of two tables.**
+  ```sql
+  SELECT * FROM Worker INTERSECT SELECT * FROM Worker_Clone;
+  ```
+
+- **Q-30: Show records from one table that another table does not have.**
+  ```sql
+  SELECT * FROM Worker EXCEPT SELECT * FROM Worker_Clone;
+  ```
+
+- **Q-31: Show current date and time.**
+  ```sql
+  SELECT CURRENT_TIMESTAMP, CURRENT_DATE;
+  ```
+
+- **Q-32: Show top 5 records ordered by descending salary.**
+  ```sql
+  SELECT * FROM Worker ORDER BY Salary DESC LIMIT 5;
+  ```
+
+- **Q-33: Determine the Nth (5th) highest salary from a table using LIMIT.**
+  ```sql
+  SELECT Salary FROM Worker ORDER BY Salary DESC LIMIT 1 OFFSET 4;
+  ```
+
+- **Q-34: Determine 5th highest salary without using LIMIT keyword (Correlated Subquery).**
+  ```sql
+  SELECT Salary FROM Worker w1
+  WHERE 4 = (
+      SELECT COUNT(DISTINCT w2.Salary) 
+      FROM Worker w2 
+      WHERE w2.Salary > w1.Salary
+  );
+  ```
+
+- **Q-35: Fetch list of employees who share the exact same salary.**
+  ```sql
+  SELECT w1.* FROM Worker w1 
+  INNER JOIN Worker w2 ON w1.Salary = w2.Salary AND w1.Worker_id != w2.Worker_id;
+  ```
+
+- **Q-36: Show the second highest salary using a subquery.**
+  ```sql
+  SELECT MAX(Salary) FROM Worker 
+  WHERE Salary < (SELECT MAX(Salary) FROM Worker);
+  ```
+
+- **Q-37: Show one row twice in query results.**
+  ```sql
+  SELECT * FROM Worker WHERE Worker_id = 1
+  UNION ALL
+  SELECT * FROM Worker WHERE Worker_id = 1;
+  ```
+
+- **Q-38: List `Worker_id` who did not receive any bonus.**
+  ```sql
+  SELECT Worker_id FROM Worker WHERE Worker_id NOT IN (SELECT Worker_id_ref FROM Bonus);
+  ```
+
+- **Q-39: Fetch the first 50% records from Worker table.**
+  ```sql
+  SELECT * FROM Worker WHERE Worker_id <= (SELECT COUNT(Worker_id)/2 FROM Worker);
+  ```
+
+- **Q-40: Fetch departments that have less than 4 workers.**
+  ```sql
+  SELECT Department, COUNT(*) AS Dept_Count FROM Worker GROUP BY Department HAVING COUNT(*) < 4;
+  ```
+
+- **Q-41: Show all departments along with the total worker count.**
+  ```sql
+  SELECT Department, COUNT(*) AS Total_Workers FROM Worker GROUP BY Department;
+  ```
+
+- **Q-42: Show the last record from a table.**
+  ```sql
+  SELECT * FROM Worker WHERE Worker_id = (SELECT MAX(Worker_id) FROM Worker);
+  ```
+
+- **Q-43: Fetch the first row of a table.**
+  ```sql
+  SELECT * FROM Worker WHERE Worker_id = (SELECT MIN(Worker_id) FROM Worker);
+  ```
+
+- **Q-44: Fetch the last five records from a table.**
+  ```sql
+  SELECT * FROM (SELECT * FROM Worker ORDER BY Worker_id DESC LIMIT 5) sub ORDER BY Worker_id ASC;
+  ```
+
+- **Q-45: Print name of employee having highest salary in each department.**
+  ```sql
+  SELECT w.Department, w.First_name, w.Salary
+  FROM Worker w
+  INNER JOIN (
+      SELECT Department, MAX(Salary) AS Max_Salary 
+      FROM Worker 
+      GROUP BY Department
+  ) top_sal ON w.Department = top_sal.Department AND w.Salary = top_sal.Max_Salary;
+  ```
+
+- **Q-46: Fetch top 3 distinct max salaries using correlated subquery.**
+  ```sql
+  SELECT DISTINCT Salary FROM Worker w1
+  WHERE 3 >= (SELECT COUNT(DISTINCT Salary) FROM Worker w2 WHERE w2.Salary >= w1.Salary)
+  ORDER BY Salary DESC;
+  ```
+
+- **Q-47: Fetch top 3 distinct min salaries using correlated subquery.**
+  ```sql
+  SELECT DISTINCT Salary FROM Worker w1
+  WHERE 3 >= (SELECT COUNT(DISTINCT Salary) FROM Worker w2 WHERE w2.Salary <= w1.Salary)
+  ORDER BY Salary ASC;
+  ```
+
+- **Q-48: Fetch Nth max salary using correlated subquery.**
+  ```sql
+  SELECT DISTINCT Salary FROM Worker w1
+  WHERE @N = (SELECT COUNT(DISTINCT Salary) FROM Worker w2 WHERE w2.Salary >= w1.Salary);
+  ```
+
+- **Q-49: Fetch departments along with total salaries paid for each.**
+  ```sql
+  SELECT Department, SUM(Salary) AS Total_Dept_Payroll FROM Worker GROUP BY Department ORDER BY Total_Dept_Payroll DESC;
+  ```
+
+- **Q-50: Fetch name of workers who earn the highest overall salary in the company.**
+  ```sql
+  SELECT First_name, Last_name, Salary FROM Worker WHERE Salary = (SELECT MAX(Salary) FROM Worker);
+  ```
 
 </details>
 
@@ -1174,7 +1521,7 @@ Key metrics to analyze in query plans:
 
 ## Summary & Master Takeaways for Database Engineers
 
-1. **No Single Database Fits All Workloads**: Master **Polyglot Persistence**. Use Relational systems (PostgreSQL/MySQL) for transactional core workflows, NoSQL (Cassandra/Mongo/Redis) for specific scale, search, or access patterns.
+1. **Polyglot Persistence is the Standard**: Use Relational systems (PostgreSQL/MySQL) for transactional core workflows, NoSQL (Cassandra/Mongo/Redis) for specific scale, search, or access patterns.
 2. **Understand Storage Engine Trade-Offs**: B+ Trees prioritize low-latency reads; LSM-Trees prioritize high-throughput append writes.
 3. **Data Modeling Dictates Scalability**: In SQL, normalize to prevent anomalies and selectively denormalize for performance. In NoSQL, design schemas around your application's specific query patterns.
 4. **Always Profile with Execution Plans**: Never guess performance bottlenecks. Use `EXPLAIN (ANALYZE, BUFFERS)` to inspect indexes, memory usage, and execution paths.
