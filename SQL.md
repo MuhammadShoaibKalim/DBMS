@@ -1,1162 +1,993 @@
-# DBMS
+# SQL Master Guide: Comprehensive Syntax, Architecture & Practical Reference
 
-## SQL_Syntax
-- [Basic_Syntax.sql](./SQL_Syntax/Basic_Syntax.sql)
-- [Advanced_Syntax.sql](./SQL_Syntax/Advanced_Syntax.sql)
-- [Joins.sql](./SQL_Syntax/Joins.sql)
-- [Subqueries.sql](./SQL_Syntax/Subqueries.sql)
-- [Indexes.sql](./SQL_Syntax/Indexes.sql)
-- [Transactions.sql](./SQL_Syntax/Transactions.sql)
-- [Views.sql](./SQL_Syntax/Views.sql)
-- [Stored_Procedures.sql](./SQL_Syntax/Stored_Procedures.sql)
-- [Triggers.sql](./SQL_Syntax/Triggers.sql)
-- [Functions.sql](./SQL_Syntax/Functions.sql)
+> **Author**: Senior Database Engineer (15+ Years Industry Experience)  
+> **Scope**: ANSI SQL standard with specific implementation notes for PostgreSQL, MySQL/MariaDB, MS SQL Server, and Oracle.  
+> **Format**: Structured reference with Interactive Collapsible Toggle Sections, Precise Syntax, Real-World Examples, Execution Order, and Performance Best Practices.  
+> **Note**: Zero emojis. Clear technical formatting and text badges used throughout.
 
-# 01. Using AND, OR, NOT, BETWEEN, and IN in SQL
+---
 
-**28. AND**
-```
-SELECT name, salary
-FROM Employees
-WHERE position = 'Manager' AND salary > 70000;
-```
-**Example**
-```
-SELECT name, salary
-FROM employees
-WHERE position = 'Manager' AND salary > 70000;
-```
+## Interactive Table of Contents
 
-**29. OR**
-```
-SELECT name, salary
-FROM Employees
-WHERE position = 'Manager' OR position = 'Developer';
-```
-**Example**
-```
-SELECT name, salary
-FROM employees
-WHERE position = 'Manager' OR position = 'Developer';
-```
-**30. NOT**
-```
-SELECT name, salary
-FROM Employees
-WHERE NOT position = 'Manager';
-```
+- [SECTION 01: SQL Fundamentals, Classification & Execution Order](#section-01-sql-fundamentals-classification--execution-order)
+- [SECTION 02: DDL (Data Definition Language) - Schema Design & Constraints](#section-02-ddl-data-definition-language---schema-design--constraints)
+- [SECTION 03: DML (Data Manipulation Language) - CRUD Operations](#section-03-dml-data-manipulation-language---crud-operations)
+- [SECTION 04: DQL (Data Query Language) - Filtering, Sorting & Operators](#section-04-dql-data-query-language---filtering-sorting--operators)
+- [SECTION 05: Aggregations, Grouping & Conditional Logic](#section-05-aggregations-grouping--conditional-logic)
+- [SECTION 06: Joins Masterclass (Relational Data Combining)](#section-06-joins-masterclass-relational-data-combining)
+- [SECTION 07: Set Operations (UNION, INTERSECT, EXCEPT)](#section-07-set-operations-union-intersect-except)
+- [SECTION 08: Subqueries & Common Table Expressions (CTEs)](#section-08-subqueries--common-table-expressions-ctes)
+- [SECTION 09: Advanced Analytics & Window Functions](#section-09-advanced-analytics--window-functions)
+- [SECTION 10: Database Objects - Views, Materialized Views & Indexes](#section-10-database-objects---views-materialized-views--indexes)
+- [SECTION 11: Programmability - Stored Procedures, Functions & Triggers](#section-11-programmability---stored-procedures-functions--triggers)
+- [SECTION 12: Transactions, Concurrency & Locking (TCL)](#section-12-transactions-concurrency--locking-tcl)
+- [SECTION 13: Query Performance Optimization & Anti-Patterns](#section-13-query-performance-optimization--anti-patterns)
 
-**Example**
-```
-SELECT name, salary
-FROM employees
-WHERE NOT position = 'Manager';
-```
-**31. BETWEEN**
-```
-SELECT name, salary
-FROM Employees
-WHERE salary BETWEEN 50000 AND 80000;
-```
-**Example**
-```
-SELECT name, salary
-FROM employees
-WHERE salary BETWEEN 50000 AND 80000;
-```
-**32. IN**
-```
-SELECT name, salary
-FROM Employees
-WHERE position IN ('Manager', 'Developer');
-```
-**Example**
-```
-SELECT name, salary
-FROM employees
-WHERE position IN ('Manager', 'Developer');
-```
- 
-**33. IS NULL**
-```
-SELECT column1, column2, ...
-FROM table_name
-WHERE column_name IS NULL;
-```
-**Example**
-```
-SELECT name, salary
-FROM employees
-WHERE salary IS NULL;
-```
-# 02. Wildcards Characters in SQL
+---
 
-**36.Using LIKE with Wildcards**
-```
-SELECT column1, column2, ...
-FROM table_name
-WHERE column_name LIKE pattern;
-```
-**Note:** 
-The LIKE operator is used in a WHERE clause to search for a specified pattern in a column.
+<details open>
+<summary><h2>[SECTION 01] SQL Fundamentals, Classification & Execution Order</h2></summary>
 
-**Example : %**
-```
--- Find all employees whose names start with 'J'
-SELECT name
-FROM employees
-WHERE name LIKE 'J%';
-```
-**Example with: _**
-```
--- Find all employees whose names have 'o' as the second character
-SELECT name
-FROM employees
-WHERE name LIKE '_o%';
-```
-**Combining Both: % _**
-```
--- Find all employees whose names start with 'J' and have 'n' as the third character
-SELECT name
-FROM employees
-WHERE name LIKE 'J_n%';
-```
-**Note:** The COALESCE function returns the first non-NULL value in a list of arguments.
+### 1. SQL Sublanguage Classifications
 
-**34. IS NOT NULL**
-```
-SELECT column1, column2, ...
-FROM table_name
-WHERE column_name IS NOT NULL;
-```
-**Example**
-```
-SELECT column1, column2, ...
-FROM table_name
-WHERE column_name IS NOT NULL;
-```
-**35. Using COALESCE**
-```
-SELECT COALESCE(column1, column2, ...) AS alias_name
-FROM table_name;
-```
-**Example**
-```
-SELECT name, COALESCE(bonus, 0) AS bonus
-FROM employees;
-```
-# 03. Sorting Data with ORDER BY in SQL
+| Sublanguage | Full Name | Primary Purpose | Key Commands |
+| :--- | :--- | :--- | :--- |
+| **DDL** | Data Definition Language | Define, alter, and manage database structures/schema | `CREATE`, `ALTER`, `DROP`, `TRUNCATE`, `RENAME` |
+| **DML** | Data Manipulation Language | Modify, insert, and remove actual data rows | `INSERT`, `UPDATE`, `DELETE`, `MERGE` |
+| **DQL** | Data Query Language | Retrieve and query data from tables | `SELECT` |
+| **DCL** | Data Control Language | Manage permissions and access privileges | `GRANT`, `REVOKE` |
+| **TCL** | Transaction Control Language | Manage transaction boundaries and concurrency | `BEGIN / START`, `COMMIT`, `ROLLBACK`, `SAVEPOINT` |
 
-**37. Sorting Data with ORDER BY**
+---
+
+### 2. Logical Query Processing Order (How SQL Actually Executes)
+SQL is declarative: you write queries in lexical syntax, but the database engine executes clauses in a strict logical order:
 
 ```
-SELECT column1, column2, ...
-FROM table_name
-ORDER BY column1 [ASC|DESC], column2 [ASC|DESC], ...;
-```
-**Ascending order**
-```
--- Select all employees sorted by their salary in ascending order
-SELECT name, salary
-FROM employees
-ORDER BY salary ASC;
-```
-**Descending order**
-```
--- Select all employees sorted by their salary in descending order
-SELECT name, salary
-FROM employees
-ORDER BY salary DESC;
-```
-**Multiple Columns**
-```
--- Select all employees sorted by department and then by name within each department in ascending order
-SELECT name, department_id, salary
-FROM employees
-ORDER BY department_id ASC, name ASC;
-```
-**38. Using Distinct**
-```
-SELECT DISTINCT column1, column2, ...
-FROM table_name;
-```
-**Example**
-```
--- Select unique positions from the employees table
-SELECT DISTINCT position
-FROM employees;
-```
-```
--- Select unique combinations of department_id and position
-SELECT DISTINCT department_id, position
-FROM employees;
-```
- **Aggregate Functions (COUNT, MAX, MIN, SUM, AVG) in SQL**
-
-**39. Count**
-```
--- Count the total number of employees
-SELECT COUNT(*)
-FROM employees;
-
-Output:
-| COUNT(*) |
-|----------|
-|    10    |
-
-```
-**Exmaple**
-```
--- Count the number of employees in each department
-SELECT department_id, COUNT(*)
-FROM employees
-GROUP BY department_id;
-```
-**40. Max**
-```
--- Find the highest salary among all employees
-SELECT MAX(salary)
-FROM employees;
-```
-**Example**
-```
--- Find the highest salary in each department
-SELECT department_id, MAX(salary)
-FROM employees
-GROUP BY department_id;
+[Written Query Syntax Order]                     [Logical Engine Execution Order]
+1. SELECT                                        1. FROM & JOINs (Row source collection)
+2. FROM & JOIN                                   2. ON (Join filter evaluation)
+3. WHERE                                         3. WHERE (Row-level filtering)
+4. GROUP BY                                      4. GROUP BY (Grouping row sets)
+5. HAVING                                        5. HAVING (Group-level filtering)
+6. WINDOW functions                              6. SELECT (Expression evaluation & projections)
+7. ORDER BY                                      7. DISTINCT (Duplicate elimination)
+8. LIMIT / OFFSET                                8. ORDER BY (Sorting output rows)
+                                                 9. LIMIT / OFFSET / TOP (Pagination)
 ```
 
-**41. MIN**
-```
--- Find the lowest salary among all employees
-SELECT MIN(salary)
-FROM employees;
-```
-```
--- Find the lowest salary in each department
-SELECT department_id, MIN(salary)
-FROM employees
-GROUP BY department_id;
-```
-**42. SUM**
-```
--- Calculate the total salary paid to all employees
-SELECT SUM(salary)
-FROM employees;
-```
-**Exmaple**
-```
--- Calculate the total salary paid in each department
-SELECT department_id, SUM(salary)
-FROM employees
-GROUP BY department_id;
-```
-**43. AVG**
-```
--- Calculate the average salary of all employees
-SELECT AVG(salary)
-FROM employees;
-```
-**Example**
-```
--- Calculate the average salary in each department
-SELECT department_id, AVG(salary)
-FROM employees
-GROUP BY department_id;
-```
-**Note:** It is often used with aggregate functions like COUNT, MAX, MIN, SUM, and AVG to perform operations on each data group.
+> **Key Rule**: Because `WHERE` (Step 3) executes before `SELECT` (Step 6), you **cannot** use column aliases defined in `SELECT` inside the `WHERE` clause.
 
+---
 
-# 04. GROUP BY Clause in SQL 
+### 3. Common SQL Data Types
 
-**44. Count**
-```
-SELECT column1, aggregate_function(column2)
-FROM table_name
-WHERE condition
-GROUP BY column1, column2, ...;
-```
-**Example**
-```
--- Count the number of employees in each department
-SELECT department_id, COUNT(*)
-FROM employees
-GROUP BY department_id;
-```
-**Output**
-```
-| department_id | COUNT(*) |
-|---------------|----------|
-|       1       |     3    |
-|       2       |     4    |
-|       3       |     3    |
-```
-**45. Avg**
-```
--- Calculate the average salary for each department
-SELECT department_id, AVG(salary) AS avg_salary
-FROM employees
-GROUP BY department_id;
-```
-**Example**
-```
--- Calculate the average salary for each department
-SELECT department_id, AVG(salary) AS avg_salary
-FROM employees
-GROUP BY department_id;
-```
-**Output**
-```
-| department_id | avg_salary |
-|---------------|------------|
-|       1       |   60000.00 |
-|       2       |   70000.00 |
-|       3       |   86666.67 |
-```
-**47. Combining GROUP BY with ORDER BY**
-```
--- Count the number of employees in each department and sort by department_id
-SELECT department_id, COUNT(*) AS num_employees
-FROM employees
-GROUP BY department_id
-ORDER BY department_id;
-```
-**Output**
-```
-| department_id | num_employees |
-|---------------|---------------|
-|       1       |       3       |
-|       2       |       4       |
-|       3       |       3       |
-```
-**48. Using Multiple Columns in GROUP BY**
-```
--- Count the number of employees in each department and position
-SELECT department_id, position, COUNT(*) AS num_employees
-FROM employees
-GROUP BY department_id, position;
-```
-**Output**
-```
-| department_id | position  | num_employees |
-|---------------|-----------|---------------|
-|       1       | Manager   |       1       |
-|       1       | Developer |       2       |
-|       2       | Manager   |       2       |
-|       2       | Developer |       2       |
-|       3       | Manager   |       1       |
-|       3       | Developer |       2       |
-```
-**Point to remember:**
-1. The `GROUP BY` clause is a powerful tool in SQL for organizing data into **groups** and performing aggregate calculations on those groups. While it is not an **aggregate function itself**, it is often used in **conjunction with aggregate functions** to summarize data.
-2. The `WHERE` clause filters rows before any groupings are made and any aggregate functions are applied. It is used to specify conditions on individual rows in a table.
-   **Example**
-```
-SELECT column1, column2, ...
-FROM table_name
-WHERE condition;
-```
-**Output**
-```
-| id  | name    | salary | department_id |
-|-----|---------|--------|---------------|
-| 1   | Alice   | 50000  | 1             |
-| 2   | Bob     | 60000  | 1             |
-| 3   | Charlie | 70000  | 2             |
-| 4   | David   | 80000  | 2             |
-| 5   | Eve     | 90000  | 3             |
-```
-**Example**
-```
--- Select employees with salary greater than 60000
-SELECT name, salary
-FROM employees
-WHERE salary > 60000;
-```
-**Output**
-```
-| name    | salary |
-|---------|--------|
-| Charlie | 70000  |
-| David   | 80000  |
-| Eve     | 90000  |
-```
+| Category | Standard Data Types | Description & Best Practice |
+| :--- | :--- | :--- |
+| **Integer Numbers** | `SMALLINT` (2B), `INT / INTEGER` (4B), `BIGINT` (8B) | Use `BIGINT` for auto-incrementing primary keys in high-growth tables. |
+| **Exact Decimals** | `NUMERIC(precision, scale)`, `DECIMAL(p, s)` | Mandatory for financial amounts, currency, and scientific precision. |
+| **Approximate Numbers** | `FLOAT`, `DOUBLE PRECISION`, `REAL` | Fast mathematical computations; avoid for currency due to rounding errors. |
+| **Fixed Strings** | `CHAR(n)` | Fixed-length (pads with spaces). Ideal for fixed codes (e.g., country code `CHAR(2)`). |
+| **Variable Strings** | `VARCHAR(n)`, `TEXT` | Variable-length strings up to specified maximum length. |
+| **Date & Time** | `DATE`, `TIME`, `TIMESTAMP`, `TIMESTAMPTZ` | Always prefer `TIMESTAMPTZ` (timestamp with timezone) for universal UTC storage. |
+| **Boolean** | `BOOLEAN` (`TRUE`, `FALSE`, `UNKNOWN / NULL`) | SQL uses 3-valued logic (3VL). |
+| **Semi-Structured** | `JSON`, `JSONB`, `XML` | `JSONB` stores decomposed binary JSON with indexable keys (PostgreSQL). |
 
-# 05. Having  Clause in SQL 
+</details>
 
-**46. Having**
-```
--- Find departments with an average salary greater than 70000
-SELECT department_id, AVG(salary) AS avg_salary
-FROM employees
-GROUP BY department_id
-HAVING AVG(salary) > 70000;
-```
-**Output**
-```
-| department_id | avg_salary |
-|---------------|------------|
-|       2       |   70000.00 |
-|       3       |   86666.67 |
-```
-**HAVING Clause**
-```
-SELECT column1, aggregate_function(column2)
-FROM table_name
-GROUP BY column1
-HAVING condition;
-```
-**Example**
-```
--- Find departments with an average salary greater than 65000
-SELECT department_id, AVG(salary) AS avg_salary
-FROM employees
-GROUP BY department_id
-HAVING AVG(salary) > 65000;
-```
-**Output**
-```
-| department_id | avg_salary |
-|---------------|------------|
-|       2       |  75000.00  |
-|       3       |  90000.00  |
-```
-# 06. Check, Unique and Default constraints in SQL 
+---
 
-**49. Check Constraint**
-```
-CREATE TABLE table_name (
-    column1 datatype CHECK (condition),
-    column2 datatype,
-    ...
+<details>
+<summary><h2>[SECTION 02] DDL (Data Definition Language) - Schema Design & Constraints</h2></summary>
+
+<details>
+<summary><b>[DDL-1] Table Creation with Production Constraints</b></summary>
+
+```sql
+-- Create Department Table
+CREATE TABLE departments (
+    dept_id SERIAL PRIMARY KEY,
+    dept_name VARCHAR(100) NOT NULL UNIQUE,
+    budget NUMERIC(14, 2) NOT NULL CHECK (budget > 0),
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-```
-**Example**
-```
+
+-- Create Employee Table with Foreign Key & Check Constraints
 CREATE TABLE employees (
-    id INT PRIMARY KEY,
-    name VARCHAR(100),
-    salary DECIMAL(10, 2) CHECK (salary > 30000),
-    department_id INT
+    emp_id BIGSERIAL PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    salary NUMERIC(12, 2) NOT NULL CHECK (salary >= 30000.00),
+    hire_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    dept_id INT NOT NULL,
+    manager_id BIGINT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE' 
+        CHECK (status IN ('ACTIVE', 'ON_LEAVE', 'TERMINATED')),
+    
+    -- Foreign Key Constraints
+    CONSTRAINT fk_emp_department 
+        FOREIGN KEY (dept_id) 
+        REFERENCES departments(dept_id) 
+        ON DELETE RESTRICT 
+        ON UPDATE CASCADE,
+        
+    CONSTRAINT fk_emp_manager 
+        FOREIGN KEY (manager_id) 
+        REFERENCES employees(emp_id) 
+        ON DELETE SET NULL
 );
 ```
-**50. Unique Constraint**
-```
-CREATE TABLE table_name (
-    column1 datatype UNIQUE,
-    column2 datatype,
-    ...
-);
-```
-**Example**
-```
-CREATE TABLE employees (
-    id INT PRIMARY KEY,
-    name VARCHAR(100),
-    email VARCHAR(100) UNIQUE,
-    salary DECIMAL(10, 2),
-    department_id INT
-);
-```
-**51. Default Constraint**
-```
-CREATE TABLE table_name (
-    column1 datatype DEFAULT default_value,
-    column2 datatype,
-    ...
-);
-```
-**Example**
-```
-CREATE TABLE employees (
-    id INT PRIMARY KEY,
-    name VARCHAR(100),
-    salary DECIMAL(10, 2) DEFAULT 40000,
-    department_id INT
-);
-```
-**Note:**
 
-1. The `UNIQUE constraint` ensures that all values in a column are different. It helps to ensure that no duplicate values are entered in a column.
-2. The `CHECK constraint` is used to limit the range of values that can be placed in a column. It ensures that all values in a column satisfy certain conditions.
-3. The `DEFAULT constraint` provides a default value for a column when no value is specified during the insertion of a record. This is useful for ensuring that
-   columns have meaningful default values.
- 
-# 07. Alter Operations in SQL
+#### Foreign Key Referential Actions:
+- **`ON DELETE RESTRICT / NO ACTION`**: Prevents parent row deletion if child rows reference it (Default safe behavior).
+- **`ON DELETE CASCADE`**: Automatically deletes all child rows when the parent row is deleted.
+- **`ON DELETE SET NULL`**: Sets the foreign key column in child rows to `NULL` when the parent row is deleted.
+- **`ON DELETE SET DEFAULT`**: Sets the foreign key in child rows to its defined default value.
 
-**6. Altering Tables**
+</details>
 
-**6.0 Drop**
-```
-ALTER TABLE employees
-DROP COLUMN salary;
-```
-**6.1 Modify**
-```
-ALTER TABLE table_name
-MODIFY COLUMN column_name datatype [constraints];
-```
-**Example**
-```
-ALTER TABLE employees
-MODIFY COLUMN salary DECIMAL(15, 2);
+<details>
+<summary><b>[DDL-2] Altering Existing Tables (`ALTER TABLE`)</b></summary>
+
+```sql
+-- 1. Add a new column
+ALTER TABLE employees ADD COLUMN phone_number VARCHAR(20) NULL;
+
+-- 2. Drop a column
+ALTER TABLE employees DROP COLUMN phone_number;
+
+-- 3. Modify column data type and nullability
+ALTER TABLE employees ALTER COLUMN first_name TYPE VARCHAR(100);
+ALTER TABLE employees ALTER COLUMN phone_number SET NOT NULL;
+
+-- 4. Add a new constraint
+ALTER TABLE employees ADD CONSTRAINT chk_emp_salary_max CHECK (salary <= 1000000);
+
+-- 5. Drop a constraint
+ALTER TABLE employees DROP CONSTRAINT chk_emp_salary_max;
+
+-- 6. Rename a column
+ALTER TABLE employees RENAME COLUMN status TO employment_status;
+
+-- 7. Rename a table
+ALTER TABLE departments RENAME TO company_departments;
 ```
 
-**6.2 Add column**
-```
-ALTER TABLE table_name
-ADD COLUMN column_name datatype [constraints];
-```
-**Example**
-```
-ALTER TABLE employees
-ADD COLUMN hire_date DATE;
-```
-**6.3 Rename**
-```
-ALTER TABLE table_name
-RENAME COLUMN old_column_name TO new_column_name;
-```
-**Example**
-```
-ALTER TABLE table_name
-RENAME COLUMN old_column_name TO new_column_name;
-```
-**6.4 Add Constraints**
-```
-ALTER TABLE table_name
-ADD CONSTRAINT constraint_name constraint_type (column_name);
-```
-**Example**
-```
-ALTER TABLE employees
-ADD CONSTRAINT unique_email UNIQUE (email);
-```
-**6.5 DESC Command**
-```
-DESC table_name;
--- or
-DESCRIBE table_name;
-```
-**Example**
-```
-DESC employees;
-```
-**6.6 CHANGE Command**
-```
-ALTER TABLE table_name
-CHANGE COLUMN old_column_name new_column_name column_definition;
+</details>
+
+<details>
+<summary><b>[DDL-3] Dropping vs. Truncating Tables</b></summary>
+
+```sql
+-- TRUNCATE: Deletes all rows rapidly by deallocating storage pages. Keeps table schema intact.
+TRUNCATE TABLE employees RESTART IDENTITY CASCADE;
+
+-- DROP: Permanently destroys table structure, indexes, constraints, and all data rows.
+DROP TABLE IF EXISTS employees CASCADE;
 ```
 
-**Note:**
+</details>
 
-1. The `DESC` (or DESCRIBE) command is used to display the structure of a table, including the column names, **data types**, and any constraints. This command helps you understand the schema of a table, including details about each column.
-2. The `CHANGE` command is used in MySQL to modify the definition of an existing column in a table. This command allows you to **rename** a column, change its data type, and modify its constraints.
+</details>
 
-     **Parameter**
-      1. table_name: The name of the table containing the column to be changed.
-      2. old_column_name: The current name of the column.
-      3. new_column_name: The new name for the column.
-      4. column_definition: The new data type and constraints for the column.
+---
 
-       
-        1. Change Column Name and Data Type
-   
-         ALTER TABLE employees
-         CHANGE COLUMN name name VARCHAR(150) NOT NULL;
-         
-       2. Change Column Data Type and Add Constraints
-   ```  
-         ALTER TABLE employees
-         CHANGE COLUMN salary monthly_salary DECIMAL(15, 2);
-   ```
-   
-# 08. Basic Data Operations (DML) in SQL
+<details>
+<summary><h2>[SECTION 03] DML (Data Manipulation Language) - CRUD Operations</h2></summary>
 
-**7. Inserting Data**
+<details>
+<summary><b>[DML-1] Inserting Records (`INSERT`)</b></summary>
 
-```
-INSERT INTO table_name (column1, column2, column3, ...)
-VALUES (value1, value2, value3, ...);
-```
-**Example**
-```
-INSERT INTO employees (id, name, position, salary)
-VALUES (1, 'John Doe', 'Manager', 75000.00);
-```
-**8. Selecting Data**
-```
-SELECT column1, column2, ...
-FROM table_name
-WHERE condition;
+```sql
+-- Single-row Insert
+INSERT INTO departments (dept_name, budget)
+VALUES ('Engineering', 5000000.00);
 
-SELECT * FROM table_name;
-```
-**Example**
-```
-SELECT name, salary
+-- Multi-row Bulk Insert
+INSERT INTO employees (first_name, last_name, email, salary, dept_id)
+VALUES 
+    ('Alice', 'Smith', 'alice@company.com', 95000.00, 1),
+    ('Bob', 'Jones', 'bob@company.com', 85000.00, 1),
+    ('Charlie', 'Brown', 'charlie@company.com', 72000.00, 1);
+
+-- Insert From Query (Table Copy)
+INSERT INTO archived_employees (emp_id, full_name, termination_date)
+SELECT emp_id, CONCAT(first_name, ' ', last_name), CURRENT_DATE
 FROM employees
-WHERE position = 'Manager';
-
-SELECT * FROM employees;
+WHERE status = 'TERMINATED';
 ```
 
-**9. Updating Data**
-```
-UPDATE table_name
-SET column1 = value1, column2 = value2, ...
-WHERE condition;
-```
-**Example**
-```
+</details>
+
+<details>
+<summary><b>[DML-2] Updating Records (`UPDATE`)</b></summary>
+
+```sql
+-- Basic Update with WHERE condition
 UPDATE employees
-SET salary = 80000.00
-WHERE id = 1;
+SET salary = salary * 1.10,
+    status = 'ACTIVE'
+WHERE dept_id = 1 AND salary < 80000;
+
+-- Conditional Update with CASE statement
+UPDATE employees
+SET salary = CASE 
+    WHEN dept_id = 1 THEN salary * 1.08  -- 8% raise for Engineering
+    WHEN dept_id = 2 THEN salary * 1.05  -- 5% raise for Sales
+    ELSE salary * 1.03                   -- 3% raise for others
+END;
+
+-- Update with JOIN (PostgreSQL syntax)
+UPDATE employees e
+SET salary = e.salary + 5000
+FROM departments d
+WHERE e.dept_id = d.dept_id AND d.dept_name = 'Engineering';
 ```
 
-**9.0 Deleting Data**
-```
-DELETE FROM table_name
-WHERE condition;
-```
-**Example**
-```
+</details>
+
+<details>
+<summary><b>[DML-3] Deleting Records (`DELETE`)</b></summary>
+
+```sql
+-- Delete with specific WHERE filter
 DELETE FROM employees
-WHERE id = 1;
-```
-# 09. Creating, Dropping, and Altering Table(DDL) in SQL
+WHERE status = 'TERMINATED' AND hire_date < '2020-01-01';
 
- ### 1. How to create DB
- ```sql
- CREATE DATABASE database_name;
+-- Delete using Subquery
+DELETE FROM employees
+WHERE dept_id IN (SELECT dept_id FROM departments WHERE is_active = FALSE);
 ```
 
- **2. Using DB**
+</details>
 
- ```
- USE database_name;
-```
- **example**
- ```
-USE my_database;
- ```
+<details>
+<summary><b>[DML-4] Upsert / Merge Operations (`ON CONFLICT` / `ON DUPLICATE KEY`)</b></summary>
 
-**3. Drop a DB**
-```
-DROP DATABASE database_name;
-```
- **example**
- ```
-DROP DATABASE my_database;
-```
+```sql
+-- PostgreSQL Upsert (INSERT ... ON CONFLICT DO UPDATE)
+INSERT INTO product_inventory (product_id, quantity, last_updated)
+VALUES (101, 50, CURRENT_TIMESTAMP)
+ON CONFLICT (product_id) 
+DO UPDATE SET 
+    quantity = product_inventory.quantity + EXCLUDED.quantity,
+    last_updated = EXCLUDED.last_updated;
 
-**4. Creating Table**
-```
-CREATE TABLE table_name (
-    column1 datatype PRIMARY KEY (optional),
-    column2 datatype,
-    column3 datatype,
-   ....
-);
-```
-**Example**
-```
-CREATE TABLE employees (
-    id INT PRIMARY KEY,
-    name VARCHAR(100),
-    position VARCHAR(100),
-    salary DECIMAL(10, 2)
-);
-```
-**5. Dropping Table**
-```
-DROP TABLE table_name;
-```
-**Example**
-```
-DROP TABLE employees;
+-- MySQL Upsert (INSERT ... ON DUPLICATE KEY UPDATE)
+INSERT INTO product_inventory (product_id, quantity)
+VALUES (101, 50)
+ON DUPLICATE KEY UPDATE 
+    quantity = quantity + VALUES(quantity);
 ```
 
-# 10. On Delete, on Delete Cascade in SQL 
+</details>
 
-**9.1 On Delete Cascade**
-```
-ALTER TABLE child_table
-ADD CONSTRAINT fk_constraint_name
-FOREIGN KEY (column_name) REFERENCES parent_table (column_name)
-ON DELETE CASCADE;
-```
-**Example**
-```
-ALTER TABLE employees
-ADD CONSTRAINT fk_department
-FOREIGN KEY (department_id) REFERENCES departments(department_id)
-ON DELETE CASCADE;
-```
-**9.1 On Delete Set NULL**
-```
-ALTER TABLE child_table
-ADD CONSTRAINT fk_constraint_name
-FOREIGN KEY (column_name) REFERENCES parent_table (column_name)
-ON DELETE SET NULL;
-```
-**Example**
-```
-ALTER TABLE employees
-ADD CONSTRAINT fk_department
-FOREIGN KEY (department_id) REFERENCES departments(department_id)
-ON DELETE SET NULL;
-```
-**Note:**
+</details>
 
-**ON DELETE CASCADE:** Deletes all related child records. Use this for the complete removal of dependent data.
+---
 
-**ON DELETE SET NULL:** Sets foreign key to NULL. Use this to keep child records but indicate the parent data is gone.
+<details>
+<summary><h2>[SECTION 04] DQL (Data Query Language) - Filtering, Sorting & Operators</h2></summary>
 
-# 11. Replace, Update in SQL
+<details>
+<summary><b>[DQL-1] Basic Selection & Aliases</b></summary>
 
-**9.2 REPLACE**
-```
-REPLACE INTO table_name (column1, column2, column3, ...)
-VALUES (value1, value2, value3, ...);
-```
-**Example**
-```
-REPLACE INTO employees (id, name, salary, department_id)
-VALUES (2, 'Bob', 65000, 1);
-```
-**Use Case:** 
-When you need to ensure that a row with a specific key is present in the table, either by inserting a new row or 
-updating an existing one.
+```sql
+-- Projecting specific columns with aliases
+SELECT 
+    emp_id AS employee_identifier,
+    CONCAT(first_name, ' ', last_name) AS full_name,
+    salary,
+    salary * 12 AS annual_compensation
+FROM employees;
 
-**Benefits:** 
-Simplifies the logic for upsert (insert or update) operations by handling both insertion and updating in a single command.
-
-**Note:**
-1. `Replace` is used if data is already present. 
-2. `Update` is used if data is not present.
-3. If a row is not present `replace` will add a row and `update` will do nothing.
-
-# 12. JOIN  Advanced topic in SQL  
-
-**10. Inner Join**
+-- Unique distinct values
+SELECT DISTINCT dept_id, status
+FROM employees;
 ```
-SELECT columns
-FROM table1
-INNER JOIN table2
-ON table1.column = table2.column;
-```
-**Example**
-```
-SELECT employees.name, departments.department_name
+
+</details>
+
+<details>
+<summary><b>[DQL-2] Logical Operators: `AND`, `OR`, `NOT`, `BETWEEN`, `IN`</b></summary>
+
+```sql
+-- AND: All conditions must evaluate to TRUE
+SELECT first_name, salary, dept_id
 FROM employees
-INNER JOIN departments
-ON employees.department_id = departments.id;
-```
-   
-### Outer Join
+WHERE dept_id = 1 AND salary >= 80000;
 
-**11. Left Join**
-```
-SELECT columns
-FROM table1
-LEFT JOIN table2
-ON table1.column = table2.column;
-```
-**Example**
-```
-SELECT employees.name, departments.department_name
+-- OR: At least one condition must evaluate to TRUE
+SELECT first_name, status
 FROM employees
-LEFT JOIN departments
-ON employees.department_id = departments.id;
-```
-**12. Right Join**
-```
-SELECT columns
-FROM table1
-RIGHT JOIN table2
-ON table1.column = table2.column;
-```
-**Example**
-```
-SELECT employees.name, departments.department_name
+WHERE status = 'ON_LEAVE' OR status = 'TERMINATED';
+
+-- NOT: Negates condition
+SELECT first_name, status
 FROM employees
-RIGHT JOIN departments
-ON employees.department_id = departments.id;
-```
+WHERE NOT (status = 'TERMINATED');
 
-**13. FULL OUTER JOIN Join**
-```
-SELECT columns
-FROM table1
-FULL OUTER JOIN table2
-ON table1.column = table2.column;
-```
-**Example**
-```
-SELECT employees.name, departments.department_name
+-- BETWEEN: Inclusive range check (salary >= 60000 AND salary <= 90000)
+SELECT first_name, salary
 FROM employees
-FULL OUTER JOIN departments
-ON employees.department_id = departments.id;
-```
-**10.0 Using Aliases (AS) with INNERLEFT/RIGHT JOIN**
-```
-SELECT columns
-FROM table1 AS alias1
-INNER JOIN table2 AS alias2
-ON alias1.column = alias2.column;
-```
-**Example**
-```
-SELECT e.name, d.department_name
-FROM employees AS e
-INNER JOIN departments AS d
-ON e.department_id = d.id;
+WHERE salary BETWEEN 60000 AND 90000;
+
+-- IN: Matches any value in a defined list or subquery
+SELECT first_name, dept_id
+FROM employees
+WHERE dept_id IN (1, 3, 5);
+
+-- NOT IN: Matches values outside the list
+SELECT first_name, dept_id
+FROM employees
+WHERE dept_id NOT IN (2, 4);
 ```
 
-**Note:**
-   1. Aliases in SQL are used to give a table or a column a temporary name. This is often useful to make your SQL queries more readable
-   and manageable, especially when dealing with joins.
-   2. MySQL does not directly support FULL OUTER JOIN. You can achieve the same result using a UNION of LEFT JOIN and RIGHT JOIN.
-   3. In join we place one column from a table with another table column via inner/left/right/full join. 
- ```
-SELECT columns
-FROM table1 AS alias1
-LEFT JOIN table2 AS alias2
-ON alias1.column = alias2.column
-UNION
-SELECT columns
-FROM table1 AS alias1
-RIGHT JOIN table2 AS alias2
-ON alias1.column = alias2.column;
-```
- **Example**
- ```
-SELECT e.name, d.department_name
-FROM employees AS e
-LEFT JOIN departments AS d
-ON e.department_id = d.id
-UNION
-SELECT e.name, d.department_name
-FROM employees AS e
-RIGHT JOIN departments AS d
-ON e.department_id = d.id;
+</details>
+
+<details>
+<summary><b>[DQL-3] Pattern Matching: `LIKE`, `ILIKE`, Wildcards</b></summary>
+
+| Wildcard | Meaning | Example Pattern | Matches |
+| :--- | :--- | :--- | :--- |
+| `%` | Zero, one, or multiple characters | `'J%'` | `John`, `Jane`, `J` |
+| `_` | Exactly one single character | `'J_ne'` | `Jane`, `June` |
+| `%...%` | Substring match anywhere | `'%tech%'` | `Fintech`, `Biotechnology` |
+
+```sql
+-- Find emails ending with company domain
+SELECT email FROM employees WHERE email LIKE '%@company.com';
+
+-- Case-insensitive pattern matching (PostgreSQL)
+SELECT first_name FROM employees WHERE first_name ILIKE 'john%';
+
+-- Escape character when searching for literal '%' or '_'
+SELECT project_name FROM projects WHERE project_name LIKE '%\%%' ESCAPE '\';
 ```
 
-(*) `employees` table is aliased as `e`.
+</details>
 
-(*) `departments` table is aliased as `d`.
+<details>
+<summary><b>[DQL-4] Handling NULLs: `IS NULL`, `IS NOT NULL`, `COALESCE`, `NULLIF`</b></summary>
 
-(*) `e.name` refers to the `name` column from the `employees` table.
+> **Crucial Rule**: In SQL, `NULL = NULL` evaluates to `UNKNOWN`, not `TRUE`. You **must** use `IS NULL` or `IS NOT NULL`.
 
-(*) `d.department_name` refers to the `department_name` column from the `departments` table.
+```sql
+-- Find employees without an assigned manager
+SELECT first_name FROM employees WHERE manager_id IS NULL;
 
-(*) `ON` clause uses the aliases to refer to the `department_id` in the `employees` table and the `id` in the `departments` table.
+-- Find employees with an assigned manager
+SELECT first_name FROM employees WHERE manager_id IS NOT NULL;
 
+-- COALESCE: Returns the first non-null argument in list
+SELECT 
+    first_name,
+    COALESCE(phone_number, 'No Phone Provided') AS contact_phone,
+    COALESCE(bonus, commission, 0) AS total_variable_pay
+FROM employees;
 
-**Note:**
-1. To apply to `join`, there should be at least common attributes in both tables.
-2. In `left join` all data of the left table but also added matching data of the right table is called left join.
-3. In `right join` all data of the left table but also added matching data of the left table is called right join.
-
-
-# 13. Set Operation in SQL 
-**Union:**
-```
-SELECT column1, column2, ...
-FROM table1
-UNION
-SELECT column1, column2, ...
-FROM table2;
-```
-**Example**
-```
-SELECT name FROM employees
-UNION
-SELECT name FROM departments;
-```
-**Intersection:**
-```
-SELECT column1, column2, ...
-FROM table1
-INTERSECT
-SELECT column1, column2, ...
-FROM table2;
-```
-**Example**
-```
-SELECT name FROM employees
-INTERSECT
-SELECT name FROM departments;
+-- NULLIF: Returns NULL if both arguments are equal (prevents division by zero)
+SELECT 
+    dept_id,
+    total_revenue / NULLIF(total_units, 0) AS revenue_per_unit
+FROM sales_summary;
 ```
 
-**Minus(Except):**
+</details>
+
+<details>
+<summary><b>[DQL-5] Sorting & Pagination (`ORDER BY`, `LIMIT`, `OFFSET`)</b></summary>
+
+```sql
+-- Sorting by multiple columns with explicit direction
+SELECT first_name, last_name, salary, hire_date
+FROM employees
+ORDER BY salary DESC, hire_date ASC;
+
+-- Handling NULL sorting positions
+SELECT first_name, manager_id
+FROM employees
+ORDER BY manager_id ASC NULLS LAST;
+
+-- Pagination: Top 10 highest earners
+SELECT emp_id, first_name, salary
+FROM employees
+ORDER BY salary DESC
+LIMIT 10 OFFSET 0;
+
+-- Standard ANSI SQL Pagination (OFFSET ... FETCH NEXT)
+SELECT emp_id, first_name, salary
+FROM employees
+ORDER BY salary DESC
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
 ```
-SELECT column1, column2, ...
-FROM table1
-EXCEPT
-SELECT column1, column2, ...
-FROM table2;
+
+</details>
+
+</details>
+
+---
+
+<details>
+<summary><h2>[SECTION 05] Aggregations, Grouping & Conditional Logic</h2></summary>
+
+<details>
+<summary><b>[AGG-1] Aggregate Functions</b></summary>
+
+```sql
+SELECT 
+    COUNT(*) AS total_employees,                   -- Counts all rows including NULLs
+    COUNT(manager_id) AS employees_with_manager,  -- Counts only non-NULL values
+    COUNT(DISTINCT dept_id) AS active_dept_count,  -- Unique department count
+    SUM(salary) AS total_payroll,
+    AVG(salary) AS average_salary,
+    MIN(salary) AS lowest_salary,
+    MAX(salary) AS highest_salary
+FROM employees;
 ```
-**Example**
+
+</details>
+
+<details>
+<summary><b>[AGG-2] `GROUP BY` Clause & Rules</b></summary>
+
+> **Rule of GROUP BY**: Every non-aggregated column in the `SELECT` list **must** appear in the `GROUP BY` clause.
+
+```sql
+-- Department-wise Salary Breakdown
+SELECT 
+    dept_id,
+    status,
+    COUNT(*) AS employee_count,
+    AVG(salary) AS avg_dept_salary,
+    SUM(salary) AS total_dept_cost
+FROM employees
+GROUP BY dept_id, status;
 ```
-SELECT name FROM employees
-EXCEPT
-SELECT name FROM departments;
+
+</details>
+
+<details>
+<summary><b>[AGG-3] `HAVING` vs. `WHERE`</b></summary>
+
+| Clause | Filter Level | Can Use Aggregate Functions? | Execution Step |
+| :--- | :--- | :--- | :--- |
+| **`WHERE`** | Individual table rows before grouping | **No** | Step 3 (Pre-grouping) |
+| **`HAVING`** | Summarized aggregated groups | **Yes** (`HAVING AVG(salary) > 50000`) | Step 5 (Post-grouping) |
+
+```sql
+-- Filter rows with WHERE, then filter aggregated groups with HAVING
+SELECT 
+    dept_id,
+    COUNT(*) AS emp_count,
+    AVG(salary) AS avg_salary
+FROM employees
+WHERE status = 'ACTIVE'                -- Step 1: Filter individual active rows
+GROUP BY dept_id
+HAVING COUNT(*) >= 5 AND AVG(salary) > 75000; -- Step 2: Filter departments meeting criteria
 ```
-**Emulation using INNER JOIN:**
+
+</details>
+
+<details>
+<summary><b>[AGG-4] Conditional Expressions (`CASE WHEN`)</b></summary>
+
+```sql
+-- Classify employee compensation bands
+SELECT 
+    first_name,
+    salary,
+    CASE 
+        WHEN salary >= 100000 THEN 'Executive Tier'
+        WHEN salary >= 70000 THEN 'Senior Tier'
+        WHEN salary >= 50000 THEN 'Mid-Level Tier'
+        ELSE 'Junior Tier'
+    END AS compensation_tier
+FROM employees;
+
+-- Pivot query using conditional aggregation (Count active/terminated per dept)
+SELECT 
+    dept_id,
+    COUNT(CASE WHEN status = 'ACTIVE' THEN 1 END) AS active_count,
+    COUNT(CASE WHEN status = 'ON_LEAVE' THEN 1 END) AS leave_count,
+    COUNT(CASE WHEN status = 'TERMINATED' THEN 1 END) AS terminated_count
+FROM employees
+GROUP BY dept_id;
 ```
-SELECT e.name
+
+</details>
+
+</details>
+
+---
+
+<details>
+<summary><h2>[SECTION 06] Joins Masterclass (Relational Data Combining)</h2></summary>
+
+<details>
+<summary><b>[JOIN-1] Visual Join Architecture Overview</b></summary>
+
+```
+  [INNER JOIN]           [LEFT JOIN]            [RIGHT JOIN]           [FULL OUTER]
+   Matching only        All Left + Match       All Right + Match       All Both Sides
+     +---+---+              +---+---+              +---+---+              +---+---+
+     |   |XXX|   |          |XXX|XXX|   |          |   |XXX|XXX|          |XXX|XXX|XXX|
+     +---+---+              +---+---+              +---+---+              +---+---+
+      TableA TableB          TableA TableB          TableA TableB          TableA TableB
+```
+
+</details>
+
+<details>
+<summary><b>[JOIN-2] Practical Join Query Syntax</b></summary>
+
+```sql
+-- 1. INNER JOIN: Returns rows with matching keys in both tables
+SELECT e.first_name, e.salary, d.dept_name
 FROM employees e
-INNER JOIN departments d
-ON e.name = d.department_name;
-```
-**Emulating EXCEPT (MINUS)**
-```
-SELECT e.name
+INNER JOIN departments d ON e.dept_id = d.dept_id;
+
+-- 2. LEFT JOIN (Left Outer): Returns all left rows, plus matching right rows (or NULL)
+SELECT e.first_name, d.dept_name
 FROM employees e
-LEFT JOIN departments d
-ON e.name = d.department_name
-WHERE d.department_name IS NULL;
-```
-**Note:**
-1.  **Set Operations** (e.g., `UNION`, `UNION ALL`, `INTERSECT`, `EXCEPT`): These are used for combining rows from two or more result sets into a single result set. 
-2.  They operate on entire rows and the columns involved must be compatible in number and data type.
-3.  THe `INTERSECTION` is not used so we emulate by inner join.
-4.  The operation `Union` is used to select common and ignore duplication. While `Union ALL` is used to select all included duplicates too. In syntax, there is an ALL keyword
-    differences.
-5.  **Column Compatibility:** The number of columns and their data types in the SELECT statements must be the same for all set operations.
-6.  **Order of Results:** The order of rows in the result set is not guaranteed unless you use an ORDER BY clause at the end of the query.
-7.  Emulating `INTERSECT` and `EXCEPT (or MINUS)` operations in SQL can be done using **JOIN** and **LEFT JOIN** with **WHERE** conditions.
+LEFT JOIN departments d ON e.dept_id = d.dept_id;
 
-**Correlated Sub Query**
-```
-SELECT column1, column2, ...
-FROM table_name AS t1
-WHERE column_name OPERATOR (SELECT column_name FROM another_table AS t2 WHERE t2.column_name = t1.column_name);
-```
-**Example**
-```
-SELECT name, salary
-FROM employees AS e1
-WHERE salary > (SELECT AVG(salary)
-                FROM employees AS e2
-                WHERE e2.department_id = e1.department_id);
-```
-**Note:**
-  (*) The outer query selects the name and salary columns from the employee's table (aliased as e1).
-  (*) The subquery calculates the average salary for each department_id in the employee's table (aliased as e2).
-  (*) The WHERE clause in the outer query compares each employee's salary to the average salary of their department.
-  (*) This ensures that only employees whose salary is greater than the average salary of their department are selected.
+-- 3. Find Orphan Rows (Anti-Join Pattern: Left rows with no right match)
+SELECT e.emp_id, e.first_name
+FROM employees e
+LEFT JOIN departments d ON e.dept_id = d.dept_id
+WHERE d.dept_id IS NULL;
 
-# 14. Sub Queries in SQL 
+-- 4. RIGHT JOIN: Returns all right rows, plus matching left rows
+SELECT e.first_name, d.dept_name
+FROM employees e
+RIGHT JOIN departments d ON e.dept_id = d.dept_id;
 
-**14. Sub Queries** 
+-- 5. FULL OUTER JOIN: Returns all rows from both tables, filling NULLs where no match
+SELECT e.first_name, d.dept_name
+FROM employees e
+FULL OUTER JOIN departments d ON e.dept_id = d.dept_id;
+
+-- 6. SELF JOIN: Joining a table to itself (e.g., Employee -> Manager relationship)
+SELECT 
+    emp.first_name AS employee_name,
+    mgr.first_name AS manager_name
+FROM employees emp
+LEFT JOIN employees mgr ON emp.manager_id = mgr.emp_id;
+
+-- 7. CROSS JOIN: Cartesian Product (Every row in Table A combined with every row in Table B)
+SELECT d.dept_name, s.shift_name
+FROM departments d
+CROSS JOIN work_shifts s;
 ```
-SELECT column1
-FROM table_name
-WHERE column2 = (SELECT column2
-                 FROM table_name
-                 WHERE condition);
+
+</details>
+
+</details>
+
+---
+
+<details>
+<summary><h2>[SECTION 07] Set Operations (UNION, INTERSECT, EXCEPT)</h2></summary>
+
+<details>
+<summary><b>[SET-1] Rules for Set Operations</b></summary>
+
+1. Both `SELECT` statements must return the **exact same number of columns**.
+2. Corresponding columns must have **compatible data types**.
+3. Column names in the final result set are taken from the **first** `SELECT` query.
+
+```sql
+-- UNION: Combines result sets and removes duplicate rows (Performs expensive Sort/Unique)
+SELECT city FROM customers
+UNION
+SELECT city FROM suppliers;
+
+-- UNION ALL: Combines result sets keeping all duplicates (Ultra-fast, no sort overhead)
+SELECT city FROM customers
+UNION ALL
+SELECT city FROM suppliers;
+
+-- INTERSECT: Returns only rows that exist in BOTH queries
+SELECT city FROM customers
+INTERSECT
+SELECT city FROM suppliers;
+
+-- EXCEPT / MINUS: Returns rows from first query that DO NOT exist in second query
+SELECT city FROM customers
+EXCEPT
+SELECT city FROM suppliers;
 ```
-**Example**
-```
-SELECT name
+
+</details>
+
+</details>
+
+---
+
+<details>
+<summary><h2>[SECTION 08] Subqueries & Common Table Expressions (CTEs)</h2></summary>
+
+<details>
+<summary><b>[SUBQ-1] Scalar & Multi-Row Subqueries</b></summary>
+
+```sql
+-- 1. Scalar Subquery in WHERE: Find employees earning above company average
+SELECT first_name, salary
 FROM employees
 WHERE salary > (SELECT AVG(salary) FROM employees);
-```
 
-**Note:**
-1. It is an alternative to join means where join is used it can be used easily.
-2. The inner query is independent and executes the first and the outer query is dependent on the inner query.
-3. It is called a nested query.
-
-# 15. VIEW in SQL 
-
-**18. Create View**
-```
-CREATE VIEW view_name AS
-SELECT column1, column2, ...
-FROM table_name
-WHERE condition;
-```
-**Example**
-```
-CREATE VIEW high_salary_employees AS
-SELECT name, salary
+-- 2. Multi-Row Subquery with IN
+SELECT first_name, dept_id
 FROM employees
-WHERE salary > 50000;
-```
-**19. Drop View**
-```
-DROP VIEW view_name;
-```
-**Example**
-```
-DROP VIEW high_salary_employees;
+WHERE dept_id IN (SELECT dept_id FROM departments WHERE budget > 1000000);
+
+-- 3. Multi-Row with ANY / ALL
+-- ALL: Salary higher than EVERY employee in Department 2
+SELECT first_name, salary
+FROM employees
+WHERE salary > ALL (SELECT salary FROM employees WHERE dept_id = 2);
+
+-- 4. Correlated Subquery: Evaluated once per each outer row
+-- Find employees earning more than the average of THEIR specific department
+SELECT e.first_name, e.salary, e.dept_id
+FROM employees e
+WHERE e.salary > (
+    SELECT AVG(sub.salary) 
+    FROM employees sub 
+    WHERE sub.dept_id = e.dept_id
+);
+
+-- 5. EXISTS / NOT EXISTS (High-performance existence check)
+SELECT d.dept_name
+FROM departments d
+WHERE EXISTS (
+    SELECT 1 
+    FROM employees e 
+    WHERE e.dept_id = d.dept_id AND e.salary > 100000
+);
 ```
 
+</details>
 
+<details>
+<summary><b>[CTE-1] Common Table Expressions (`WITH` Clause)</b></summary>
 
-# Index
+```sql
+-- Standard CTE: Improve readability and modularity over nested subqueries
+WITH DepartmentPayroll AS (
+    SELECT 
+        dept_id,
+        COUNT(*) AS total_staff,
+        SUM(salary) AS total_payroll,
+        AVG(salary) AS avg_payroll
+    FROM employees
+    GROUP BY dept_id
+),
+HighBudgetDepts AS (
+    SELECT dept_id, dept_name 
+    FROM departments 
+    WHERE budget >= 1000000
+)
+SELECT 
+    h.dept_name,
+    p.total_staff,
+    p.total_payroll
+FROM HighBudgetDepts h
+INNER JOIN DepartmentPayroll p ON h.dept_id = p.dept_id;
 
-**15. Create Index**
-```
-CREATE INDEX index_name
-ON table_name (column1, column2, ...);
-```
-**Example**
-```
-CREATE INDEX idx_salary
-ON employees (salary);
-```
-**16. Dropping Index**
-```
-DROP INDEX index_name;
-```
-**Example**
-```
-DROP INDEX idx_salary;
-```
-
-
-# Transaction
-
-**17. Make Transaction**
-```
-BEGIN TRANSACTION;
-
--- SQL statements
-
-COMMIT;
-
--- or if something goes wrong
-
-ROLLBACK;
-```
-**Example**
-```
-BEGIN TRANSACTION;
-
-UPDATE employees
-SET salary = salary * 1.1
-WHERE department_id = 2;
-
-COMMIT;
-
--- or if something goes wrong
-
-ROLLBACK;
+-- Recursive CTE: Generate Organizational Hierarchy Tree
+WITH RECURSIVE OrgChart AS (
+    -- Anchor member: Top-level CEO (no manager)
+    SELECT emp_id, first_name, manager_id, 1 AS org_level
+    FROM employees
+    WHERE manager_id IS NULL
+    
+    UNION ALL
+    
+    -- Recursive member: Find direct reports of current level
+    SELECT e.emp_id, e.first_name, e.manager_id, o.org_level + 1
+    FROM employees e
+    INNER JOIN OrgChart o ON e.manager_id = o.emp_id
+)
+SELECT * FROM OrgChart ORDER BY org_level, manager_id;
 ```
 
+</details>
 
-# Stored Procedures
+</details>
 
-**20. Create  Stored Procedures**
-```
-CREATE PROCEDURE procedure_name
-AS
-BEGIN
-    -- SQL statements
-END;
-```
-**Example**
-```
-CREATE PROCEDURE raise_salary
-AS
-BEGIN
-    UPDATE employees
-    SET salary = salary * 1.1;
-END;
-```
+---
 
-**21. Executing Stored Procedures**
-```
-EXEC procedure_name;
-```
-**Example**
-```
-EXEC raise_salary;
-```
-**22. Dropping Stored Procedures**
-```
-DROP PROCEDURE procedure_name;
-```
-**Example**
-```
-DROP PROCEDURE raise_salary;
-```
+<details>
+<summary><h2>[SECTION 09] Advanced Analytics & Window Functions</h2></summary>
 
-# Function
+<details>
+<summary><b>[WINDOW-1] Window Function Mechanics & Syntax</b></summary>
 
-**23. Create Function**
-```
-CREATE FUNCTION function_name (@param1 datatype, @param2 datatype, ...)
-RETURNS return_datatype
-AS
-BEGIN
-    -- SQL statements
-    RETURN return_value;
-END;
-```
-**Example**
-```
-CREATE FUNCTION calculate_bonus (@salary DECIMAL)
-RETURNS DECIMAL
-AS
-BEGIN
-    RETURN @salary * 0.1;
-END;
-```
-**24. Execution Function**
-```
-SELECT function_name(param1, param2, ...);
-```
-**Example**
-```
-SELECT calculate_bonus(salary)
+Syntax: `FUNCTION() OVER (PARTITION BY col1 ORDER BY col2 [ROWS/RANGE frame])`
+
+```sql
+-- 1. Ranking Functions: ROW_NUMBER vs RANK vs DENSE_RANK
+SELECT 
+    emp_id,
+    dept_id,
+    salary,
+    ROW_NUMBER() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS row_num,
+    RANK() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS standard_rank,
+    DENSE_RANK() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS dense_rank
+FROM employees;
+
+/*
+DENSE_RANK vs RANK Example:
+Salaries: 100k, 100k, 80k
+- ROW_NUMBER: 1, 2, 3
+- RANK:       1, 1, 3  (Gaps after ties)
+- DENSE_RANK: 1, 1, 2  (No gaps after ties)
+*/
+
+-- 2. Value Offset Functions: LAG and LEAD (Previous / Next row lookups)
+SELECT 
+    emp_id,
+    hire_date,
+    salary,
+    LAG(salary, 1) OVER (ORDER BY hire_date) AS prev_hired_salary,
+    LEAD(salary, 1) OVER (ORDER BY hire_date) AS next_hired_salary,
+    salary - LAG(salary, 1) OVER (ORDER BY hire_date) AS salary_diff_from_previous
+FROM employees;
+
+-- 3. Running Totals & Moving Window Averages
+SELECT 
+    emp_id,
+    dept_id,
+    hire_date,
+    salary,
+    -- Running total within department
+    SUM(salary) OVER (
+        PARTITION BY dept_id 
+        ORDER BY hire_date 
+        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    ) AS running_dept_total,
+    -- 3-Row Moving Average (Previous row, current row, next row)
+    AVG(salary) OVER (
+        ORDER BY hire_date 
+        ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING
+    ) AS three_row_moving_avg
 FROM employees;
 ```
-**25. Dropping Function**
-```
-DROP FUNCTION function_name;
-```
-**Example**
-```
-DROP FUNCTION calculate_bonus;
+
+</details>
+
+</details>
+
+---
+
+<details>
+<summary><h2>[SECTION 10] Database Objects - Views, Materialized Views & Indexes</h2></summary>
+
+<details>
+<summary><b>[VIEW-1] Views & Materialized Views</b></summary>
+
+```sql
+-- Standard View: Virtual table (Saved SQL query executed at runtime)
+CREATE VIEW v_active_engineering_staff AS
+SELECT e.emp_id, e.first_name, e.last_name, e.salary, d.dept_name
+FROM employees e
+INNER JOIN departments d ON e.dept_id = d.dept_id
+WHERE e.status = 'ACTIVE' AND d.dept_name = 'Engineering';
+
+-- Querying the View
+SELECT * FROM v_active_engineering_staff WHERE salary > 80000;
+
+-- Materialized View: Physically stores the pre-computed query output on disk (PostgreSQL)
+CREATE MATERIALIZED VIEW mv_monthly_dept_expenses AS
+SELECT 
+    dept_id,
+    COUNT(*) AS total_staff,
+    SUM(salary) AS total_payroll,
+    CURRENT_DATE AS snapshot_date
+FROM employees
+GROUP BY dept_id;
+
+-- Refreshing the Materialized View
+REFRESH MATERIALIZED VIEW CONCURRENTLY mv_monthly_dept_expenses;
 ```
 
-# Trigers
+</details>
 
-**26. Create Triggers**
+<details>
+<summary><b>[INDEX-1] Index Types & Strategy</b></summary>
+
+```sql
+-- 1. Standard B-Tree Index on foreign key / lookup column
+CREATE INDEX idx_employees_dept_id ON employees(dept_id);
+
+-- 2. Composite Multi-Column Index (Column ordering matters: Equality first, range last)
+CREATE INDEX idx_emp_dept_status_salary ON employees(dept_id, status, salary);
+
+-- 3. Unique Index
+CREATE UNIQUE INDEX idx_employees_email_lower ON employees(LOWER(email));
+
+-- 4. Partial / Filtered Index (Postgres / SQL Server: Indexes only rows matching condition)
+CREATE INDEX idx_emp_active_salary ON employees(salary) WHERE status = 'ACTIVE';
+
+-- 5. Covering Index (Includes unindexed columns in leaf nodes to avoid bookmark lookups)
+CREATE INDEX idx_emp_dept_include ON employees(dept_id) INCLUDE (first_name, salary);
 ```
-CREATE TRIGGER trigger_name
-ON table_name
-AFTER INSERT, UPDATE, DELETE
-AS
+
+</details>
+
+</details>
+
+---
+
+<details>
+<summary><h2>[SECTION 11] Programmability - Stored Procedures, Functions & Triggers</h2></summary>
+
+<details>
+<summary><b>[PROC-1] Stored Procedures & Functions</b></summary>
+
+```sql
+-- PostgreSQL Stored Procedure (Supports Transaction COMMIT/ROLLBACK inside)
+CREATE OR REPLACE PROCEDURE transfer_department_budget(
+    sender_dept_id INT,
+    receiver_dept_id INT,
+    transfer_amount NUMERIC
+)
+LANGUAGE plpgsql
+AS $$
 BEGIN
-    -- SQL statements
+    -- Check sender balance
+    IF (SELECT budget FROM departments WHERE dept_id = sender_dept_id) < transfer_amount THEN
+        RAISE EXCEPTION 'Insufficient department budget for transfer';
+    END IF;
+
+    -- Debit sender
+    UPDATE departments 
+    SET budget = budget - transfer_amount 
+    WHERE dept_id = sender_dept_id;
+
+    -- Credit receiver
+    UPDATE departments 
+    SET budget = budget + transfer_amount 
+    WHERE dept_id = receiver_dept_id;
+
+    COMMIT;
 END;
-```
-**Example**
-```
-CREATE TRIGGER trg_after_insert
-ON employees
-AFTER INSERT
-AS
+$$;
+
+-- Calling the Procedure
+CALL transfer_department_budget(1, 2, 50000.00);
+
+-- User-Defined Scalar Function (UDF: Computes annual tax estimate)
+CREATE OR REPLACE FUNCTION calculate_estimated_tax(annual_salary NUMERIC)
+RETURNS NUMERIC
+LANGUAGE plpgsql
+DETERMINISTIC
+AS $$
 BEGIN
-    PRINT 'A new employee record has been inserted.';
+    RETURN annual_salary * 0.25;
 END;
-```
-**27. Dropping Trigger**
-```
-DROP TRIGGER trigger_name;
-```
-**Example**
-```
-DROP TRIGGER trg_after_insert;
+$$;
+
+-- Using the function in standard queries
+SELECT first_name, salary, calculate_estimated_tax(salary) AS estimated_tax
+FROM employees;
 ```
 
-This structure organizes the SQL syntax and examples into a comprehensive and easy-to-navigate `README.md` file for your repository. You can add this file to your 
-repository and update the path paths based on your directory structure.
+</details>
 
+<details>
+<summary><b>[TRIGGER-1] Database Triggers (Audit Logging)</b></summary>
+
+```sql
+-- Create Audit Table
+CREATE TABLE employee_audit_log (
+    audit_id SERIAL PRIMARY KEY,
+    emp_id BIGINT NOT NULL,
+    old_salary NUMERIC(12, 2),
+    new_salary NUMERIC(12, 2),
+    changed_by VARCHAR(100) DEFAULT CURRENT_USER,
+    changed_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Trigger Function
+CREATE OR REPLACE FUNCTION log_salary_change()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF OLD.salary <> NEW.salary THEN
+        INSERT INTO employee_audit_log (emp_id, old_salary, new_salary)
+        VALUES (OLD.emp_id, OLD.salary, NEW.salary);
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+-- Binding Trigger to Table
+CREATE TRIGGER trg_salary_audit
+AFTER UPDATE ON employees
+FOR EACH ROW
+EXECUTE FUNCTION log_salary_change();
+```
+
+</details>
+
+</details>
+
+---
+
+<details>
+<summary><h2>[SECTION 12] Transactions, Concurrency & Locking (TCL)</h2></summary>
+
+<details>
+<summary><b>[TCL-1] Transaction Control & Explicit Locking</b></summary>
+
+```sql
+-- ACID Transaction Block
+BEGIN TRANSACTION;
+
+-- Pessimistic Lock: SELECT FOR UPDATE locks selected rows against concurrent writes
+SELECT balance 
+FROM bank_accounts 
+WHERE account_id = 450 
+FOR UPDATE;
+
+UPDATE bank_accounts 
+SET balance = balance - 1000.00 
+WHERE account_id = 450;
+
+UPDATE bank_accounts 
+SET balance = balance + 1000.00 
+WHERE account_id = 890;
+
+-- Commit changes permanently to disk WAL
+COMMIT;
+
+-- Rollback on error example
+BEGIN TRANSACTION;
+UPDATE inventory SET stock = stock - 10 WHERE item_id = 99;
+-- If error occurs:
+ROLLBACK;
+```
+
+</details>
+
+</details>
+
+---
+
+<details>
+<summary><h2>[SECTION 13] Query Performance Optimization & Anti-Patterns</h2></summary>
+
+<details>
+<summary><b>[PERF-1] Top 10 Production SQL Anti-Patterns & Solutions</b></summary>
+
+| Anti-Pattern | Why It Degrades Performance | Optimal Production Solution |
+| :--- | :--- | :--- |
+| **`SELECT *`** | Fetches unnecessary wide columns, wastes RAM/network, breaks index-only scans. | Explicitly name only needed columns: `SELECT id, name`. |
+| **Function on Index** (`WHERE YEAR(created_at) = 2024`) | Invalidates B-Tree index; forces full table scan on every row. | Use SARGable range: `WHERE created_at >= '2024-01-01' AND created_at < '2025-01-01'`. |
+| **Leading Wildcard** (`WHERE name LIKE '%smith'`) | B-Tree index cannot seek backwards; triggers full sequential scan. | Use Full-Text Search (tsvector / Lucene) or Reverse B-Tree index. |
+| **`NOT IN (Subquery)` with NULLs** | If the subquery returns even a single `NULL`, the entire condition returns empty set. | Replace with `NOT EXISTS (SELECT 1 ...)` or `LEFT JOIN ... WHERE right.id IS NULL`. |
+| **`UNION` instead of `UNION ALL`** | Forces database engine to sort all output rows to remove duplicates. | Use `UNION ALL` unless duplicate suppression is strictly required. |
+| **Implicit Type Conversion** (`WHERE varchar_col = 123`) | Database casts indexed string column to int for every row, invalidating index. | Match literal type: `WHERE varchar_col = '123'`. |
+| **N+1 Query Loop in ORM** | Fires thousands of individual queries inside an application loop. | Use SQL `JOIN` or eager loading batch queries (`WHERE id IN (...)`). |
+| **Missing Foreign Key Indexes** | Causes child table full scans on `ON DELETE CASCADE` or joins. | Always create secondary B-Tree indexes on all foreign key columns. |
+| **Unindexed `ORDER BY` with `LIMIT`** | Database sorts millions of rows in memory/temp disk before returning 10. | Create an index covering both the filter and sort columns. |
+| **Over-indexing Tables** | Slows down every `INSERT`, `UPDATE`, and `DELETE` operation. | Regularly monitor and remove unused/duplicate indexes. |
+
+</details>
+
+</details>
+
+---
+
+## Summary & Master Takeaways for SQL Engineers
+
+1. **Understand Logical Execution Order**: Always remember that `FROM/WHERE` runs before `SELECT` and `ORDER BY`.
+2. **Write SARGable Queries**: Avoid wrapping indexed columns in functions or calculations in the `WHERE` clause.
+3. **Use the Right Tool for the Job**: Use CTEs for clarity, Window Functions for running calculations, and Materialized Views for heavy analytical summaries.
+4. **Always Profile with `EXPLAIN ANALYZE`**: Verify index utilization, buffer reads, and join algorithms before deploying queries to production.
